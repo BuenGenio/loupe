@@ -83,12 +83,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String commonMessageCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count ileti',
-      one: '$count ileti',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count ileti', one: '$count ileti');
     return '$_temp0';
   }
 
@@ -156,8 +151,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get changesExplainTitle => 'Neler değişti';
 
   @override
-  String get changesExplainIntro =>
-      'Değişen bilgileri açıklar ve her birini iki iletideki ilgili bölümlere bağlar.';
+  String get changesExplainIntro => 'Değişen bilgileri açıklar ve her birini iki iletideki ilgili bölümlere bağlar.';
 
   @override
   String get changesExplainAction => 'Değişiklikleri açıkla';
@@ -175,12 +169,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get changesExplainProviderError => 'Model yanıt vermedi.';
 
   @override
-  String get changesExplainInvalid =>
-      'Yanıt Loupe’un denetimlerinden geçemedi, bu yüzden hiçbir kısmı gösterilmiyor.';
+  String get changesExplainInvalid => 'Yanıt Loupe’un denetimlerinden geçemedi, bu yüzden hiçbir kısmı gösterilmiyor.';
 
   @override
-  String get changesExplainNoChange =>
-      'Anlamda bir değişiklik bulunamadı. Metindeki tam değişiklikler aşağıda.';
+  String get changesExplainNoChange => 'Anlamda bir değişiklik bulunamadı. Metindeki tam değişiklikler aşağıda.';
 
   @override
   String changesExplainKind(String kind) {
@@ -205,8 +197,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get changesExplainConflictNote =>
-      'İletiler bunlardan hangisinin geçerli olduğunu söylemiyor.';
+  String get changesExplainConflictNote => 'İletiler bunlardan hangisinin geçerli olduğunu söylemiyor.';
 
   @override
   String get changesExplainPartial => 'Uzun bir iletinin yalnızca başı okundu.';
@@ -228,8 +219,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Yalnızca ileti metni açıklanır. Ekler yalnızca ad, tür ve boyuta göre karşılaştırılır.';
 
   @override
-  String get changesExplainDemoNote =>
-      'Bunu bir model değil, yerleşik demo hazırladı.';
+  String get changesExplainDemoNote => 'Bunu bir model değil, yerleşik demo hazırladı.';
 
   @override
   String changesExplainMadeBy(String provider) {
@@ -274,8 +264,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get conversationChangesSameMetadata => 'Eşleşen ayrıntılar';
 
   @override
-  String get conversationChangesFullTextNote =>
-      'Alıntılar ve imzalar dahil iletinin tüm metni karşılaştırılır.';
+  String get conversationChangesFullTextNote => 'Alıntılar ve imzalar dahil iletinin tüm metni karşılaştırılır.';
 
   @override
   String get conversationChangesLimited =>
@@ -285,8 +274,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get conversationChangesLoadError => 'Bu iletiler karşılaştırılamadı.';
 
   @override
-  String get conversationSomethingWentWrong =>
-      'Bir sorun oluştu. Tekrar deneyin.';
+  String get conversationSomethingWentWrong => 'Bir sorun oluştu. Tekrar deneyin.';
 
   @override
   String get conversationReplyToList => 'Listeye yanıtla';
@@ -295,8 +283,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get conversationReplyList => 'Listeye yanıt';
 
   @override
-  String get conversationThreadMuted =>
-      'Yazışma sessize alındı. Yeni iletileri okunmuş olarak gelir.';
+  String get conversationThreadMuted => 'Yazışma sessize alındı. Yeni iletileri okunmuş olarak gelir.';
 
   @override
   String get conversationThreadUnmuted => 'Yazışmanın sesi açıldı.';
@@ -329,8 +316,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get conversationOfflineTitle => 'Çevrimdışısınız';
 
   @override
-  String get conversationOfflineText =>
-      'Bu yazışma henüz indirilmedi. Yeniden çevrimiçi olduğunuzda yüklenecek.';
+  String get conversationOfflineText => 'Bu yazışma henüz indirilmedi. Yeniden çevrimiçi olduğunuzda yüklenecek.';
 
   @override
   String get conversationErrorTitle => 'Bu ileti gösterilemiyor';
@@ -397,8 +383,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get conversationBodyError => 'Bu ileti yüklenemedi.';
 
   @override
-  String get conversationBodyOffline =>
-      'Çevrimdışısınız. İleti, yeniden çevrimiçi olduğunuzda yüklenecek.';
+  String get conversationBodyOffline => 'Çevrimdışısınız. İleti, yeniden çevrimiçi olduğunuzda yüklenecek.';
 
   @override
   String get conversationOriginalHint => 'Orijinal görünümde daha iyi görünür';
@@ -443,8 +428,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get conversationShareAsFile => 'Dosya olarak paylaş…';
 
   @override
-  String get conversationSearchFromMessageMenu =>
-      'Bu iletiden yola çıkarak ara…';
+  String get conversationSearchFromMessageMenu => 'Bu iletiden yola çıkarak ara…';
 
   @override
   String get conversationVip => 'VIP';
@@ -476,8 +460,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get conversationNoHeaders => 'Üst bilgi yok';
 
   @override
-  String get conversationSearchFromMessageTitle =>
-      'Bu iletiden yola çıkarak ara';
+  String get conversationSearchFromMessageTitle => 'Bu iletiden yola çıkarak ara';
 
   @override
   String conversationSearchFrom(String name) {
@@ -566,12 +549,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String conversationSecurityTrackers(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count izleyici',
-      one: '$count izleyici',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count izleyici', one: '$count izleyici');
     return '$_temp0';
   }
 
@@ -579,8 +557,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get conversationSecurityBadgeHint => 'Nedenini gösterir';
 
   @override
-  String get conversationPhishingBannerTitle =>
-      'Bu ileti kimlik avı gibi görünüyor';
+  String get conversationPhishingBannerTitle => 'Bu ileti kimlik avı gibi görünüyor';
 
   @override
   String conversationPhishingBannerReason(String reason) {
@@ -588,8 +565,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get conversationPhishingBannerText =>
-      'Bağlantılar ve görseller kapatıldı.';
+  String get conversationPhishingBannerText => 'Bağlantılar ve görseller kapatıldı.';
 
   @override
   String get conversationPhishingWhy => 'Neden?';
@@ -598,31 +574,26 @@ class AppLocalizationsTr extends AppLocalizations {
   String get conversationPhishingShowAnyway => 'Yine de göster';
 
   @override
-  String get conversationSecurityPhishingTitle =>
-      'Bu, kimlik avı gibi görünüyor';
+  String get conversationSecurityPhishingTitle => 'Bu, kimlik avı gibi görünüyor';
 
   @override
-  String get conversationSecurityPhishingText =>
-      'Birçok işaret, bu iletinin iddia ettiği şey olmadığını gösteriyor.';
+  String get conversationSecurityPhishingText => 'Birçok işaret, bu iletinin iddia ettiği şey olmadığını gösteriyor.';
 
   @override
   String get conversationSecurityCarefulTitle => 'Bu iletiye dikkat edin';
 
   @override
-  String get conversationSecurityCarefulText =>
-      'İçinde ikinci kez bakmaya değer bir şey var.';
+  String get conversationSecurityCarefulText => 'İçinde ikinci kez bakmaya değer bir şey var.';
 
   @override
-  String get conversationSecurityVerifiedText =>
-      'Gönderen doğrulandı ve şüpheli bir şey görünmüyor.';
+  String get conversationSecurityVerifiedText => 'Gönderen doğrulandı ve şüpheli bir şey görünmüyor.';
 
   @override
   String get conversationSecurityUnverifiedText =>
       'Şüpheli bir şey görünmüyor. E-posta sunucunuz gönderenin doğrulanıp doğrulanmadığını belirtmedi.';
 
   @override
-  String get conversationSecurityNothingSuspicious =>
-      'Şüpheli bir şey görünmüyor.';
+  String get conversationSecurityNothingSuspicious => 'Şüpheli bir şey görünmüyor.';
 
   @override
   String get conversationSecurityWhy => 'Neden';
@@ -645,8 +616,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityTrackingPixelsText =>
-      'Bu iletiyi açtığınızda gönderene haber vereceklerdi.';
+  String get conversationSecurityTrackingPixelsText => 'Bu iletiyi açtığınızda gönderene haber vereceklerdi.';
 
   @override
   String get conversationSecurityNoRemoteImages => 'Uzak görsel yok';
@@ -689,8 +659,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get conversationSecurityTechnicalDetails => 'Teknik ayrıntılar';
 
   @override
-  String get conversationSecurityCheckedLocally =>
-      'Bu cihazda denetlendi. Hiçbir yere bir şey gönderilmedi.';
+  String get conversationSecurityCheckedLocally => 'Bu cihazda denetlendi. Hiçbir yere bir şey gönderilmedi.';
 
   @override
   String get conversationSecurityTrackersLabel => 'İzleyiciler';
@@ -714,12 +683,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String conversationSecurityHiddenValue(int elements, int characters) {
-    String _temp0 = intl.Intl.pluralLogic(
-      elements,
-      locale: localeName,
-      other: '$elements öğe',
-      one: '$elements öğe',
-    );
+    String _temp0 = intl.Intl.pluralLogic(elements, locale: localeName, other: '$elements öğe', one: '$elements öğe');
     String _temp1 = intl.Intl.pluralLogic(
       characters,
       locale: localeName,
@@ -755,8 +719,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Beklediğiniz bir ileti değilse ona göre hareket etmeyin. Emin değilseniz gönderenle başka bir yoldan iletişime geçin.';
 
   @override
-  String get conversationSecurityAuthUnalignedTitle =>
-      'Başka bir alan adıyla imzalanmış';
+  String get conversationSecurityAuthUnalignedTitle => 'Başka bir alan adıyla imzalanmış';
 
   @override
   String conversationSecurityAuthUnalignedText(String signer, String domain) {
@@ -769,8 +732,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressTitle =>
-      'Ad farklı bir adres gösteriyor';
+  String get conversationSecurityNameShowsAddressTitle => 'Ad farklı bir adres gösteriyor';
 
   @override
   String conversationSecurityNameShowsAddressText(String shown, String email) {
@@ -778,8 +740,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressAdvice =>
-      'Ada değil, adrese güvenin.';
+  String get conversationSecurityNameShowsAddressAdvice => 'Ada değil, adrese güvenin.';
 
   @override
   String get conversationSecurityReplyToTitle => 'Yanıtlar başka yere gidiyor';
@@ -790,15 +751,13 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityReplyToAdvice =>
-      'Kişisel bir şeyle yanıt vermeden önce adresi kontrol edin.';
+  String get conversationSecurityReplyToAdvice => 'Kişisel bir şeyle yanıt vermeden önce adresi kontrol edin.';
 
   @override
   String get conversationSecurityImpersonationYouTitle => 'Adınızı kullanıyor';
 
   @override
-  String get conversationSecurityImpersonationTitle =>
-      'Tanıdığınız birinin adını kullanıyor';
+  String get conversationSecurityImpersonationTitle => 'Tanıdığınız birinin adını kullanıyor';
 
   @override
   String conversationSecurityImpersonationYouText(String name, String email) {
@@ -806,28 +765,17 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityImpersonationVipText(
-    String name,
-    String knownName,
-    String knownEmail,
-    String email,
-  ) {
+  String conversationSecurityImpersonationVipText(String name, String knownName, String knownEmail, String email) {
     return 'Tıpkı VIP kişiniz $knownName ($knownEmail) gibi “$name” imzasını taşıyor ama yeni bir adresten geliyor: $email.';
   }
 
   @override
-  String conversationSecurityImpersonationText(
-    String name,
-    String knownName,
-    String knownEmail,
-    String email,
-  ) {
+  String conversationSecurityImpersonationText(String name, String knownName, String knownEmail, String email) {
     return 'Tıpkı $knownName ($knownEmail) gibi “$name” imzasını taşıyor ama yeni bir adresten geliyor: $email.';
   }
 
   @override
-  String get conversationSecurityImpersonationRepliesElsewhere =>
-      'Üstelik yanıtlar da bambaşka bir adrese gider.';
+  String get conversationSecurityImpersonationRepliesElsewhere => 'Üstelik yanıtlar da bambaşka bir adrese gider.';
 
   @override
   String get conversationSecurityImpersonationAdvice =>
@@ -852,16 +800,13 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeAdvice =>
-      'Henüz tanımadığınız kişilerden gelen isteklere dikkat edin.';
+  String get conversationSecurityFirstTimeAdvice => 'Henüz tanımadığınız kişilerden gelen isteklere dikkat edin.';
 
   @override
-  String get conversationSecuritySenderHomographTitle =>
-      'Gönderen adresinde benzer görünümlü harfler';
+  String get conversationSecuritySenderHomographTitle => 'Gönderen adresinde benzer görünümlü harfler';
 
   @override
-  String get conversationSecurityLinkHomographTitle =>
-      'Bir bağlantıda benzer görünümlü harfler';
+  String get conversationSecurityLinkHomographTitle => 'Bir bağlantıda benzer görünümlü harfler';
 
   @override
   String conversationSecurityHomographText(String host) {
@@ -874,8 +819,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecuritySenderHomographAdvice =>
-      'Silin ya da gereksiz olarak bildirin.';
+  String get conversationSecuritySenderHomographAdvice => 'Silin ya da gereksiz olarak bildirin.';
 
   @override
   String get conversationSecurityLinkHomographAdvice => 'Açmayın.';
@@ -889,8 +833,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get conversationSecurityLookalikeTitle => 'Benzer görünümlü alan adı';
 
   @override
-  String get conversationSecurityFamiliarNameTitle =>
-      'Alan adında tanıdık bir ad kullanıyor';
+  String get conversationSecurityFamiliarNameTitle => 'Alan adında tanıdık bir ad kullanıyor';
 
   @override
   String conversationSecurityLookalikeOwnText(String domain, String real) {
@@ -898,11 +841,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityLookalikeText(
-    String domain,
-    String brand,
-    String real,
-  ) {
+  String conversationSecurityLookalikeText(String domain, String brand, String real) {
     return '$domain, $brand ($real) gibi görünüyor ama farklı bir alan adı.';
   }
 
@@ -912,11 +851,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityFamiliarNameText(
-    String domain,
-    String brand,
-    String real,
-  ) {
+  String conversationSecurityFamiliarNameText(String domain, String brand, String real) {
     return '$domain, $brand ($real) adını kullanıyor ama ona ait değil.';
   }
 
@@ -966,8 +901,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLinkUncheckableTitle =>
-      'Bir bağlantının hedefi denetlenemiyor';
+  String get conversationSecurityLinkUncheckableTitle => 'Bir bağlantının hedefi denetlenemiyor';
 
   @override
   String conversationSecurityLinkUncheckableText(String shown, String host) {
@@ -975,8 +909,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityIpAddressTitle =>
-      'Bir bağlantı yalın bir IP adresine gidiyor';
+  String get conversationSecurityIpAddressTitle => 'Bir bağlantı yalın bir IP adresine gidiyor';
 
   @override
   String conversationSecurityIpAddressText(String hosts) {
@@ -984,8 +917,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityUserInfoTitle =>
-      'Kılık değiştirmiş bir bağlantı';
+  String get conversationSecurityUserInfoTitle => 'Kılık değiştirmiş bir bağlantı';
 
   @override
   String conversationSecurityUserInfoText(String shown, String host) {
@@ -993,8 +925,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityDataLinkTitle =>
-      'Gizli bir sayfa devre dışı bırakıldı';
+  String get conversationSecurityDataLinkTitle => 'Gizli bir sayfa devre dışı bırakıldı';
 
   @override
   String get conversationSecurityDataLinkText =>
@@ -1004,20 +935,16 @@ class AppLocalizationsTr extends AppLocalizations {
   String get conversationSecurityPasswordFieldTitle => 'Parola istiyor';
 
   @override
-  String get conversationSecurityPasswordFieldText =>
-      'İleti bir parola alanı içeriyordu. Loupe onu kaldırdı.';
+  String get conversationSecurityPasswordFieldText => 'İleti bir parola alanı içeriyordu. Loupe onu kaldırdı.';
 
   @override
-  String get conversationSecurityPasswordFieldAdvice =>
-      'Bir e-postaya asla parola yazmayın.';
+  String get conversationSecurityPasswordFieldAdvice => 'Bir e-postaya asla parola yazmayın.';
 
   @override
-  String get conversationSecurityScriptLinkTitle =>
-      'Kod çalıştıran bir bağlantı devre dışı bırakıldı';
+  String get conversationSecurityScriptLinkTitle => 'Kod çalıştıran bir bağlantı devre dışı bırakıldı';
 
   @override
-  String get conversationSecurityScriptLinkText =>
-      'Loupe iletilerdeki kodları asla çalıştırmaz.';
+  String get conversationSecurityScriptLinkText => 'Loupe iletilerdeki kodları asla çalıştırmaz.';
 
   @override
   String conversationSecurityShortenerTitle(int count) {
@@ -1036,8 +963,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityInternationalTitle =>
-      'Uluslararası web adresi';
+  String get conversationSecurityInternationalTitle => 'Uluslararası web adresi';
 
   @override
   String conversationSecurityInternationalText(String hosts) {
@@ -1045,18 +971,15 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLotsOfHiddenTextTitle =>
-      'Çok fazla gizli metin';
+  String get conversationSecurityLotsOfHiddenTextTitle => 'Çok fazla gizli metin';
 
   @override
   String conversationSecurityLotsOfHiddenTextText(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          '$count karakterlik görünmez metin kaldırıldı. Bu tür gizli metinler spam filtrelerini kandırmak içindir.',
-      one:
-          '$count karakterlik görünmez metin kaldırıldı. Bu tür gizli metinler spam filtrelerini kandırmak içindir.',
+      other: '$count karakterlik görünmez metin kaldırıldı. Bu tür gizli metinler spam filtrelerini kandırmak içindir.',
+      one: '$count karakterlik görünmez metin kaldırıldı. Bu tür gizli metinler spam filtrelerini kandırmak içindir.',
     );
     return '$_temp0';
   }
@@ -1076,8 +999,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get exportDownloadFailed =>
-      'İleti indirilemedi. Bağlantıyı kontrol edip tekrar deneyin.';
+  String get exportDownloadFailed => 'İleti indirilemedi. Bağlantıyı kontrol edip tekrar deneyin.';
 
   @override
   String exportSaved(String name) {
@@ -1186,8 +1108,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get mailboxesSmartMailboxes => 'Smart Mailboxes';
 
   @override
-  String get mailboxesSmartMailboxesEmpty =>
-      'Burada tutmak için bir aramayı kaydedin.';
+  String get mailboxesSmartMailboxesEmpty => 'Burada tutmak için bir aramayı kaydedin.';
 
   @override
   String get mailboxesTags => 'Etiketler';
@@ -1221,8 +1142,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get projectsDelete => 'Projeyi sil';
 
   @override
-  String get projectsDeleteMessage =>
-      'Yazışmaları bulundukları yerde kalır ve projeden çıkar.';
+  String get projectsDeleteMessage => 'Yazışmaları bulundukları yerde kalır ve projeden çıkar.';
 
   @override
   String get projectsUntitled => 'Proje';
@@ -1336,8 +1256,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get mailboxesVipTitle => 'VIP';
 
   @override
-  String get mailboxesVipFooter =>
-      'Bir iletide gönderenin adına dokunup VIP’yi de açabilirsiniz.';
+  String get mailboxesVipFooter => 'Bir iletide gönderenin adına dokunup VIP’yi de açabilirsiniz.';
 
   @override
   String get mailboxesAddVip => 'VIP ekle…';
@@ -1346,8 +1265,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get mailboxesAddVipTitle => 'VIP ekle';
 
   @override
-  String get mailboxesAddVipText =>
-      'Bu adresten gelen e-postalar yıldız alır ve VIP posta kutusunda görünür.';
+  String get mailboxesAddVipText => 'Bu adresten gelen e-postalar yıldız alır ve VIP posta kutusunda görünür.';
 
   @override
   String get mailboxesAddVipPlaceholder => 'name@example.com';
@@ -1392,12 +1310,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String messageListSelected(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count seçildi',
-      one: '$count seçildi',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count seçildi', one: '$count seçildi');
     return '$_temp0';
   }
 
@@ -1484,12 +1397,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String panesDragCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count ileti',
-      one: '1 ileti',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count ileti', one: '1 ileti');
     return '$_temp0';
   }
 
@@ -1533,15 +1441,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get snoozeNoTime => 'Zaman belirlenmedi';
 
   @override
-  String get snoozeFooter =>
-      'Ertelenen iletiler, zamanı geldiğinde okunmamış olarak Gelen Kutusu’na döner.';
+  String get snoozeFooter => 'Ertelenen iletiler, zamanı geldiğinde okunmamış olarak Gelen Kutusu’na döner.';
 
   @override
   String get snoozeEmptyTitle => 'Ertelenen ileti yok';
 
   @override
-  String get snoozeEmptyText =>
-      'Bir iletiyi erteleyin, ihtiyacınız olduğunda Gelen Kutusu’na geri gelsin.';
+  String get snoozeEmptyText => 'Bir iletiyi erteleyin, ihtiyacınız olduğunda Gelen Kutusu’na geri gelsin.';
 
   @override
   String get briefButton => 'Özet';
@@ -1565,15 +1471,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get briefStopped => 'Özeti durdurdunuz.';
 
   @override
-  String get briefFailedTooLarge =>
-      'Bu ileti model için çok uzun, bu yüzden hiçbir şey gönderilmedi.';
+  String get briefFailedTooLarge => 'Bu ileti model için çok uzun, bu yüzden hiçbir şey gönderilmedi.';
 
   @override
   String get briefFailedProvider => 'Model bu iletiyi özetleyemedi.';
 
   @override
-  String get briefFailedInvalid =>
-      'Yanıt Loupe denetimlerini geçemedi, bu yüzden liste gösterilmiyor.';
+  String get briefFailedInvalid => 'Yanıt Loupe denetimlerini geçemedi, bu yüzden liste gösterilmiyor.';
 
   @override
   String get briefNothingTitle => 'Özetlenecek bir şey yok';
@@ -1625,11 +1529,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String briefOwner(String owner) {
-    String _temp0 = intl.Intl.selectLogic(owner, {
-      'me': 'Siz',
-      'them': 'Diğerleri',
-      'other': 'Belirtilmemiş',
-    });
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Siz', 'them': 'Diğerleri', 'other': 'Belirtilmemiş'});
     return '$_temp0';
   }
 
@@ -1717,15 +1617,13 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get briefSecurityText =>
-      'Bu özetteki herhangi bir şeyi yapmadan önce iletinin kendisini kontrol edin.';
+  String get briefSecurityText => 'Bu özetteki herhangi bir şeyi yapmadan önce iletinin kendisini kontrol edin.';
 
   @override
   String get briefSourceTitle => 'İletide';
 
   @override
-  String get briefSourceAttachment =>
-      'Bu, ekli bir dosyanın adından geliyor. Özet eklerin içeriğini okumaz.';
+  String get briefSourceAttachment => 'Bu, ekli bir dosyanın adından geliyor. Özet eklerin içeriğini okumaz.';
 
   @override
   String get briefEventTitle => 'Yeni etkinlik';
@@ -1766,12 +1664,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get appLockFailed => 'Loupe kimliğinizi doğrulayamadı.';
 
   @override
-  String get appLockLockedOut =>
-      'Çok fazla deneme yapıldı. Daha sonra tekrar deneyin.';
+  String get appLockLockedOut => 'Çok fazla deneme yapıldı. Daha sonra tekrar deneyin.';
 
   @override
-  String get appLockPromptError =>
-      'Doğrulama penceresi gösterilemedi. Tekrar deneyin.';
+  String get appLockPromptError => 'Doğrulama penceresi gösterilemedi. Tekrar deneyin.';
 
   @override
   String get appLockNoScreenLock => 'Bu telefonda ekran kilidi yok.';
@@ -1780,15 +1676,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get appLockUnlockPromptTitle => 'Loupe’un kilidini aç';
 
   @override
-  String get appLockUnlockPromptReason =>
-      'E-postalarınızı görmek için kimliğinizi doğrulayın.';
+  String get appLockUnlockPromptReason => 'E-postalarınızı görmek için kimliğinizi doğrulayın.';
 
   @override
   String get appLockTurnOnPromptTitle => 'Uygulama Kilidi’ni aç';
 
   @override
-  String get appLockTurnOnPromptReason =>
-      'Uygulama Kilidi’ni açmak için kimliğinizi doğrulayın.';
+  String get appLockTurnOnPromptReason => 'Uygulama Kilidi’ni açmak için kimliğinizi doğrulayın.';
 
   @override
   String get appLockScreenLockRemoved =>
@@ -1799,23 +1693,13 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String appLockAfterMinutes(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count dakika',
-      one: '1 dakika',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count dakika', one: '1 dakika');
     return '$_temp0';
   }
 
   @override
   String appLockAfterHours(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count saat',
-      one: '1 saat',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count saat', one: '1 saat');
     return '$_temp0';
   }
 
@@ -1862,8 +1746,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get openpgpSignedWithRejectedKey =>
-      'Reddedilmiş bir anahtarla imzalanmış';
+  String get openpgpSignedWithRejectedKey => 'Reddedilmiş bir anahtarla imzalanmış';
 
   @override
   String openpgpSignedByNotAccepted(String name) {
@@ -1893,12 +1776,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String openpgpForKeys(int count, String keys) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Anahtarlar: $keys',
-      one: 'Anahtar: $keys',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Anahtarlar: $keys', one: 'Anahtar: $keys');
     return '$_temp0';
   }
 
@@ -1932,44 +1810,34 @@ class AppLocalizationsTr extends AppLocalizations {
   String get openpgpChangeAcceptance => 'Kabul durumunu değiştir…';
 
   @override
-  String get openpgpCheckedFooter =>
-      'Bu cihazda, Thunderbird ile uyumlu OpenPGP ile denetlendi.';
+  String get openpgpCheckedFooter => 'Bu cihazda, Thunderbird ile uyumlu OpenPGP ile denetlendi.';
 
   @override
-  String get openpgpSummaryLocked =>
-      'Anahtarınız kilitli. Bu iletiyi okumak için parolasıyla kilidini açın.';
+  String get openpgpSummaryLocked => 'Anahtarınız kilitli. Bu iletiyi okumak için parolasıyla kilidini açın.';
 
   @override
-  String get openpgpSummaryNoSecretKey =>
-      'Bu cihazda olmayan bir anahtar için şifrelenmiş.';
+  String get openpgpSummaryNoSecretKey => 'Bu cihazda olmayan bir anahtar için şifrelenmiş.';
 
   @override
-  String get openpgpSummaryDamaged =>
-      'Şifreli veriler hasarlı ya da yolda değiştirilmiş.';
+  String get openpgpSummaryDamaged => 'Şifreli veriler hasarlı ya da yolda değiştirilmiş.';
 
   @override
-  String get openpgpSummaryUnsupported =>
-      'Loupe’un desteklemediği bir algoritma kullanıyor.';
+  String get openpgpSummaryUnsupported => 'Loupe’un desteklemediği bir algoritma kullanıyor.';
 
   @override
-  String get openpgpSummaryEncrypted =>
-      'Yalnızca siz ve diğer alıcılar okuyabilir.';
+  String get openpgpSummaryEncrypted => 'Yalnızca siz ve diğer alıcılar okuyabilir.';
 
   @override
-  String get openpgpSummaryNotSigned =>
-      'İmzalı değil, bu yüzden gönderen doğrulanmadı.';
+  String get openpgpSummaryNotSigned => 'İmzalı değil, bu yüzden gönderen doğrulanmadı.';
 
   @override
-  String get openpgpSummaryUnknownKey =>
-      'İmzalı, ancak sizde olmayan bir anahtarla; bu yüzden imza denetlenemiyor.';
+  String get openpgpSummaryUnknownKey => 'İmzalı, ancak sizde olmayan bir anahtarla; bu yüzden imza denetlenemiyor.';
 
   @override
-  String get openpgpSummaryBadSignature =>
-      'İmza eşleşmiyor: ileti değiştirilmiş olabilir.';
+  String get openpgpSummaryBadSignature => 'İmza eşleşmiyor: ileti değiştirilmiş olabilir.';
 
   @override
-  String get openpgpSummaryMismatch =>
-      'İmza geçerli, ancak anahtar gönderenin adresine değil, başka bir adrese ait.';
+  String get openpgpSummaryMismatch => 'İmza geçerli, ancak anahtar gönderenin adresine değil, başka bir adrese ait.';
 
   @override
   String get openpgpSummaryPartial =>
@@ -1979,16 +1847,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get openpgpSummaryOwnKey => 'Kendi anahtarınızla imzalanmış.';
 
   @override
-  String get openpgpSummaryVerified =>
-      'İmza geçerli ve anahtarın parmak izini doğruladınız.';
+  String get openpgpSummaryVerified => 'İmza geçerli ve anahtarın parmak izini doğruladınız.';
 
   @override
-  String get openpgpSummaryUnverified =>
-      'İmza geçerli. Anahtarı, parmak izini denetlemeden kabul ettiniz.';
+  String get openpgpSummaryUnverified => 'İmza geçerli. Anahtarı, parmak izini denetlemeden kabul ettiniz.';
 
   @override
-  String get openpgpSummaryRejected =>
-      'İmza geçerli, ancak bu anahtarı reddettiniz.';
+  String get openpgpSummaryRejected => 'İmza geçerli, ancak bu anahtarı reddettiniz.';
 
   @override
   String get openpgpSummaryUndecided =>
@@ -2048,12 +1913,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get openpgpAddresses => 'Adresler';
 
   @override
-  String get openpgpAddressesFooter =>
-      'Her adresin hangi anahtarı kullandığı ve ne zaman şifreleyip imzaladığı.';
+  String get openpgpAddressesFooter => 'Her adresin hangi anahtarı kullandığı ve ne zaman şifreleyip imzaladığı.';
 
   @override
-  String get openpgpCorrespondentsKeys =>
-      'Yazıştığınız kişilerin OpenPGP anahtarları';
+  String get openpgpCorrespondentsKeys => 'Yazıştığınız kişilerin OpenPGP anahtarları';
 
   @override
   String get openpgpCorrespondentsKeysFooter =>
@@ -2084,8 +1947,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Arama, şifreli iletileri gönderenine, alıcılarına ve konusuna göre bulur. Bu açıkken Loupe, şifresini çözdüğü her şifreli iletinin metnini de bu cihazdaki şifreli veritabanında bulunan arama dizinine ekler; böylece arama, iletileri metinlerine göre de bulur. Kapatırsanız bu metin dizinden kaldırılır.';
 
   @override
-  String get openpgpIndexDecrypted =>
-      'Şifresi çözülen iletileri aramaya dizinle';
+  String get openpgpIndexDecrypted => 'Şifresi çözülen iletileri aramaya dizinle';
 
   @override
   String get openpgpPassphrases => 'Parolalar';
@@ -2245,8 +2107,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Anahtarı yeniden içe aktarmadığınız sürece, bu anahtar için şifrelenmiş e-postalar bu cihazda artık okunamaz.';
 
   @override
-  String get openpgpRemoveKeyMessage =>
-      'Daha sonra yeniden içe aktarabilirsiniz.';
+  String get openpgpRemoveKeyMessage => 'Daha sonra yeniden içe aktarabilirsiniz.';
 
   @override
   String get openpgpKeyHeader => 'OpenPGP anahtarı';
@@ -2269,8 +2130,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get openpgpEncryptAutomatically => 'Otomatik şifrele';
 
   @override
-  String get openpgpAlwaysEncryptDetail =>
-      'Bir alıcının anahtarı yoksa göndermeyi reddeder';
+  String get openpgpAlwaysEncryptDetail => 'Bir alıcının anahtarı yoksa göndermeyi reddeder';
 
   @override
   String get openpgpSignUnencrypted => 'Şifresiz e-postaları imzala';
@@ -2289,17 +2149,11 @@ class AppLocalizationsTr extends AppLocalizations {
   String get openpgpPreferEncryption => 'Şifrelemeyi tercih et';
 
   @override
-  String get openpgpPreferEncryptionDetail =>
-      'Başkalarından, mümkün olduğunda şifrelemelerini iste';
+  String get openpgpPreferEncryptionDetail => 'Başkalarından, mümkün olduğunda şifrelemelerini iste';
 
   @override
   String openpgpValidityYears(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count yıl',
-      one: '1 yıl',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count yıl', one: '1 yıl');
     return '$_temp0';
   }
 
@@ -2481,20 +2335,17 @@ class AppLocalizationsTr extends AppLocalizations {
   String get openpgpWrongPassphrase => 'Parola yanlış. Tekrar deneyin.';
 
   @override
-  String get openpgpExplainLocked =>
-      'Bu ileti şifreli. Okumak için OpenPGP anahtarınızın kilidini açın.';
+  String get openpgpExplainLocked => 'Bu ileti şifreli. Okumak için OpenPGP anahtarınızın kilidini açın.';
 
   @override
   String get openpgpExplainNoKey =>
       'Bu ileti şifreli, ancak bu cihazdaki hiçbir OpenPGP anahtarı için şifrelenmemiş. İletiyi Thunderbird’de okuyorsanız anahtarınızı oradan içe aktarın: Ayarlar › Uçtan uca şifreleme.';
 
   @override
-  String get openpgpExplainDamaged =>
-      'Bu şifreli ileti hasarlı, bu yüzden şifresi güvenle çözülemiyor.';
+  String get openpgpExplainDamaged => 'Bu şifreli ileti hasarlı, bu yüzden şifresi güvenle çözülemiyor.';
 
   @override
-  String get openpgpExplainUnsupported =>
-      'Bu ileti, Loupe’un henüz okuyamadığı bir şifreleme kullanıyor.';
+  String get openpgpExplainUnsupported => 'Bu ileti, Loupe’un henüz okuyamadığı bir şifreleme kullanıyor.';
 
   @override
   String get openpgpExplainSmimeNoKey =>
@@ -2506,8 +2357,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get openpgpExplainSmimeUnlock =>
-      'Okumak için S/MIME sertifikanızın kilidini açın.';
+  String get openpgpExplainSmimeUnlock => 'Okumak için S/MIME sertifikanızın kilidini açın.';
 
   @override
   String get openpgpAttachmentGone => 'Bu ek artık kullanılamıyor.';
@@ -2706,42 +2556,34 @@ class AppLocalizationsTr extends AppLocalizations {
   String get smimeTrust => 'Güven';
 
   @override
-  String get smimeSummaryNoKey =>
-      'Bu cihazda olmayan bir sertifika için şifrelenmiş.';
+  String get smimeSummaryNoKey => 'Bu cihazda olmayan bir sertifika için şifrelenmiş.';
 
   @override
-  String get smimeSummaryDamaged =>
-      'Şifreli veriler hasarlı ya da yolda değiştirilmiş.';
+  String get smimeSummaryDamaged => 'Şifreli veriler hasarlı ya da yolda değiştirilmiş.';
 
   @override
-  String get smimeSummaryUnsupported =>
-      'Loupe’un desteklemediği bir algoritma kullanıyor.';
+  String get smimeSummaryUnsupported => 'Loupe’un desteklemediği bir algoritma kullanıyor.';
 
   @override
   String get smimeSummaryLocked => 'S/MIME sertifikanız kilitli.';
 
   @override
-  String get smimeSummaryEncrypted =>
-      'Yalnızca siz ve diğer alıcılar okuyabilir.';
+  String get smimeSummaryEncrypted => 'Yalnızca siz ve diğer alıcılar okuyabilir.';
 
   @override
-  String get smimeSummaryNotSigned =>
-      'İmzalı değil, bu yüzden gönderen doğrulanmadı.';
+  String get smimeSummaryNotSigned => 'İmzalı değil, bu yüzden gönderen doğrulanmadı.';
 
   @override
-  String get smimeSummaryModified =>
-      'İmza eşleşmiyor: ileti imzalandıktan sonra değiştirilmiş.';
+  String get smimeSummaryModified => 'İmza eşleşmiyor: ileti imzalandıktan sonra değiştirilmiş.';
 
   @override
   String get smimeSummaryUncheckable => 'İmza denetlenemiyor.';
 
   @override
-  String get smimeSummaryNoCertificate =>
-      'İmzalayanın sertifikası iletide yok, bu yüzden denetlenemiyor.';
+  String get smimeSummaryNoCertificate => 'İmzalayanın sertifikası iletide yok, bu yüzden denetlenemiyor.';
 
   @override
-  String get smimeSummaryRevoked =>
-      'Sertifika yetkilisi, imzalayanın sertifikasını iptal etmiş: imzaya güvenilemez.';
+  String get smimeSummaryRevoked => 'Sertifika yetkilisi, imzalayanın sertifikasını iptal etmiş: imzaya güvenilemez.';
 
   @override
   String smimeSummaryRevokedReason(String reason) {
@@ -2758,12 +2600,10 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get smimeProblemInvalidChain =>
-      'Sertifika ya da onu verenlerden biri geçersiz.';
+  String get smimeProblemInvalidChain => 'Sertifika ya da onu verenlerden biri geçersiz.';
 
   @override
-  String get smimeProblemUntrusted =>
-      'Sertifika, Loupe’un güvenmediği bir yetkiliden geliyor.';
+  String get smimeProblemUntrusted => 'Sertifika, Loupe’un güvenmediği bir yetkiliden geliyor.';
 
   @override
   String get smimeProblemExpired => 'Sertifikanın süresi dolmuştu.';
@@ -2775,8 +2615,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get smimeProblemWrongUsage => 'Sertifika e-posta için tasarlanmamış.';
 
   @override
-  String get smimeProblemWrongAddress =>
-      'Sertifika, gönderenin adresine değil, başka bir adrese ait.';
+  String get smimeProblemWrongAddress => 'Sertifika, gönderenin adresine değil, başka bir adrese ait.';
 
   @override
   String smimeTrustedBy(String issuer) {
@@ -2833,12 +2672,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get smimeImportCertificateEllipsis => 'Sertifika içe aktar…';
 
   @override
-  String get smimeUseDeviceCertificate =>
-      'Bu cihazdaki bir sertifikayı kullan…';
+  String get smimeUseDeviceCertificate => 'Bu cihazdaki bir sertifikayı kullan…';
 
   @override
-  String get smimeCorrespondentsCertificates =>
-      'Yazıştığınız kişilerin sertifikaları';
+  String get smimeCorrespondentsCertificates => 'Yazıştığınız kişilerin sertifikaları';
 
   @override
   String get smimeCorrespondentsCertificatesFooter =>
@@ -2862,10 +2699,8 @@ class AppLocalizationsTr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          'Mozilla’nın e-posta için güvendiği $count yetkilinin yanı sıra sizin güvendikleriniz.',
-      one:
-          'Mozilla’nın e-posta için güvendiği $count yetkilinin yanı sıra sizin güvendikleriniz.',
+      other: 'Mozilla’nın e-posta için güvendiği $count yetkilinin yanı sıra sizin güvendikleriniz.',
+      one: 'Mozilla’nın e-posta için güvendiği $count yetkilinin yanı sıra sizin güvendikleriniz.',
     );
     return '$_temp0';
   }
@@ -3040,8 +2875,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Özel anahtarı bu cihazdan silinir: yeniden içe aktarmadığınız sürece, onun için şifrelenmiş e-postalar burada artık okunamaz.';
 
   @override
-  String get smimeRemoveContactMessage =>
-      'Kişinin bir sonraki imzalı iletisiyle geri gelir.';
+  String get smimeRemoveContactMessage => 'Kişinin bir sonraki imzalı iletisiyle geri gelir.';
 
   @override
   String get smimeAddressImportFooter =>
@@ -3064,8 +2898,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get smimeCertificatePassword => 'Sertifika parolası';
 
   @override
-  String get smimeCertificatePasswordPrompt =>
-      'Sertifika dosyası dışa aktarılırken kullanılan parolayı girin.';
+  String get smimeCertificatePasswordPrompt => 'Sertifika dosyası dışa aktarılırken kullanılan parolayı girin.';
 
   @override
   String get smimeImport => 'İçe aktar';
@@ -3101,10 +2934,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String smimeImportedCertificatesAndAuthorities(
-    int count,
-    String certificates,
-  ) {
+  String smimeImportedCertificatesAndAuthorities(int count, String certificates) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -3115,12 +2945,10 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get smimeNoPrivateKey =>
-      'Bu dosyada özel anahtar yok. Sertifikanızı özel anahtarıyla birlikte dışa aktarın.';
+  String get smimeNoPrivateKey => 'Bu dosyada özel anahtar yok. Sertifikanızı özel anahtarıyla birlikte dışa aktarın.';
 
   @override
-  String get smimeImportAsYoursTitle =>
-      'Sertifikanız olarak içe aktarılsın mı?';
+  String get smimeImportAsYoursTitle => 'Sertifikanız olarak içe aktarılsın mı?';
 
   @override
   String smimeImportAsYoursMessage(String names) {
@@ -3198,12 +3026,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get smimeSetPassphraseButton => 'Belirle';
 
   @override
-  String get smimeLockedOpenAgain =>
-      'S/MIME sertifikanız kilitli. Kilidini açmak için iletiyi yeniden açın.';
+  String get smimeLockedOpenAgain => 'S/MIME sertifikanız kilitli. Kilidini açmak için iletiyi yeniden açın.';
 
   @override
-  String get smimeDeviceHasNoCertificates =>
-      'Bu cihaz sertifikalarını sunmuyor.';
+  String get smimeDeviceHasNoCertificates => 'Bu cihaz sertifikalarını sunmuyor.';
 
   @override
   String get smimeCantReadCertificate => 'Loupe bu sertifikayı okuyamıyor.';
@@ -3217,8 +3043,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Sertifika artık bu cihazda değil ya da Loupe artık onu kullanamıyor olabilir. Ayarlar › Uçtan uca şifreleme bölümünden yeniden seçin.';
 
   @override
-  String get smimeDeviceCertificateAppOnly =>
-      'Bu cihazdaki sertifika yalnızca Loupe açıkken kullanılabilir.';
+  String get smimeDeviceCertificateAppOnly => 'Bu cihazdaki sertifika yalnızca Loupe açıkken kullanılabilir.';
 
   @override
   String get smimeDeviceKeyDamaged => 'Şifreli anahtar hasarlı.';
@@ -3237,12 +3062,10 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityNotWebAddress =>
-      'Yetkilinin adresi bir web adresi değil.';
+  String get smimeAuthorityNotWebAddress => 'Yetkilinin adresi bir web adresi değil.';
 
   @override
-  String get smimeAuthorityTimeout =>
-      'Sertifika yetkilisi zamanında yanıt vermedi.';
+  String get smimeAuthorityTimeout => 'Sertifika yetkilisi zamanında yanıt vermedi.';
 
   @override
   String get smimeAuthorityUnreachable => 'Sertifika yetkilisine ulaşılamadı.';
@@ -3253,8 +3076,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityAnswerTooLarge =>
-      'Sertifika yetkilisinin yanıtı çok büyük.';
+  String get smimeAuthorityAnswerTooLarge => 'Sertifika yetkilisinin yanıtı çok büyük.';
 
   @override
   String get smimeRevocationNotChecked =>
@@ -3536,8 +3358,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get actionsSuggestByDemo =>
-      'Yerleşik demo önerdi: kurallar, model yok. Hiçbir şey bu telefondan çıkmaz.';
+  String get actionsSuggestByDemo => 'Yerleşik demo önerdi: kurallar, model yok. Hiçbir şey bu telefondan çıkmaz.';
 
   @override
   String get actionsSuggestNone => 'Bu iletide takip edilecek bir şey yok.';
@@ -3570,8 +3391,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get actionsSuggestTooLarge => 'Bu ileti seçilen model için çok uzun.';
 
   @override
-  String get actionsSuggestInvalid =>
-      'Yanıt iletiyle uyuşmadı, bu yüzden bir şey önerilmiyor.';
+  String get actionsSuggestInvalid => 'Yanıt iletiyle uyuşmadı, bu yüzden bir şey önerilmiyor.';
 
   @override
   String get actionsSuggestCancelled => 'Durduruldu.';
@@ -3581,10 +3401,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String settingsIdle(String protocol) {
-    String _temp0 = intl.Intl.selectLogic(protocol, {
-      'jmap': 'Push',
-      'other': 'IDLE',
-    });
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
     return '$_temp0';
   }
 
@@ -3649,8 +3466,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsSignatureAddField => 'Alan ekle';
 
   @override
-  String get settingsSignatureImageFailed =>
-      'Bu görsel eklenemedi. Daha küçük bir PNG veya JPEG deneyin.';
+  String get settingsSignatureImageFailed => 'Bu görsel eklenemedi. Daha küçük bir PNG veya JPEG deneyin.';
 
   @override
   String get settingsSignatureWhenToUse => 'Ne zaman kullanılır';
@@ -3666,8 +3482,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsSignatureAddCopied => 'Adres veya alan adı ekle…';
 
   @override
-  String get settingsSignatureCopiedPrompt =>
-      'Bir adres ya da client.example gibi bir alan adı.';
+  String get settingsSignatureCopiedPrompt => 'Bir adres ya da client.example gibi bir alan adı.';
 
   @override
   String get settingsSignatureScheduled => 'Zamanlanmış';
@@ -3686,8 +3501,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsSignatureRotation => 'Dönüşümlü';
 
   @override
-  String get settingsSignatureRotationFooter =>
-      'Her yeni ileti, dönüşümlü imzalardan birini rastgele alır.';
+  String get settingsSignatureRotationFooter => 'Her yeni ileti, dönüşümlü imzalardan birini rastgele alır.';
 
   @override
   String get settingsSignatureMakeDefault => 'Varsayılan yap';
@@ -3728,8 +3542,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsSwipeRight => 'Sağa kaydırma';
 
   @override
-  String get settingsSwipeRightFooter =>
-      'Sonuna kadar kaydırmak bu işlemi çalıştırır.';
+  String get settingsSwipeRightFooter => 'Sonuna kadar kaydırmak bu işlemi çalıştırır.';
 
   @override
   String get settingsSwipeToggleRead => 'Okundu / okunmadı olarak işaretle';
@@ -3750,17 +3563,11 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsUndoSendDelay => 'Gönderimi geri alma süresi';
 
   @override
-  String get settingsUndoSendDelayFooter =>
-      'Gönderilen iletiler bu kadar bekler; böylece onları geri alabilirsiniz.';
+  String get settingsUndoSendDelayFooter => 'Gönderilen iletiler bu kadar bekler; böylece onları geri alabilirsiniz.';
 
   @override
   String settingsUndoSendSeconds(int seconds) {
-    String _temp0 = intl.Intl.pluralLogic(
-      seconds,
-      locale: localeName,
-      other: '$seconds saniye',
-      one: '1 saniye',
-    );
+    String _temp0 = intl.Intl.pluralLogic(seconds, locale: localeName, other: '$seconds saniye', one: '1 saniye');
     return '$_temp0';
   }
 
@@ -3802,8 +3609,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsDefaultView => 'Varsayılan görünüm';
 
   @override
-  String get settingsDefaultViewFooter =>
-      'Her iletinin görünümünü Aa düğmesiyle değiştirebilirsiniz.';
+  String get settingsDefaultViewFooter => 'Her iletinin görünümünü Aa düğmesiyle değiştirebilirsiniz.';
 
   @override
   String get settingsViewReadable => 'Okunaklı';
@@ -3815,8 +3621,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsViewOriginal => 'Orijinal';
 
   @override
-  String get settingsViewOriginalDetail =>
-      'Tam olarak gönderenin tasarladığı gibi';
+  String get settingsViewOriginalDetail => 'Tam olarak gönderenin tasarladığı gibi';
 
   @override
   String get settingsViewPlain => 'Düz metin';
@@ -3834,8 +3639,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsFontMono => 'Eş aralıklı';
 
   @override
-  String get settingsFontMonoDetail =>
-      'ASCII çizimleri ve tabloları hizalı tutar';
+  String get settingsFontMonoDetail => 'ASCII çizimleri ve tabloları hizalı tutar';
 
   @override
   String get settingsTechnicalLists => 'Teknik listeler';
@@ -3847,8 +3651,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsOpenLinksDirectly => 'Bağlantıları doğrudan aç';
 
   @override
-  String get settingsOpenLinksDirectlyDetail =>
-      'Hedef biliniyorsa tıklama izleyicilerini atla';
+  String get settingsOpenLinksDirectlyDetail => 'Hedef biliniyorsa tıklama izleyicilerini atla';
 
   @override
   String get settingsSecurityHeader => 'Güvenlik';
@@ -3893,8 +3696,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsLockAfter => 'Kilitleme süresi';
 
   @override
-  String get settingsLockAfterFooter =>
-      'Loupe’un yeniden sormadan önce arka planda ne kadar kalabileceği.';
+  String get settingsLockAfterFooter => 'Loupe’un yeniden sormadan önce arka planda ne kadar kalabileceği.';
 
   @override
   String get settingsNotifications => 'Bildirimler';
@@ -3919,8 +3721,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsResetApp => 'Uygulamayı sıfırla';
 
   @override
-  String get settingsResetFooter =>
-      'Tüm ayarları unutur ve karşılama ekranına döner.';
+  String get settingsResetFooter => 'Tüm ayarları unutur ve karşılama ekranına döner.';
 
   @override
   String get settingsResetTitle => 'Loupe sıfırlansın mı?';
@@ -3946,12 +3747,10 @@ class AppLocalizationsTr extends AppLocalizations {
       'Loupe’ta analiz ve izleme yok. E-postalarınız yalnızca e-posta sunucularınıza gider.';
 
   @override
-  String get settingsNotificationsOffIos =>
-      'Ayarlar’da Loupe için bildirimler kapalı.';
+  String get settingsNotificationsOffIos => 'Ayarlar’da Loupe için bildirimler kapalı.';
 
   @override
-  String get settingsNotificationsOffAndroid =>
-      'Android Ayarları’nda Loupe için bildirimler kapalı.';
+  String get settingsNotificationsOffAndroid => 'Android Ayarları’nda Loupe için bildirimler kapalı.';
 
   @override
   String settingsNotificationsBlockedFooter(String system) {
@@ -4018,8 +3817,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsComingSoon => 'Yakında';
 
   @override
-  String get settingsAllowUnrestrictedBattery =>
-      'Kısıtlamasız pil kullanımına izin ver';
+  String get settingsAllowUnrestrictedBattery => 'Kısıtlamasız pil kullanımına izin ver';
 
   @override
   String get settingsPush => 'Anlık bildirim';
@@ -4045,16 +3843,14 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsAppIconBadge => 'Uygulama simgesi rozeti';
 
   @override
-  String get settingsBadgeNote =>
-      'Rozet, Loupe her e-posta denetlediğinde güncellenir; arka planda da.';
+  String get settingsBadgeNote => 'Rozet, Loupe her e-posta denetlediğinde güncellenir; arka planda da.';
 
   @override
   String get settingsBadgeUnsupportedFooter =>
       'Bu telefonun ana ekranı uygulama simgelerinde sayı göstermiyor. Rozet, Loupe her e-posta denetlediğinde güncellenir; arka planda da.';
 
   @override
-  String get settingsTestNotificationBody =>
-      'Yeni e-posta bildirimleri böyle görünür.';
+  String get settingsTestNotificationBody => 'Yeni e-posta bildirimleri böyle görünür.';
 
   @override
   String get settingsAccountRemoved => 'Bu hesap kaldırıldı.';
@@ -4075,8 +3871,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsColour => 'Renk';
 
   @override
-  String get settingsColourFooter =>
-      'Bu hesabın iletilerini Tüm Gelen Kutuları’nda işaretler.';
+  String get settingsColourFooter => 'Bu hesabın iletilerini Tüm Gelen Kutuları’nda işaretler.';
 
   @override
   String settingsColourNumber(int number) {
@@ -4168,12 +3963,10 @@ class AppLocalizationsTr extends AppLocalizations {
       'İlk kimlik, yeni iletiler için varsayılandır. Sırayı değiştirmek için sürükleyin.';
 
   @override
-  String get settingsIdentitiesFooterSingle =>
-      'Yeni iletiler için varsayılan kimlik.';
+  String get settingsIdentitiesFooterSingle => 'Yeni iletiler için varsayılan kimlik.';
 
   @override
-  String get settingsIdentitiesReplyFooter =>
-      'Yanıt, iletinin gönderildiği kimlikten gider.';
+  String get settingsIdentitiesReplyFooter => 'Yanıt, iletinin gönderildiği kimlikten gider.';
 
   @override
   String get settingsIdentityDefault => 'Varsayılan';
@@ -4205,8 +3998,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsCopyToMyself => 'Kendime kopya';
 
   @override
-  String get settingsCopyToMyselfFooter =>
-      'Bu kimlikten gönderilen her iletiye eklenir.';
+  String get settingsCopyToMyselfFooter => 'Bu kimlikten gönderilen her iletiye eklenir.';
 
   @override
   String get settingsCc => 'Cc';
@@ -4222,8 +4014,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Bu adreslere gönderilmiş iletilere verilen yanıtlar bu kimlikten gider. * her şeyin yerini tutar: *@example.com, me+*@example.com.';
 
   @override
-  String get settingsReplyPatternPrompt =>
-      'Bir adres ya da * işaretinin her şeyin yerini tuttuğu bir kalıp.';
+  String get settingsReplyPatternPrompt => 'Bir adres ya da * işaretinin her şeyin yerini tuttuğu bir kalıp.';
 
   @override
   String get settingsAddReplyPattern => 'Adres veya kalıp ekle';
@@ -4245,8 +4036,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsIdentityNoAddressTitle => 'Adres yok';
 
   @override
-  String get settingsIdentityNoAddressMessage =>
-      'Gönderimde kullanılacak e-posta adresini girin.';
+  String get settingsIdentityNoAddressMessage => 'Gönderimde kullanılacak e-posta adresini girin.';
 
   @override
   String get settingsIdentityInvalidAddressTitle => 'Geçersiz adres';
@@ -4277,12 +4067,10 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get settingsDeleteIdentityMessage =>
-      'Bu kimlikten önceden gönderilmiş iletiler olduğu gibi kalır.';
+  String get settingsDeleteIdentityMessage => 'Bu kimlikten önceden gönderilmiş iletiler olduğu gibi kalır.';
 
   @override
-  String get settingsLastIdentityFooter =>
-      'Bir hesabın en az bir kimliği olmalıdır.';
+  String get settingsLastIdentityFooter => 'Bir hesabın en az bir kimliği olmalıdır.';
 
   @override
   String get rulesTitle => 'Kurallar';
@@ -4354,8 +4142,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get rulesStatusUnavailable => 'Kullanılamıyor';
 
   @override
-  String get rulesStatusNoSieve =>
-      'Bu hesabın sunucusu Sieve sunmuyor (ManageSieve veya JMAP).';
+  String get rulesStatusNoSieve => 'Bu hesabın sunucusu Sieve sunmuyor (ManageSieve veya JMAP).';
 
   @override
   String rulesActionMove(String folder) {
@@ -4437,8 +4224,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get rulesRemovedAccount => 'Kaldırılmış hesap';
 
   @override
-  String get rulesAccountsFooter =>
-      'Tüm hesaplar için bir kural, sonradan eklediğiniz hesapları da kapsar.';
+  String get rulesAccountsFooter => 'Tüm hesaplar için bir kural, sonradan eklediğiniz hesapları da kapsar.';
 
   @override
   String get rulesActionsHeader => 'O zaman';
@@ -4500,8 +4286,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get rulesMoveAccountTitle => 'Hangi hesaptaki klasör?';
 
   @override
-  String get rulesMoveAccountMessage =>
-      'Diğer hesapların e-postaları, oradaki aynı adlı klasöre gider.';
+  String get rulesMoveAccountMessage => 'Diğer hesapların e-postaları, oradaki aynı adlı klasöre gider.';
 
   @override
   String get rulesAddTag => 'Etiket ekle';
@@ -4540,8 +4325,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get rulesChooseActionTitle => 'Bir işlem seçin';
 
   @override
-  String get rulesChooseActionMessage =>
-      'Kuralın eşleştiği iletilerle ne yapacağını ekleyin.';
+  String get rulesChooseActionMessage => 'Kuralın eşleştiği iletilerle ne yapacağını ekleyin.';
 
   @override
   String get rulesSaveError => 'Kural kaydedilemedi';
@@ -4556,8 +4340,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get rulesNothingToApplyTitle => 'Uygulanacak bir şey yok';
 
   @override
-  String get rulesNothingToApplyMessage =>
-      'Önce kurala çalışan bir koşul ve bir işlem verin.';
+  String get rulesNothingToApplyMessage => 'Önce kurala çalışan bir koşul ve bir işlem verin.';
 
   @override
   String rulesApplyScopeTitle(String rule) {
@@ -4589,8 +4372,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String rulesApplyConfirmTitle(int count, String rule) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4604,8 +4386,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String rulesApplyConfirm(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4619,8 +4400,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String rulesApplied(int count, String rule) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4662,8 +4442,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String rulesMatchingCount(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4677,8 +4456,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String rulesMatchingCountMore(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4707,8 +4485,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String rulesPreviewMore(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4801,8 +4578,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get subscriptionsNoNewsletters => 'Bülten yok';
 
   @override
-  String get subscriptionsNoNewslettersDetail =>
-      'Bültenler ve diğer toplu e-postalar geldiklerinde burada görünür.';
+  String get subscriptionsNoNewslettersDetail => 'Bültenler ve diğer toplu e-postalar geldiklerinde burada görünür.';
 
   @override
   String get subscriptionsNothingNeverRead => 'Hiç okunmamış bülten yok';
@@ -4811,8 +4587,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get subscriptionsNothingRarelyRead => 'Nadiren okunan bülten yok';
 
   @override
-  String get subscriptionsNothingFilteredDetail =>
-      'Size gelen her şeyin bir kısmını okuyorsunuz.';
+  String get subscriptionsNothingFilteredDetail => 'Size gelen her şeyin bir kısmını okuyorsunuz.';
 
   @override
   String get subscriptionsNoDiscussions => 'Tartışma yok';
@@ -4889,8 +4664,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String subscriptionsArchiveInbox(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4906,15 +4680,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get subscriptionsCreateRule => 'Kural oluştur…';
 
   @override
-  String get subscriptionsCreateRuleDetail =>
-      'Gelecekteki e-postalarını taşı veya arşivle';
+  String get subscriptionsCreateRuleDetail => 'Gelecekteki e-postalarını taşı veya arşivle';
 
   @override
   String get subscriptionsTreatAsDiscussion => 'Tartışma olarak ele al';
 
   @override
-  String get subscriptionsTreatAsDiscussionDetail =>
-      'İnsanların yazdığı bir liste: forum gibi okuyun';
+  String get subscriptionsTreatAsDiscussionDetail => 'İnsanların yazdığı bir liste: forum gibi okuyun';
 
   @override
   String get subscriptionsTreatAsNewsletter => 'Bülten olarak ele al';
@@ -4929,8 +4701,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get subscriptionsBlocked => 'Engellendi';
 
   @override
-  String get subscriptionsBlockedDetail =>
-      'Yeni e-postalar Gereksiz klasörüne gider';
+  String get subscriptionsBlockedDetail => 'Yeni e-postalar Gereksiz klasörüne gider';
 
   @override
   String get subscriptionsPin => 'Posta kutularına sabitle';
@@ -4949,8 +4720,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String subscriptionsUnreadCount(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4979,12 +4749,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String subscriptionsReadDetail(String percent, int read, int total) {
-    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(
-      localeName,
-    );
+    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String readString = readNumberFormat.format(read);
-    final intl.NumberFormat totalNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
 
     return '$percent · $totalString iletiden $readString';
@@ -4995,12 +4762,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String subscriptionsFolders(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Klasörler',
-      one: 'Klasör',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Klasörler', one: 'Klasör');
     return '$_temp0';
   }
 
@@ -5046,12 +4808,10 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickFailedTitle =>
-      'Abonelikten otomatik olarak çıkılamadı';
+  String get subscriptionsOneClickFailedTitle => 'Abonelikten otomatik olarak çıkılamadı';
 
   @override
-  String get subscriptionsSendUnsubscribeEmail =>
-      'Abonelikten çıkma e-postası gönder';
+  String get subscriptionsSendUnsubscribeEmail => 'Abonelikten çıkma e-postası gönder';
 
   @override
   String subscriptionsOpenSite(String site) {
@@ -5109,8 +4869,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickNotAllowed =>
-      'Abonelikten çıkma bağlantısı internette güvenli bir adres değil.';
+  String get subscriptionsOneClickNotAllowed => 'Abonelikten çıkma bağlantısı internette güvenli bir adres değil.';
 
   @override
   String subscriptionsOneClickTimeout(String site) {
@@ -5133,8 +4892,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoAccountToSend =>
-      'Abonelikten çıkma e-postasını gönderecek bir hesap yok.';
+  String get subscriptionsNoAccountToSend => 'Abonelikten çıkma e-postasını gönderecek bir hesap yok.';
 
   @override
   String subscriptionsMailConfirm(String to, String from, String subject) {
@@ -5205,8 +4963,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get rulesDescribeAccount => 'Hesap';
 
   @override
-  String get rulesDescribeHint =>
-      'Harbor Coffee’den gelen fişleri Receipts klasörüne taşı';
+  String get rulesDescribeHint => 'Harbor Coffee’den gelen fişleri Receipts klasörüne taşı';
 
   @override
   String rulesDescribeSentNote(String account) {
@@ -5245,8 +5002,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get rulesDescribeScopeChoose =>
-      'Nerede çalışacağını kural düzenleyicide siz seçersiniz.';
+  String get rulesDescribeScopeChoose => 'Nerede çalışacağını kural düzenleyicide siz seçersiniz.';
 
   @override
   String rulesDescribeCantDoHeader(int count) {
@@ -5295,8 +5051,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get rulesDescribeReasonOther => 'Kurallar bunu yapamaz.';
 
   @override
-  String get rulesDescribeSuggestion =>
-      'Loupe’un bunun yerine eşleştirebileceği sözcükler:';
+  String get rulesDescribeSuggestion => 'Loupe’un bunun yerine eşleştirebileceği sözcükler:';
 
   @override
   String get rulesDescribeQuestions => 'Loupe’un bilmesi gerekenler';
@@ -5305,25 +5060,20 @@ class AppLocalizationsTr extends AppLocalizations {
   String get rulesDescribeDryRunHeader => 'Deneme çalıştırması';
 
   @override
-  String get rulesDescribeDryRunWorking =>
-      'Bu telefondaki e-postalar denetleniyor…';
+  String get rulesDescribeDryRunWorking => 'Bu telefondaki e-postalar denetleniyor…';
 
   @override
   String rulesDescribeDryRunCount(int total, int matched, String account) {
-    final intl.NumberFormat totalNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
-    final intl.NumberFormat matchedNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String matchedString = matchedNumberFormat.format(matched);
 
     String _temp0 = intl.Intl.pluralLogic(
       total,
       locale: localeName,
-      other:
-          '$account hesabında indirilmiş $totalString iletiden $matchedString tanesiyle eşleşirdi',
-      one:
-          '$account hesabında indirilmiş 1 iletiden $matchedString tanesiyle eşleşirdi',
+      other: '$account hesabında indirilmiş $totalString iletiden $matchedString tanesiyle eşleşirdi',
+      one: '$account hesabında indirilmiş 1 iletiden $matchedString tanesiyle eşleşirdi',
     );
     return '$_temp0';
   }
@@ -5340,8 +5090,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String rulesDescribeDryRunCapped(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -5355,8 +5104,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String rulesDescribeDryRunUnchecked(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -5369,8 +5117,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get rulesDescribeDryRunFailed =>
-      'Loupe bu telefondaki e-postaları denetleyemedi.';
+  String get rulesDescribeDryRunFailed => 'Loupe bu telefondaki e-postaları denetleyemedi.';
 
   @override
   String get rulesDescribeOpenEditor => 'Kural düzenleyicide aç';
@@ -5391,7 +5138,8 @@ class AppLocalizationsTr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Bunları tarif ettiniz ama Loupe bunları yapamadığı için kurala alınmadılar ve yerlerine hiçbir şey konmadı.',
+      other:
+          'Bunları tarif ettiniz ama Loupe bunları yapamadığı için kurala alınmadılar ve yerlerine hiçbir şey konmadı.',
       one: 'Bunu tarif ettiniz ama Loupe bunu yapamadığı için kurala alınmadı ve yerine hiçbir şey konmadı.',
     );
     return '$_temp0';
@@ -5401,8 +5149,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get appLiveGateTitle => 'Hesaplarınız açılamadı';
 
   @override
-  String get appLiveGateUnavailableBuild =>
-      'Gerçek hesaplar bu sürümde henüz kullanılamıyor.';
+  String get appLiveGateUnavailableBuild => 'Gerçek hesaplar bu sürümde henüz kullanılamıyor.';
 
   @override
   String get appLiveGateKeyUnreadable =>
@@ -5450,8 +5197,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get attachmentsShareMenu => 'Paylaş…';
 
   @override
-  String get attachmentsDownloadError =>
-      'Ek indirilemedi. Bağlantıyı kontrol edip tekrar deneyin.';
+  String get attachmentsDownloadError => 'Ek indirilemedi. Bağlantıyı kontrol edip tekrar deneyin.';
 
   @override
   String get attachmentsShareError => 'Ek paylaşılamadı.';
@@ -5480,12 +5226,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String attachmentsPageCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count sayfa',
-      one: '1 sayfa',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count sayfa', one: '1 sayfa');
     return '$_temp0';
   }
 
@@ -5495,8 +5236,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get attachmentsLargeDownload =>
-      'Bu ek büyük. Şimdi ya da daha sonra Wi-Fi’de indirin.';
+  String get attachmentsLargeDownload => 'Bu ek büyük. Şimdi ya da daha sonra Wi-Fi’de indirin.';
 
   @override
   String get attachmentsDownload => 'İndir';
@@ -5518,8 +5258,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get attachmentsPdfUnavailable =>
-      'Bu PDF burada gösterilemiyor (parolayla korunuyor olabilir).';
+  String get attachmentsPdfUnavailable => 'Bu PDF burada gösterilemiyor (parolayla korunuyor olabilir).';
 
   @override
   String attachmentsPageOf(int page, int count) {
@@ -5546,12 +5285,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String attachmentsTextInfo(String charset, int count, String lines) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$lines satır',
-      one: '$lines satır',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$lines satır', one: '$lines satır');
     return '$charset · $_temp0';
   }
 
@@ -5562,8 +5296,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get attachmentsCopied => 'Kopyalandı';
 
   @override
-  String get attachmentsImageUnavailable =>
-      'Bu görsel burada gösterilemiyor. Şununla aç… seçeneğini deneyin.';
+  String get attachmentsImageUnavailable => 'Bu görsel burada gösterilemiyor. Şununla aç… seçeneğini deneyin.';
 
   @override
   String get attachmentsEmlNoSubject => '(Konu yok)';
@@ -5585,12 +5318,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String attachmentsEmlAttachments(int count, String names) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Ekler: $names',
-      one: 'Ek: $names',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Ekler: $names', one: 'Ek: $names');
     return '$_temp0';
   }
 
@@ -5795,8 +5523,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get calendarCancelled => 'İptal edildi';
 
   @override
-  String get calendarCancelledByOrganizer =>
-      'Düzenleyen bu etkinliği iptal etti.';
+  String get calendarCancelledByOrganizer => 'Düzenleyen bu etkinliği iptal etti.';
 
   @override
   String get calendarCancelledLater => 'Bu etkinlik daha sonra iptal edildi.';
@@ -5805,8 +5532,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get calendarOutdated => 'Güncel değil';
 
   @override
-  String get calendarOutdatedDetail =>
-      'Bu davet daha sonra güncellendi; yenisi geçerlidir.';
+  String get calendarOutdatedDetail => 'Bu davet daha sonra güncellendi; yenisi geçerlidir.';
 
   @override
   String calendarLocationRemoved(String location) {
@@ -5850,45 +5576,25 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String calendarGuestCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count konuk',
-      one: '1 konuk',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count konuk', one: '1 konuk');
     return '$_temp0';
   }
 
   @override
   String calendarAcceptedCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count kabul',
-      one: '$count kabul',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count kabul', one: '$count kabul');
     return '$_temp0';
   }
 
   @override
   String calendarMaybeCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count belki',
-      one: '$count belki',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count belki', one: '$count belki');
     return '$_temp0';
   }
 
   @override
   String calendarDeclinedCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count ret',
-      one: '$count ret',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count ret', one: '$count ret');
     return '$_temp0';
   }
 
@@ -5950,8 +5656,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get calendarNoCalendarApp =>
-      'Etkinliğin ekleneceği bir takvim uygulaması yok.';
+  String get calendarNoCalendarApp => 'Etkinliğin ekleneceği bir takvim uygulaması yok.';
 
   @override
   String get calendarCantOpenCalendar => 'Takvim açılamadı.';
@@ -5987,8 +5692,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get calendarNoOrganizer =>
-      'Bu davette yanıtlanacak bir düzenleyen yok.';
+  String get calendarNoOrganizer => 'Bu davette yanıtlanacak bir düzenleyen yok.';
 
   @override
   String get calendarNoAccount => 'Yanıt verilecek bir hesap yok.';
@@ -6089,8 +5793,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get keyboardKeyBackspace => 'Backspace';
 
   @override
-  String get mailingListsMuted =>
-      'Yazışma sessize alındı. Yeni iletileri okunmuş olarak gelir.';
+  String get mailingListsMuted => 'Yazışma sessize alındı. Yeni iletileri okunmuş olarak gelir.';
 
   @override
   String get mailingListsUnmuted => 'Yazışmanın sesi açıldı.';
@@ -6147,12 +5850,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String mailingListsReplyCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count yanıt',
-      one: '1 yanıt',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count yanıt', one: '1 yanıt');
     return '$_temp0';
   }
 
@@ -6166,8 +5864,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get mailingListsTechnicalTitle => 'Teknik listeler';
 
   @override
-  String get mailingListsTechnicalEmpty =>
-      'E-posta listeleri, e-postaları geldiğinde burada görünür.';
+  String get mailingListsTechnicalEmpty => 'E-posta listeleri, e-postaları geldiğinde burada görünür.';
 
   @override
   String get mailingListsTechnicalFooter =>
@@ -6467,12 +6164,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String sharedBytes(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count bayt',
-      one: '$count bayt',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count bayt', one: '$count bayt');
     return '$_temp0';
   }
 
@@ -6690,8 +6382,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get sharedMoveOneAccount =>
-      'Taşımak için tek bir hesaptan ileti seçin.';
+  String get sharedMoveOneAccount => 'Taşımak için tek bir hesaptan ileti seçin.';
 
   @override
   String get sharedSnoozeTitle => 'Ertele';
@@ -6863,27 +6554,22 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get documentsStatusNotDownloaded =>
-      'İndirilmedi: okumak ve içinde aramak için açın.';
+  String get documentsStatusNotDownloaded => 'İndirilmedi: okumak ve içinde aramak için açın.';
 
   @override
-  String get documentsStatusEncrypted =>
-      'Parolayla korunuyor: Loupe bunu okuyamıyor.';
+  String get documentsStatusEncrypted => 'Parolayla korunuyor: Loupe bunu okuyamıyor.';
 
   @override
-  String get documentsStatusNoText =>
-      'Metin bulunamadı: Loupe’un henüz okuyamadığı bir tarama veya fotoğraf olabilir.';
+  String get documentsStatusNoText => 'Metin bulunamadı: Loupe’un henüz okuyamadığı bir tarama veya fotoğraf olabilir.';
 
   @override
   String get documentsStatusEmpty => 'Bu dosyada metin yok.';
 
   @override
-  String get documentsStatusUnsupported =>
-      'Loupe bu tür belgeleri henüz okuyamıyor.';
+  String get documentsStatusUnsupported => 'Loupe bu tür belgeleri henüz okuyamıyor.';
 
   @override
-  String get documentsStatusTooLarge =>
-      'Bu telefonda okunamayacak kadar büyük.';
+  String get documentsStatusTooLarge => 'Bu telefonda okunamayacak kadar büyük.';
 
   @override
   String get documentsStatusDamaged => 'Okunamadı: dosya bozuk olabilir.';
@@ -6900,8 +6586,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get documentsStatusPartialText =>
-      'Yalnızca baş kısmı okundu; geri kalanında arama yapılmıyor.';
+  String get documentsStatusPartialText => 'Yalnızca baş kısmı okundu; geri kalanında arama yapılmıyor.';
 
   @override
   String get documentsOpenDocument => 'Belgeyi aç';
@@ -6949,8 +6634,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get documentsNoFactChanges =>
-      'Temel bilgiler aynı; farklar metnin başka yerlerinde.';
+  String get documentsNoFactChanges => 'Temel bilgiler aynı; farklar metnin başka yerlerinde.';
 
   @override
   String get documentsKeyFacts => 'Temel bilgiler';
@@ -6965,8 +6649,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get documentsKeyFactsFailed => 'Temel bilgiler bulunamadı.';
 
   @override
-  String get documentsKeyFactsDemoNote =>
-      'Yerleşik demo hazırladı, bir model değil.';
+  String get documentsKeyFactsDemoNote => 'Yerleşik demo hazırladı, bir model değil.';
 
   @override
   String documentsKeyFactsMadeBy(String provider) {
@@ -6974,16 +6657,13 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get documentsKeyFactsHint =>
-      'Belgenin bunu nerede belirttiğini görmek için bir bilgiye dokunun.';
+  String get documentsKeyFactsHint => 'Belgenin bunu nerede belirttiğini görmek için bir bilgiye dokunun.';
 
   @override
-  String get documentsKeyFactsNone =>
-      'Loupe bu tür belgeler için henüz temel bilgi sunmuyor.';
+  String get documentsKeyFactsNone => 'Loupe bu tür belgeler için henüz temel bilgi sunmuyor.';
 
   @override
-  String get documentsKeyFactsPartial =>
-      'Yalnızca ilk sayfalar okundu; sonraki sayfalardaki bilgiler bilinmiyor.';
+  String get documentsKeyFactsPartial => 'Yalnızca ilk sayfalar okundu; sonraki sayfalardaki bilgiler bilinmiyor.';
 
   @override
   String get documentsKeyFactsNotStated => 'Belirtilmemiş';
@@ -7090,8 +6770,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get accountSetupAddressTitle => 'E-posta hesabı ekleyin';
 
   @override
-  String get accountSetupAddressText =>
-      'Loupe çoğu sağlayıcının ayarlarını bulur.';
+  String get accountSetupAddressText => 'Loupe çoğu sağlayıcının ayarlarını bulur.';
 
   @override
   String get accountSetupNameHint => 'Adınız';
@@ -7120,8 +6799,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get accountSetupCheckServers =>
-      'Sunucu adlarını ve bağlantı noktalarını kontrol edin.';
+  String get accountSetupCheckServers => 'Sunucu adlarını ve bağlantı noktalarını kontrol edin.';
 
   @override
   String get accountSetupEnterPassword => 'Parolanızı girin.';
@@ -7178,15 +6856,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get accountSetupUseAppPassword => 'Uygulama şifresi kullan';
 
   @override
-  String get accountSetupUseAppPasswordInstead =>
-      'Bunun yerine uygulama şifresi kullan';
+  String get accountSetupUseAppPasswordInstead => 'Bunun yerine uygulama şifresi kullan';
 
   @override
   String get accountSetupUseDifferentAddress => 'Farklı bir adres kullan';
 
   @override
-  String get accountSetupHowToCreateAppPassword =>
-      'Uygulama şifresi nasıl oluşturulur';
+  String get accountSetupHowToCreateAppPassword => 'Uygulama şifresi nasıl oluşturulur';
 
   @override
   String get accountSetupHowToCreateOne => 'Nasıl oluşturulur';
@@ -7216,16 +6892,14 @@ class AppLocalizationsTr extends AppLocalizations {
       'iCloud Mail, Apple Hesabı parolanızı değil, uygulamaya özel bir parola gerektirir.';
 
   @override
-  String get accountSetupYahooNote =>
-      'Yahoo Mail, hesap parolanızı değil, bir uygulama şifresi gerektirir.';
+  String get accountSetupYahooNote => 'Yahoo Mail, hesap parolanızı değil, bir uygulama şifresi gerektirir.';
 
   @override
   String get accountSetupFastmailJmapNote =>
       'Loupe, Fastmail’e JMAP üzerinden bir API belirteciyle bağlanır: Settings › Privacy & Security › Manage API tokens; JMAP için, e-posta ve gönderme erişimiyle.';
 
   @override
-  String get accountSetupFastmailNote =>
-      'Fastmail, e-posta uygulamaları için bir uygulama şifresi gerektirir.';
+  String get accountSetupFastmailNote => 'Fastmail, e-posta uygulamaları için bir uygulama şifresi gerektirir.';
 
   @override
   String get accountSetupServerSettings => 'Sunucu ayarları';
@@ -7289,8 +6963,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get accountSetupUsernameHint => 'E-posta adresiniz';
 
   @override
-  String get accountSetupNoEncryptionTitle =>
-      'Şifreleme olmadan bağlanılsın mı?';
+  String get accountSetupNoEncryptionTitle => 'Şifreleme olmadan bağlanılsın mı?';
 
   @override
   String get accountSetupNoEncryptionText =>
@@ -7308,12 +6981,10 @@ class AppLocalizationsTr extends AppLocalizations {
       'Parola reddedildi. Hesap parolanızı değil, bir uygulama şifresi kullanın.';
 
   @override
-  String get accountSetupPasswordRejected =>
-      'Parola reddedildi. Kontrol edip tekrar deneyin.';
+  String get accountSetupPasswordRejected => 'Parola reddedildi. Kontrol edip tekrar deneyin.';
 
   @override
-  String get accountSetupServerUnreachable =>
-      'Sunucuya ulaşılamıyor. Sunucu ayarlarını ve bağlantınızı kontrol edin.';
+  String get accountSetupServerUnreachable => 'Sunucuya ulaşılamıyor. Sunucu ayarlarını ve bağlantınızı kontrol edin.';
 
   @override
   String accountSetupCertificateUntrusted(String details) {
@@ -7387,11 +7058,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get accountSetupSigningIn => 'Oturum açılıyor…';
 
   @override
-  String accountSetupSignInExpired(
-    String provider,
-    String email,
-    String account,
-  ) {
+  String accountSetupSignInExpired(String provider, String email, String account) {
     return '$provider artık $email için Loupe’un oturum açmasını kabul etmiyor, bu yüzden $account eşitlenmiyor. E-postalarını almak için yeniden oturum açın.';
   }
 
@@ -7399,8 +7066,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get accountImportTitle => 'Thunderbird’den içe aktar';
 
   @override
-  String get accountImportPointCamera =>
-      'Kamerayı Thunderbird’ün gösterdiği QR koduna doğrultun.';
+  String get accountImportPointCamera => 'Kamerayı Thunderbird’ün gösterdiği QR koduna doğrultun.';
 
   @override
   String accountImportProgress(int scanned, int total) {
@@ -7458,8 +7124,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Bu kod yeni bir dışa aktarmadan geliyor, bu yüzden daha önce taranan kodlar bir kenara bırakıldı.';
 
   @override
-  String get accountImportNotThunderbird =>
-      'Bu bir Thunderbird hesap kodu değil.';
+  String get accountImportNotThunderbird => 'Bu bir Thunderbird hesap kodu değil.';
 
   @override
   String get accountImportNewerVersion =>
@@ -7469,8 +7134,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get accountImportDamaged => 'Bu Thunderbird kodu okunamadı.';
 
   @override
-  String get accountImportTooLarge =>
-      'Bu kod, bir Thunderbird dışa aktarımı olamayacak kadar büyük.';
+  String get accountImportTooLarge => 'Bu kod, bir Thunderbird dışa aktarımı olamayacak kadar büyük.';
 
   @override
   String get accountImportCouldNotOpenSettings => 'Ayarlar açılamadı.';
@@ -7486,15 +7150,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get accountImportNoCameraTitle => 'Kamera yok';
 
   @override
-  String get accountImportNoCameraText =>
-      'Loupe burada kamera kullanamıyor. Bunun yerine kodun metnini yapıştırın.';
+  String get accountImportNoCameraText => 'Loupe burada kamera kullanamıyor. Bunun yerine kodun metnini yapıştırın.';
 
   @override
   String get accountImportCameraFailedTitle => 'Kamera başlamadı';
 
   @override
-  String get accountImportCameraFailedText =>
-      'Tekrar deneyin ya da bunun yerine kodun metnini yapıştırın.';
+  String get accountImportCameraFailedText => 'Tekrar deneyin ya da bunun yerine kodun metnini yapıştırın.';
 
   @override
   String get accountImportOpenSettings => 'Ayarları aç';
@@ -7512,8 +7174,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get accountImportNoneReadable =>
-      'Bu kodlardaki hesapların hiçbiri okunamadı.';
+  String get accountImportNoneReadable => 'Bu kodlardaki hesapların hiçbiri okunamadı.';
 
   @override
   String get accountImportChoose => 'Loupe’a eklenecek hesapları seçin.';
@@ -7523,10 +7184,8 @@ class AppLocalizationsTr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          '$total koddan $codes numaralı kodlar taranmadı, bu yüzden hesapları listelenmiyor.',
-      one:
-          '$total koddan $codes. kod taranmadı, bu yüzden hesapları listelenmiyor.',
+      other: '$total koddan $codes numaralı kodlar taranmadı, bu yüzden hesapları listelenmiyor.',
+      one: '$total koddan $codes. kod taranmadı, bu yüzden hesapları listelenmiyor.',
     );
     return '$_temp0';
   }
@@ -7544,8 +7203,7 @@ class AppLocalizationsTr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          'Kodlardaki $count hesap okunamadı. Daha yeni bir Thunderbird’ün ayarlarını kullanıyor olabilirler.',
+      other: 'Kodlardaki $count hesap okunamadı. Daha yeni bir Thunderbird’ün ayarlarını kullanıyor olabilirler.',
       one: 'Kodlardaki 1 hesap okunamadı. Daha yeni bir Thunderbird’ün ayarlarını kullanıyor olabilir.',
     );
     return '$_temp0';
@@ -7555,8 +7213,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get accountImportScanAgain => 'Yeniden tara';
 
   @override
-  String get accountImportAlreadyAdded =>
-      'Bu adrese sahip bir hesap zaten Loupe’ta.';
+  String get accountImportAlreadyAdded => 'Bu adrese sahip bir hesap zaten Loupe’ta.';
 
   @override
   String accountImportSignsInWith(String provider) {
@@ -7564,8 +7221,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get accountImportGmailAppPassword =>
-      'Hesabı bir uygulama şifresiyle ekleyin (2 Adımlı Doğrulama gerekir).';
+  String get accountImportGmailAppPassword => 'Hesabı bir uygulama şifresiyle ekleyin (2 Adımlı Doğrulama gerekir).';
 
   @override
   String get accountImportGmailNoSignIn =>
@@ -7576,8 +7232,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Thunderbird bu hesapta tarayıcıda oturum açar. Loupe bunu henüz yapamıyor: sağlayıcınız sunuyorsa bir uygulama şifresi kullanın.';
 
   @override
-  String get accountImportUnencrypted =>
-      'Şifreleme olmadan bağlanır. Bunu yalnızca kendi ağınızda kullanın.';
+  String get accountImportUnencrypted => 'Şifreleme olmadan bağlanır. Bunu yalnızca kendi ağınızda kullanın.';
 
   @override
   String get accountImportEnterAgain => 'Yeniden girin';
@@ -7606,20 +7261,16 @@ class AppLocalizationsTr extends AppLocalizations {
   String get accountImportPasteTitle => 'Dışa aktarma metnini yapıştır';
 
   @override
-  String get accountImportPasteText =>
-      'Bir Thunderbird dışa aktarma kodunun metnini yapıştırın; her satıra bir kod.';
+  String get accountImportPasteText => 'Bir Thunderbird dışa aktarma kodunun metnini yapıştırın; her satıra bir kod.';
 
   @override
-  String get accountImportPop3 =>
-      'POP3 hesapları desteklenmiyor. Loupe, IMAP ile e-postaları sunucuda tutar.';
+  String get accountImportPop3 => 'POP3 hesapları desteklenmiyor. Loupe, IMAP ile e-postaları sunucuda tutar.';
 
   @override
-  String get accountImportKerberos =>
-      'Bu hesap, Loupe’un desteklemediği Kerberos ile oturum açıyor.';
+  String get accountImportKerberos => 'Bu hesap, Loupe’un desteklemediği Kerberos ile oturum açıyor.';
 
   @override
-  String get accountImportNtlm =>
-      'Bu hesap, Loupe’un desteklemediği NTLM ile oturum açıyor.';
+  String get accountImportNtlm => 'Bu hesap, Loupe’un desteklemediği NTLM ile oturum açıyor.';
 
   @override
   String get accountImportClientCertificate =>
@@ -7639,12 +7290,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get accountImportEnterApiToken => 'API belirtecini girin.';
 
   @override
-  String get accountImportStorageFailed =>
-      'Loupe hesap deposunu açamadı. Daha sonra tekrar deneyin.';
+  String get accountImportStorageFailed => 'Loupe hesap deposunu açamadı. Daha sonra tekrar deneyin.';
 
   @override
-  String get accountImportFailed =>
-      'Hesap eklenemedi. Tekrar deneyin ya da elle ekleyin.';
+  String get accountImportFailed => 'Hesap eklenemedi. Tekrar deneyin ya da elle ekleyin.';
 
   @override
   String get composeReplyCheckTitle => 'Yanıt kontrolü';
@@ -7965,8 +7614,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get composeNoSubjectTitle => 'Konu yok';
 
   @override
-  String get composeNoSubjectText =>
-      'Bu iletinin konusu yok. Yine de gönderilsin mi?';
+  String get composeNoSubjectText => 'Bu iletinin konusu yok. Yine de gönderilsin mi?';
 
   @override
   String get composeSentBeforeChanges =>
@@ -8088,31 +7736,24 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get composeRecoveryTitle =>
-      'Taslağınızı düzenlemeye devam edilsin mi?';
+  String get composeRecoveryTitle => 'Taslağınızı düzenlemeye devam edilsin mi?';
 
   @override
   String composeRecoveryUntitled(String recipients, String name) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Loupe kapandığında bir ileti gönderilmemişti.',
       'one': 'Loupe kapandığında $name kişisine bir ileti gönderilmemişti.',
-      'other':
-          'Loupe kapandığında $name ve diğerlerine bir ileti gönderilmemişti.',
+      'other': 'Loupe kapandığında $name ve diğerlerine bir ileti gönderilmemişti.',
     });
     return '$_temp0';
   }
 
   @override
-  String composeRecoveryWithSubject(
-    String recipients,
-    String subject,
-    String name,
-  ) {
+  String composeRecoveryWithSubject(String recipients, String subject, String name) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Loupe kapandığında “$subject” gönderilmemişti.',
       'one': 'Loupe kapandığında $name kişisine “$subject” gönderilmemişti.',
-      'other':
-          'Loupe kapandığında $name ve diğerlerine “$subject” gönderilmemişti.',
+      'other': 'Loupe kapandığında $name ve diğerlerine “$subject” gönderilmemişti.',
     });
     return '$_temp0';
   }
@@ -8160,8 +7801,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get outboxEmptyTitle => 'Gönderilecek bir şey yok';
 
   @override
-  String get outboxEmptyText =>
-      'Daha sonra gönderdiğiniz iletiler, zamanı gelene kadar burada bekler.';
+  String get outboxEmptyText => 'Daha sonra gönderdiğiniz iletiler, zamanı gelene kadar burada bekler.';
 
   @override
   String get outboxSendNow => 'Şimdi gönder';
@@ -8208,8 +7848,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get outboxBeingSent => 'Bu ileti gönderiliyor.';
 
   @override
-  String get outboxActionFailed =>
-      'Bu işe yaramadı. İleti hâlâ Giden Kutusu’nda.';
+  String get outboxActionFailed => 'Bu işe yaramadı. İleti hâlâ Giden Kutusu’nda.';
 
   @override
   String get notificationsBadgeInboxes => 'Gelen kutularındaki okunmamışlar';
@@ -8221,8 +7860,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get notificationsVipChannel => 'VIP';
 
   @override
-  String get notificationsVipChannelDescription =>
-      'Herhangi bir hesapta VIP’lerinizden gelen yeni e-postalar';
+  String get notificationsVipChannelDescription => 'Herhangi bir hesapta VIP’lerinizden gelen yeni e-postalar';
 
   @override
   String notificationsAccountChannelDescription(String email) {
@@ -8245,12 +7883,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String notificationsNewMessages(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count yeni ileti',
-      one: '1 yeni ileti',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count yeni ileti', one: '1 yeni ileti');
     return '$_temp0';
   }
 
@@ -8263,8 +7896,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get platformInstantChannel => 'Anında teslim';
 
   @override
-  String get platformInstantChannelDescription =>
-      'Loupe gelen kutularınızda yeni e-posta beklerken görünür';
+  String get platformInstantChannelDescription => 'Loupe gelen kutularınızda yeni e-posta beklerken görünür';
 
   @override
   String get platformInstantTitle => 'Yeni e-postalar bekleniyor';
@@ -8273,33 +7905,28 @@ class AppLocalizationsTr extends AppLocalizations {
   String get platformInstantText => 'Anında teslim açık';
 
   @override
-  String get platformErrorBox =>
-      'Bu bölüm gösterilirken bir sorun oluştu. Geri gidip tekrar deneyin.';
+  String get platformErrorBox => 'Bu bölüm gösterilirken bir sorun oluştu. Geri gidip tekrar deneyin.';
 
   @override
   String get welcomeTagline => 'Yüzeyde sade,\nderinde güçlü e-posta.';
 
   @override
-  String get welcomeAccountsTitle =>
-      'Tüm hesaplar, tek ve sakin bir gelen kutusu';
+  String get welcomeAccountsTitle => 'Tüm hesaplar, tek ve sakin bir gelen kutusu';
 
   @override
-  String get welcomeAccountsText =>
-      'Gmail, Outlook, iCloud, Fastmail ve her IMAP veya JMAP sunucusu.';
+  String get welcomeAccountsText => 'Gmail, Outlook, iCloud, Fastmail ve her IMAP veya JMAP sunucusu.';
 
   @override
   String get welcomeSearchTitle => 'Bulan arama';
 
   @override
-  String get welcomeSearchText =>
-      'Önce telefonunuzda anında sonuçlar, ardından sunucununkiler.';
+  String get welcomeSearchText => 'Önce telefonunuzda anında sonuçlar, ardından sunucununkiler.';
 
   @override
   String get welcomePrivacyTitle => 'Tasarımı gereği gizli';
 
   @override
-  String get welcomePrivacyText =>
-      'İzleme yok. Uzak görseller siz izin verene kadar engelli kalır.';
+  String get welcomePrivacyText => 'İzleme yok. Uzak görseller siz izin verene kadar engelli kalır.';
 
   @override
   String get welcomeAddAccount => 'Hesap ekle';
@@ -8353,12 +7980,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsAiDemo => 'Yerleşik demo';
 
   @override
-  String get settingsAiDemoDetail =>
-      'Bu telefonda. Model yok: özellikleri denemek için birkaç kural.';
+  String get settingsAiDemoDetail => 'Bu telefonda. Model yok: özellikleri denemek için birkaç kural.';
 
   @override
-  String get settingsAiAnthropicDetail =>
-      'Bulut: Claude, kendi API anahtarınızla.';
+  String get settingsAiAnthropicDetail => 'Bulut: Claude, kendi API anahtarınızla.';
 
   @override
   String get settingsAiServer => 'Sunucum';
@@ -8371,8 +7996,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsAiOnPhone => 'Bu telefonda';
 
   @override
-  String get settingsAiOnPhoneDetail =>
-      'Henüz kullanılamıyor: cihazdaki model telefonlarda hâlâ test ediliyor.';
+  String get settingsAiOnPhoneDetail => 'Henüz kullanılamıyor: cihazdaki model telefonlarda hâlâ test ediliyor.';
 
   @override
   String get settingsAiNotSetUp => 'Kurulmadı';
@@ -8419,19 +8043,16 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsAiServerAddressTitle => 'Sunucu adresi';
 
   @override
-  String get settingsAiServerAddressMessage =>
-      'API yolu dahil, örneğin Ollama için http://192.168.1.20:11434/v1.';
+  String get settingsAiServerAddressMessage => 'API yolu dahil, örneğin Ollama için http://192.168.1.20:11434/v1.';
 
   @override
-  String get settingsAiServerAddressInvalid =>
-      'Bu bir http:// ya da https:// adresi değil.';
+  String get settingsAiServerAddressInvalid => 'Bu bir http:// ya da https:// adresi değil.';
 
   @override
   String get settingsAiServerModelTitle => 'Model adı';
 
   @override
-  String get settingsAiServerModelMessage =>
-      'Sunucunuzun verdiği adla, örneğin llama3.2.';
+  String get settingsAiServerModelMessage => 'Sunucunuzun verdiği adla, örneğin llama3.2.';
 
   @override
   String get settingsAiTestConnection => 'Bağlantıyı test et';
@@ -8448,15 +8069,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsAiTestFailed => 'Test başarısız';
 
   @override
-  String get settingsAiTestInvalid =>
-      'Model yanıt verdi, ancak Loupe’un istediği biçimde değil.';
+  String get settingsAiTestInvalid => 'Model yanıt verdi, ancak Loupe’un istediği biçimde değil.';
 
   @override
   String get settingsAiRemoveKey => 'Anahtarı kaldır';
 
   @override
-  String get settingsAiRemoveKeyTitle =>
-      'Anthropic API anahtarı kaldırılsın mı?';
+  String get settingsAiRemoveKeyTitle => 'Anthropic API anahtarı kaldırılsın mı?';
 
   @override
   String get settingsAiRemoveKeyMessage =>
@@ -8473,8 +8092,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Loupe sunucunun adresini ve modelini unutur, anahtarını bu telefonun anahtar deposundan siler ve ona istek göndermeyi bırakır. Başka bir sağlayıcıya geçmez.';
 
   @override
-  String get settingsAiAnthropicRetention =>
-      'Anthropic’in veri saklama politikası';
+  String get settingsAiAnthropicRetention => 'Anthropic’in veri saklama politikası';
 
   @override
   String get settingsAiDemoDisclosure =>
@@ -8496,8 +8114,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsAiFeaturesHeader => 'Özellikler';
 
   @override
-  String get settingsAiFeaturesFooter =>
-      'Kapalı bir özellik yapay zekâ bölümü göstermez ve hiçbir modele sormaz.';
+  String get settingsAiFeaturesFooter => 'Kapalı bir özellik yapay zekâ bölümü göstermez ve hiçbir modele sormaz.';
 
   @override
   String get settingsAiFeatureBrief => 'Kısaca';
@@ -8521,12 +8138,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsAiFeatureMatters => 'Konunun durumu';
 
   @override
-  String get settingsAiFeatureSearchDetail =>
-      'Aramada: bir cümle, denetleyebileceğiniz bir aramaya dönüşür.';
+  String get settingsAiFeatureSearchDetail => 'Aramada: bir cümle, denetleyebileceğiniz bir aramaya dönüşür.';
 
   @override
-  String get settingsAiFeatureBriefDetail =>
-      'Bir iletide: sizden ne istediği, ilgili bölümlerle.';
+  String get settingsAiFeatureBriefDetail => 'Bir iletide: sizden ne istediği, ilgili bölümlerle.';
 
   @override
   String get settingsAiFeatureActionsDetail =>
@@ -8537,20 +8152,16 @@ class AppLocalizationsTr extends AppLocalizations {
       'Kurallar’da: bir tarif, kaydetmeden önce denetlediğiniz bir kurala dönüşür.';
 
   @override
-  String get settingsAiFeatureChangesDetail =>
-      'İletileri karşılaştır’da: anlamda ne değiştiği, kaynaklarıyla.';
+  String get settingsAiFeatureChangesDetail => 'İletileri karşılaştır’da: anlamda ne değiştiği, kaynaklarıyla.';
 
   @override
-  String get settingsAiFeatureDocumentsDetail =>
-      'Ekli belgelerin temel bilgileri, sayfalarıyla.';
+  String get settingsAiFeatureDocumentsDetail => 'Ekli belgelerin temel bilgileri, sayfalarıyla.';
 
   @override
-  String get settingsAiFeatureReplyCheckDetail =>
-      'Göndermeden önce: bir yanıtın neyi atlamış olabileceği.';
+  String get settingsAiFeatureReplyCheckDetail => 'Göndermeden önce: bir yanıtın neyi atlamış olabileceği.';
 
   @override
-  String get settingsAiFeatureMattersDetail =>
-      'Bir konunun son durumu, e-postalarından.';
+  String get settingsAiFeatureMattersDetail => 'Bir konunun son durumu, e-postalarından.';
 
   @override
   String get settingsAiLocalOnlyHeader => 'E-postayı telefonda tut';
@@ -8576,12 +8187,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String settingsAiUsageRequests(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count istek',
-      one: '1 istek',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count istek', one: '1 istek');
     return '$_temp0';
   }
 

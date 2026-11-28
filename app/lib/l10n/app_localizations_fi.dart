@@ -83,12 +83,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String commonMessageCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count viestiä',
-      one: '$count viesti',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count viestiä', one: '$count viesti');
     return '$_temp0';
   }
 
@@ -166,23 +161,19 @@ class AppLocalizationsFi extends AppLocalizations {
   String get changesExplainWorking => 'Muutoksia selitetään…';
 
   @override
-  String get changesExplainFailed =>
-      'Loupe ei voinut selittää näitä muutoksia.';
+  String get changesExplainFailed => 'Loupe ei voinut selittää näitä muutoksia.';
 
   @override
-  String get changesExplainTooLarge =>
-      'Nämä viestit ovat liian pitkiä mallille.';
+  String get changesExplainTooLarge => 'Nämä viestit ovat liian pitkiä mallille.';
 
   @override
   String get changesExplainProviderError => 'Malli ei vastannut.';
 
   @override
-  String get changesExplainInvalid =>
-      'Vastaus ei läpäissyt Loupen tarkistuksia, joten siitä ei näytetä mitään.';
+  String get changesExplainInvalid => 'Vastaus ei läpäissyt Loupen tarkistuksia, joten siitä ei näytetä mitään.';
 
   @override
-  String get changesExplainNoChange =>
-      'Merkityksen muutoksia ei löytynyt. Tarkat tekstimuutokset ovat alla.';
+  String get changesExplainNoChange => 'Merkityksen muutoksia ei löytynyt. Tarkat tekstimuutokset ovat alla.';
 
   @override
   String changesExplainKind(String kind) {
@@ -207,8 +198,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get changesExplainConflictNote =>
-      'Viesteistä ei selviä, kumpi näistä pätee.';
+  String get changesExplainConflictNote => 'Viesteistä ei selviä, kumpi näistä pätee.';
 
   @override
   String get changesExplainPartial => 'Pitkästä viestistä luettiin vain alku.';
@@ -230,8 +220,7 @@ class AppLocalizationsFi extends AppLocalizations {
       'Vain viestin teksti selitetään. Liitteitä verrataan vain nimen, tyypin ja koon perusteella.';
 
   @override
-  String get changesExplainDemoNote =>
-      'Tehnyt sisäänrakennettu demo, ei malli.';
+  String get changesExplainDemoNote => 'Tehnyt sisäänrakennettu demo, ei malli.';
 
   @override
   String changesExplainMadeBy(String provider) {
@@ -239,8 +228,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get changesExplainNoPassage =>
-      'Tässä viestissä ei ole korostettuja tekstikohtia.';
+  String get changesExplainNoPassage => 'Tässä viestissä ei ole korostettuja tekstikohtia.';
 
   @override
   String get conversationCompareMessages => 'Vertaa viestejä…';
@@ -288,8 +276,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get conversationChangesLoadError => 'Näitä viestejä ei voitu verrata.';
 
   @override
-  String get conversationSomethingWentWrong =>
-      'Jokin meni vikaan. Yritä uudelleen.';
+  String get conversationSomethingWentWrong => 'Jokin meni vikaan. Yritä uudelleen.';
 
   @override
   String get conversationReplyToList => 'Vastaa listalle';
@@ -298,8 +285,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get conversationReplyList => 'Vastaa listalle';
 
   @override
-  String get conversationThreadMuted =>
-      'Ketju mykistetty. Sen uudet viestit saapuvat luettuina.';
+  String get conversationThreadMuted => 'Ketju mykistetty. Sen uudet viestit saapuvat luettuina.';
 
   @override
   String get conversationThreadUnmuted => 'Ketjun mykistys poistettu.';
@@ -326,15 +312,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get conversationTrash => 'Roskakoriin';
 
   @override
-  String get conversationReplyHint =>
-      'Vastaa kaikille tai välitä painamalla pitkään';
+  String get conversationReplyHint => 'Vastaa kaikille tai välitä painamalla pitkään';
 
   @override
   String get conversationOfflineTitle => 'Ei verkkoyhteyttä';
 
   @override
-  String get conversationOfflineText =>
-      'Tätä keskustelua ei ole vielä ladattu. Se latautuu, kun olet taas verkossa.';
+  String get conversationOfflineText => 'Tätä keskustelua ei ole vielä ladattu. Se latautuu, kun olet taas verkossa.';
 
   @override
   String get conversationErrorTitle => 'Viestiä ei voi näyttää';
@@ -401,12 +385,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get conversationBodyError => 'Viestiä ei voitu ladata.';
 
   @override
-  String get conversationBodyOffline =>
-      'Ei verkkoyhteyttä. Viesti latautuu, kun olet taas verkossa.';
+  String get conversationBodyOffline => 'Ei verkkoyhteyttä. Viesti latautuu, kun olet taas verkossa.';
 
   @override
-  String get conversationOriginalHint =>
-      'Näyttää paremmalta Alkuperäinen-näkymässä';
+  String get conversationOriginalHint => 'Näyttää paremmalta Alkuperäinen-näkymässä';
 
   @override
   String get conversationShowOriginal => 'Näytä alkuperäinen';
@@ -448,8 +430,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get conversationShareAsFile => 'Jaa tiedostona…';
 
   @override
-  String get conversationSearchFromMessageMenu =>
-      'Hae tämän viestin perusteella…';
+  String get conversationSearchFromMessageMenu => 'Hae tämän viestin perusteella…';
 
   @override
   String get conversationVip => 'VIP';
@@ -481,8 +462,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get conversationNoHeaders => 'Ei otsakkeita';
 
   @override
-  String get conversationSearchFromMessageTitle =>
-      'Hae tämän viestin perusteella';
+  String get conversationSearchFromMessageTitle => 'Hae tämän viestin perusteella';
 
   @override
   String conversationSearchFrom(String name) {
@@ -558,8 +538,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get conversationReaderRemember => 'Muista tälle lähettäjälle';
 
   @override
-  String get conversationSecurityPossiblePhishing =>
-      'Mahdollista tietojenkalastelua';
+  String get conversationSecurityPossiblePhishing => 'Mahdollista tietojenkalastelua';
 
   @override
   String get conversationSecurityBeCareful => 'Ole varovainen';
@@ -572,12 +551,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String conversationSecurityTrackers(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count seurainta',
-      one: '$count seurain',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count seurainta', one: '$count seurain');
     return '$_temp0';
   }
 
@@ -585,8 +559,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get conversationSecurityBadgeHint => 'Näyttää syyn';
 
   @override
-  String get conversationPhishingBannerTitle =>
-      'Tämä viesti näyttää tietojenkalastelulta';
+  String get conversationPhishingBannerTitle => 'Tämä viesti näyttää tietojenkalastelulta';
 
   @override
   String conversationPhishingBannerReason(String reason) {
@@ -594,8 +567,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get conversationPhishingBannerText =>
-      'Linkit ja kuvat on poistettu käytöstä.';
+  String get conversationPhishingBannerText => 'Linkit ja kuvat on poistettu käytöstä.';
 
   @override
   String get conversationPhishingWhy => 'Miksi?';
@@ -604,32 +576,27 @@ class AppLocalizationsFi extends AppLocalizations {
   String get conversationPhishingShowAnyway => 'Näytä silti';
 
   @override
-  String get conversationSecurityPhishingTitle =>
-      'Tämä näyttää tietojenkalastelulta';
+  String get conversationSecurityPhishingTitle => 'Tämä näyttää tietojenkalastelulta';
 
   @override
   String get conversationSecurityPhishingText =>
       'Useat merkit viittaavat siihen, ettei tämä viesti ole sitä, mitä se väittää olevansa.';
 
   @override
-  String get conversationSecurityCarefulTitle =>
-      'Ole varovainen tämän viestin kanssa';
+  String get conversationSecurityCarefulTitle => 'Ole varovainen tämän viestin kanssa';
 
   @override
-  String get conversationSecurityCarefulText =>
-      'Siinä on jotain, mikä kannattaa katsoa tarkemmin.';
+  String get conversationSecurityCarefulText => 'Siinä on jotain, mikä kannattaa katsoa tarkemmin.';
 
   @override
-  String get conversationSecurityVerifiedText =>
-      'Lähettäjä on vahvistettu, eikä mikään näytä epäilyttävältä.';
+  String get conversationSecurityVerifiedText => 'Lähettäjä on vahvistettu, eikä mikään näytä epäilyttävältä.';
 
   @override
   String get conversationSecurityUnverifiedText =>
       'Mikään ei näytä epäilyttävältä. Sähköpostipalvelimesi ei kertonut, onko lähettäjä vahvistettu.';
 
   @override
-  String get conversationSecurityNothingSuspicious =>
-      'Mikään ei näytä epäilyttävältä.';
+  String get conversationSecurityNothingSuspicious => 'Mikään ei näytä epäilyttävältä.';
 
   @override
   String get conversationSecurityWhy => 'Miksi';
@@ -660,12 +627,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String conversationSecurityRemoteImages(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count etäkuvaa',
-      one: '$count etäkuva',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count etäkuvaa', one: '$count etäkuva');
     return '$_temp0';
   }
 
@@ -696,8 +658,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get conversationSecurityTechnicalDetails => 'Tekniset tiedot';
 
   @override
-  String get conversationSecurityCheckedLocally =>
-      'Tarkistettu tällä laitteella. Mitään ei lähetetty minnekään.';
+  String get conversationSecurityCheckedLocally => 'Tarkistettu tällä laitteella. Mitään ei lähetetty minnekään.';
 
   @override
   String get conversationSecurityTrackersLabel => 'Seuraimet';
@@ -737,8 +698,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityAuthFailedTitle =>
-      'Lähettäjää ei ole vahvistettu';
+  String get conversationSecurityAuthFailedTitle => 'Lähettäjää ei ole vahvistettu';
 
   @override
   String conversationSecurityAuthFailedText(String domain) {
@@ -763,8 +723,7 @@ class AppLocalizationsFi extends AppLocalizations {
       'Älä toimi viestin pohjalta, ellet odottanut sitä. Jos epäröit, ota yhteyttä lähettäjään muuta kautta.';
 
   @override
-  String get conversationSecurityAuthUnalignedTitle =>
-      'Toisen verkkotunnuksen allekirjoittama';
+  String get conversationSecurityAuthUnalignedTitle => 'Toisen verkkotunnuksen allekirjoittama';
 
   @override
   String conversationSecurityAuthUnalignedText(String signer, String domain) {
@@ -777,8 +736,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressTitle =>
-      'Nimessä näkyy eri osoite';
+  String get conversationSecurityNameShowsAddressTitle => 'Nimessä näkyy eri osoite';
 
   @override
   String conversationSecurityNameShowsAddressText(String shown, String email) {
@@ -786,8 +744,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressAdvice =>
-      'Luota osoitteeseen, älä nimeen.';
+  String get conversationSecurityNameShowsAddressAdvice => 'Luota osoitteeseen, älä nimeen.';
 
   @override
   String get conversationSecurityReplyToTitle => 'Vastaukset menevät muualle';
@@ -813,22 +770,12 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityImpersonationVipText(
-    String name,
-    String knownName,
-    String knownEmail,
-    String email,
-  ) {
+  String conversationSecurityImpersonationVipText(String name, String knownName, String knownEmail, String email) {
     return 'Se on allekirjoitettu nimellä ”$name” kuten VIP-henkilösi $knownName ($knownEmail), mutta se tulee uudesta osoitteesta: $email.';
   }
 
   @override
-  String conversationSecurityImpersonationText(
-    String name,
-    String knownName,
-    String knownEmail,
-    String email,
-  ) {
+  String conversationSecurityImpersonationText(String name, String knownName, String knownEmail, String email) {
     return 'Se on allekirjoitettu nimellä ”$name” kuten $knownName ($knownEmail), mutta se tulee uudesta osoitteesta: $email.';
   }
 
@@ -851,8 +798,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeTitle =>
-      'Ensimmäinen viesti tältä lähettäjältä';
+  String get conversationSecurityFirstTimeTitle => 'Ensimmäinen viesti tältä lähettäjältä';
 
   @override
   String conversationSecurityFirstTimeText(String email) {
@@ -860,16 +806,13 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeAdvice =>
-      'Suhtaudu varoen pyyntöihin ihmisiltä, joita et vielä tunne.';
+  String get conversationSecurityFirstTimeAdvice => 'Suhtaudu varoen pyyntöihin ihmisiltä, joita et vielä tunne.';
 
   @override
-  String get conversationSecuritySenderHomographTitle =>
-      'Samannäköisiä kirjaimia lähettäjän osoitteessa';
+  String get conversationSecuritySenderHomographTitle => 'Samannäköisiä kirjaimia lähettäjän osoitteessa';
 
   @override
-  String get conversationSecurityLinkHomographTitle =>
-      'Samannäköisiä kirjaimia linkissä';
+  String get conversationSecurityLinkHomographTitle => 'Samannäköisiä kirjaimia linkissä';
 
   @override
   String conversationSecurityHomographText(String host) {
@@ -882,8 +825,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get conversationSecuritySenderHomographAdvice =>
-      'Poista se tai ilmoita se roskapostiksi.';
+  String get conversationSecuritySenderHomographAdvice => 'Poista se tai ilmoita se roskapostiksi.';
 
   @override
   String get conversationSecurityLinkHomographAdvice => 'Älä avaa sitä.';
@@ -894,12 +836,10 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLookalikeTitle =>
-      'Aitoa jäljittelevä verkkotunnus';
+  String get conversationSecurityLookalikeTitle => 'Aitoa jäljittelevä verkkotunnus';
 
   @override
-  String get conversationSecurityFamiliarNameTitle =>
-      'Käyttää tuttua nimeä verkkotunnuksessaan';
+  String get conversationSecurityFamiliarNameTitle => 'Käyttää tuttua nimeä verkkotunnuksessaan';
 
   @override
   String conversationSecurityLookalikeOwnText(String domain, String real) {
@@ -907,11 +847,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityLookalikeText(
-    String domain,
-    String brand,
-    String real,
-  ) {
+  String conversationSecurityLookalikeText(String domain, String brand, String real) {
     return '$domain näyttää samalta kuin $brand ($real), mutta se on eri verkkotunnus.';
   }
 
@@ -921,11 +857,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityFamiliarNameText(
-    String domain,
-    String brand,
-    String real,
-  ) {
+  String conversationSecurityFamiliarNameText(String domain, String brand, String real) {
     return '$domain käyttää nimeä $brand ($real), mutta ei kuulu sille.';
   }
 
@@ -975,8 +907,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLinkUncheckableTitle =>
-      'Linkin kohdetta ei voi tarkistaa';
+  String get conversationSecurityLinkUncheckableTitle => 'Linkin kohdetta ei voi tarkistaa';
 
   @override
   String conversationSecurityLinkUncheckableText(String shown, String host) {
@@ -984,8 +915,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityIpAddressTitle =>
-      'Linkki osoittaa pelkkään IP-osoitteeseen';
+  String get conversationSecurityIpAddressTitle => 'Linkki osoittaa pelkkään IP-osoitteeseen';
 
   @override
   String conversationSecurityIpAddressText(String hosts) {
@@ -1001,8 +931,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityDataLinkTitle =>
-      'Piilotettu sivu poistettiin käytöstä';
+  String get conversationSecurityDataLinkTitle => 'Piilotettu sivu poistettiin käytöstä';
 
   @override
   String get conversationSecurityDataLinkText =>
@@ -1012,20 +941,16 @@ class AppLocalizationsFi extends AppLocalizations {
   String get conversationSecurityPasswordFieldTitle => 'Pyytää salasanaa';
 
   @override
-  String get conversationSecurityPasswordFieldText =>
-      'Viestissä oli salasanakenttä. Loupe poisti sen.';
+  String get conversationSecurityPasswordFieldText => 'Viestissä oli salasanakenttä. Loupe poisti sen.';
 
   @override
-  String get conversationSecurityPasswordFieldAdvice =>
-      'Älä koskaan kirjoita salasanaa sähköpostiviestiin.';
+  String get conversationSecurityPasswordFieldAdvice => 'Älä koskaan kirjoita salasanaa sähköpostiviestiin.';
 
   @override
-  String get conversationSecurityScriptLinkTitle =>
-      'Koodia suorittava linkki poistettiin käytöstä';
+  String get conversationSecurityScriptLinkTitle => 'Koodia suorittava linkki poistettiin käytöstä';
 
   @override
-  String get conversationSecurityScriptLinkText =>
-      'Loupe ei koskaan suorita viesteissä olevaa koodia.';
+  String get conversationSecurityScriptLinkText => 'Loupe ei koskaan suorita viesteissä olevaa koodia.';
 
   @override
   String conversationSecurityShortenerTitle(int count) {
@@ -1044,8 +969,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityInternationalTitle =>
-      'Kansainvälinen verkko-osoite';
+  String get conversationSecurityInternationalTitle => 'Kansainvälinen verkko-osoite';
 
   @override
   String conversationSecurityInternationalText(String hosts) {
@@ -1053,8 +977,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLotsOfHiddenTextTitle =>
-      'Paljon piilotettua tekstiä';
+  String get conversationSecurityLotsOfHiddenTextTitle => 'Paljon piilotettua tekstiä';
 
   @override
   String conversationSecurityLotsOfHiddenTextText(int count) {
@@ -1070,8 +993,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityHiddenTextTitle =>
-      'Piilotettu teksti poistettu';
+  String get conversationSecurityHiddenTextTitle => 'Piilotettu teksti poistettu';
 
   @override
   String conversationSecurityHiddenTextText(int count) {
@@ -1085,8 +1007,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get exportDownloadFailed =>
-      'Viestiä ei voitu ladata. Tarkista yhteys ja yritä uudelleen.';
+  String get exportDownloadFailed => 'Viestiä ei voitu ladata. Tarkista yhteys ja yritä uudelleen.';
 
   @override
   String exportSaved(String name) {
@@ -1116,10 +1037,8 @@ class AppLocalizationsFi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          '”$name” tallennettu. $formattedCount viestiä jäi pois, koska niitä ei voitu ladata.',
-      one:
-          '”$name” tallennettu. $count viesti jäi pois, koska sitä ei voitu ladata.',
+      other: '”$name” tallennettu. $formattedCount viestiä jäi pois, koska niitä ei voitu ladata.',
+      one: '”$name” tallennettu. $count viesti jäi pois, koska sitä ei voitu ladata.',
     );
     return '$_temp0';
   }
@@ -1197,8 +1116,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get mailboxesSmartMailboxes => 'Smart Mailboxit';
 
   @override
-  String get mailboxesSmartMailboxesEmpty =>
-      'Tallenna haku, niin se näkyy täällä.';
+  String get mailboxesSmartMailboxesEmpty => 'Tallenna haku, niin se näkyy täällä.';
 
   @override
   String get mailboxesTags => 'Tunnisteet';
@@ -1232,8 +1150,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get projectsDelete => 'Poista projekti';
 
   @override
-  String get projectsDeleteMessage =>
-      'Sen keskustelut jäävät paikoilleen, projektin ulkopuolelle.';
+  String get projectsDeleteMessage => 'Sen keskustelut jäävät paikoilleen, projektin ulkopuolelle.';
 
   @override
   String get projectsUntitled => 'Projekti';
@@ -1347,8 +1264,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get mailboxesVipTitle => 'VIP';
 
   @override
-  String get mailboxesVipFooter =>
-      'Voit myös napauttaa lähettäjän nimeä viestissä ja laittaa VIP-valinnan päälle.';
+  String get mailboxesVipFooter => 'Voit myös napauttaa lähettäjän nimeä viestissä ja laittaa VIP-valinnan päälle.';
 
   @override
   String get mailboxesAddVip => 'Lisää VIP…';
@@ -1357,8 +1273,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get mailboxesAddVipTitle => 'Lisää VIP';
 
   @override
-  String get mailboxesAddVipText =>
-      'Tästä osoitteesta tuleva posti saa tähden ja näkyy VIP-postilaatikossa.';
+  String get mailboxesAddVipText => 'Tästä osoitteesta tuleva posti saa tähden ja näkyy VIP-postilaatikossa.';
 
   @override
   String get mailboxesAddVipPlaceholder => 'name@example.com';
@@ -1403,12 +1318,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String messageListSelected(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count valittua',
-      one: '$count valittu',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count valittua', one: '$count valittu');
     return '$_temp0';
   }
 
@@ -1495,12 +1405,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String panesDragCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count viestiä',
-      one: '$count viesti',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count viestiä', one: '$count viesti');
     return '$_temp0';
   }
 
@@ -1544,15 +1449,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get snoozeNoTime => 'Aikaa ei asetettu';
 
   @override
-  String get snoozeFooter =>
-      'Torkutetut viestit palaavat lukemattomina Saapuneet-kansioon asetettuna aikana.';
+  String get snoozeFooter => 'Torkutetut viestit palaavat lukemattomina Saapuneet-kansioon asetettuna aikana.';
 
   @override
   String get snoozeEmptyTitle => 'Ei torkutettuja';
 
   @override
-  String get snoozeEmptyText =>
-      'Torkuta viesti, niin se palaa Saapuneet-kansioon, kun tarvitset sitä.';
+  String get snoozeEmptyText => 'Torkuta viesti, niin se palaa Saapuneet-kansioon, kun tarvitset sitä.';
 
   @override
   String get briefButton => 'Lyhyesti';
@@ -1576,23 +1479,19 @@ class AppLocalizationsFi extends AppLocalizations {
   String get briefStopped => 'Keskeytit tiivistelmän.';
 
   @override
-  String get briefFailedTooLarge =>
-      'Viesti on liian pitkä mallille, joten mitään ei lähetetty.';
+  String get briefFailedTooLarge => 'Viesti on liian pitkä mallille, joten mitään ei lähetetty.';
 
   @override
-  String get briefFailedProvider =>
-      'Malli ei pystynyt tiivistämään tätä viestiä.';
+  String get briefFailedProvider => 'Malli ei pystynyt tiivistämään tätä viestiä.';
 
   @override
-  String get briefFailedInvalid =>
-      'Vastaus ei läpäissyt Loupen tarkistuksia, joten tarkistuslistaa ei näytetä.';
+  String get briefFailedInvalid => 'Vastaus ei läpäissyt Loupen tarkistuksia, joten tarkistuslistaa ei näytetä.';
 
   @override
   String get briefNothingTitle => 'Ei tiivistettävää';
 
   @override
-  String get briefPartial =>
-      'Viesti on pitkä, joten tiivistelmä kattaa vain sen alun. Lue loput itse viestistä.';
+  String get briefPartial => 'Viesti on pitkä, joten tiivistelmä kattaa vain sen alun. Lue loput itse viestistä.';
 
   @override
   String get briefSectionToDo => 'Tehtävät';
@@ -1637,11 +1536,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String briefOwner(String owner) {
-    String _temp0 = intl.Intl.selectLogic(owner, {
-      'me': 'Sinä',
-      'them': 'Muut',
-      'other': 'Ei mainittu',
-    });
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Sinä', 'them': 'Muut', 'other': 'Ei mainittu'});
     return '$_temp0';
   }
 
@@ -1720,8 +1615,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get briefCaution =>
-      'Tiivistelmä voi ohittaa tai ymmärtää asioita väärin. Ratkaisevaa on itse viesti.';
+  String get briefCaution => 'Tiivistelmä voi ohittaa tai ymmärtää asioita väärin. Ratkaisevaa on itse viesti.';
 
   @override
   String briefSecurityReason(String reason) {
@@ -1729,15 +1623,13 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get briefSecurityText =>
-      'Tarkista itse viesti, ennen kuin teet mitään tämän tiivistelmän perusteella.';
+  String get briefSecurityText => 'Tarkista itse viesti, ennen kuin teet mitään tämän tiivistelmän perusteella.';
 
   @override
   String get briefSourceTitle => 'Viestissä';
 
   @override
-  String get briefSourceAttachment =>
-      'Tämä tulee liitetiedoston nimestä. Tiivistelmä ei lue liitteiden sisältöä.';
+  String get briefSourceAttachment => 'Tämä tulee liitetiedoston nimestä. Tiivistelmä ei lue liitteiden sisältöä.';
 
   @override
   String get briefEventTitle => 'Uusi tapahtuma';
@@ -1778,30 +1670,25 @@ class AppLocalizationsFi extends AppLocalizations {
   String get appLockFailed => 'Loupe ei voinut vahvistaa henkilöllisyyttäsi.';
 
   @override
-  String get appLockLockedOut =>
-      'Liian monta yritystä. Yritä myöhemmin uudelleen.';
+  String get appLockLockedOut => 'Liian monta yritystä. Yritä myöhemmin uudelleen.';
 
   @override
-  String get appLockPromptError =>
-      'Kehotetta ei voitu näyttää. Yritä uudelleen.';
+  String get appLockPromptError => 'Kehotetta ei voitu näyttää. Yritä uudelleen.';
 
   @override
-  String get appLockNoScreenLock =>
-      'Tässä puhelimessa ei ole näytön lukitusta.';
+  String get appLockNoScreenLock => 'Tässä puhelimessa ei ole näytön lukitusta.';
 
   @override
   String get appLockUnlockPromptTitle => 'Avaa Loupen lukitus';
 
   @override
-  String get appLockUnlockPromptReason =>
-      'Vahvista henkilöllisyytesi nähdäksesi postisi.';
+  String get appLockUnlockPromptReason => 'Vahvista henkilöllisyytesi nähdäksesi postisi.';
 
   @override
   String get appLockTurnOnPromptTitle => 'Ota sovelluslukitus käyttöön';
 
   @override
-  String get appLockTurnOnPromptReason =>
-      'Vahvista henkilöllisyytesi ottaaksesi sovelluslukituksen käyttöön.';
+  String get appLockTurnOnPromptReason => 'Vahvista henkilöllisyytesi ottaaksesi sovelluslukituksen käyttöön.';
 
   @override
   String get appLockScreenLockRemoved =>
@@ -1812,23 +1699,13 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String appLockAfterMinutes(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count minuuttia',
-      one: '$count minuutti',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count minuuttia', one: '$count minuutti');
     return '$_temp0';
   }
 
   @override
   String appLockAfterHours(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count tuntia',
-      one: '$count tunti',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count tuntia', one: '$count tunti');
     return '$_temp0';
   }
 
@@ -1875,8 +1752,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get openpgpSignedWithRejectedKey =>
-      'Allekirjoitettu hylätyllä avaimella';
+  String get openpgpSignedWithRejectedKey => 'Allekirjoitettu hylätyllä avaimella';
 
   @override
   String openpgpSignedByNotAccepted(String name) {
@@ -1906,12 +1782,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String openpgpForKeys(int count, String keys) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Avaimille $keys',
-      one: 'Avaimelle $keys',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Avaimille $keys', one: 'Avaimelle $keys');
     return '$_temp0';
   }
 
@@ -1945,40 +1816,33 @@ class AppLocalizationsFi extends AppLocalizations {
   String get openpgpChangeAcceptance => 'Muuta hyväksyntää…';
 
   @override
-  String get openpgpCheckedFooter =>
-      'Tarkistettu tällä laitteella OpenPGP:llä, yhteensopiva Thunderbirdin kanssa.';
+  String get openpgpCheckedFooter => 'Tarkistettu tällä laitteella OpenPGP:llä, yhteensopiva Thunderbirdin kanssa.';
 
   @override
   String get openpgpSummaryLocked =>
       'Avaimesi on lukittu. Avaa sen lukitus salalauseella, niin voit lukea tämän viestin.';
 
   @override
-  String get openpgpSummaryNoSecretKey =>
-      'Se on salattu avaimelle, jota ei ole tällä laitteella.';
+  String get openpgpSummaryNoSecretKey => 'Se on salattu avaimelle, jota ei ole tällä laitteella.';
 
   @override
-  String get openpgpSummaryDamaged =>
-      'Salatut tiedot ovat vahingoittuneet tai niitä on muutettu matkalla.';
+  String get openpgpSummaryDamaged => 'Salatut tiedot ovat vahingoittuneet tai niitä on muutettu matkalla.';
 
   @override
-  String get openpgpSummaryUnsupported =>
-      'Se käyttää algoritmia, jota Loupe ei tue.';
+  String get openpgpSummaryUnsupported => 'Se käyttää algoritmia, jota Loupe ei tue.';
 
   @override
-  String get openpgpSummaryEncrypted =>
-      'Vain sinä ja muut vastaanottajat voitte lukea sen.';
+  String get openpgpSummaryEncrypted => 'Vain sinä ja muut vastaanottajat voitte lukea sen.';
 
   @override
-  String get openpgpSummaryNotSigned =>
-      'Sitä ei ole allekirjoitettu, joten lähettäjää ei ole vahvistettu.';
+  String get openpgpSummaryNotSigned => 'Sitä ei ole allekirjoitettu, joten lähettäjää ei ole vahvistettu.';
 
   @override
   String get openpgpSummaryUnknownKey =>
       'Se on allekirjoitettu, mutta avaimella, jota sinulla ei ole, joten allekirjoitusta ei voi tarkistaa.';
 
   @override
-  String get openpgpSummaryBadSignature =>
-      'Allekirjoitus ei täsmää: viestiä on ehkä muutettu.';
+  String get openpgpSummaryBadSignature => 'Allekirjoitus ei täsmää: viestiä on ehkä muutettu.';
 
   @override
   String get openpgpSummaryMismatch =>
@@ -1992,16 +1856,14 @@ class AppLocalizationsFi extends AppLocalizations {
   String get openpgpSummaryOwnKey => 'Allekirjoitettu omalla avaimellasi.';
 
   @override
-  String get openpgpSummaryVerified =>
-      'Allekirjoitus on kelvollinen, ja olet vahvistanut avaimen sormenjäljen.';
+  String get openpgpSummaryVerified => 'Allekirjoitus on kelvollinen, ja olet vahvistanut avaimen sormenjäljen.';
 
   @override
   String get openpgpSummaryUnverified =>
       'Allekirjoitus on kelvollinen. Hyväksyit avaimen tarkistamatta sen sormenjälkeä.';
 
   @override
-  String get openpgpSummaryRejected =>
-      'Allekirjoitus on kelvollinen, mutta olet hylännyt tämän avaimen.';
+  String get openpgpSummaryRejected => 'Allekirjoitus on kelvollinen, mutta olet hylännyt tämän avaimen.';
 
   @override
   String get openpgpSummaryUndecided =>
@@ -2061,8 +1923,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get openpgpAddresses => 'Osoitteet';
 
   @override
-  String get openpgpAddressesFooter =>
-      'Mitä avainta kukin osoite käyttää ja milloin se salaa ja allekirjoittaa.';
+  String get openpgpAddressesFooter => 'Mitä avainta kukin osoite käyttää ja milloin se salaa ja allekirjoittaa.';
 
   @override
   String get openpgpCorrespondentsKeys => 'Yhteyshenkilöiden OpenPGP-avaimet';
@@ -2141,8 +2002,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get openpgpAddKeyTitle => 'Lisää OpenPGP-avain';
 
   @override
-  String get openpgpAddKeyMessage =>
-      'Tuo Thunderbirdissä käyttämäsi avain tai luo uusi.';
+  String get openpgpAddKeyMessage => 'Tuo Thunderbirdissä käyttämäsi avain tai luo uusi.';
 
   @override
   String get openpgpImportFromClipboard => 'Tuo leikepöydältä';
@@ -2163,8 +2023,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get openpgpFromFile => 'Tiedostosta';
 
   @override
-  String get openpgpClipboardEmpty =>
-      'Leikepöytä on tyhjä. Kopioi avain ensin.';
+  String get openpgpClipboardEmpty => 'Leikepöytä on tyhjä. Kopioi avain ensin.';
 
   @override
   String get openpgpKey => 'Avain';
@@ -2280,8 +2139,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get openpgpEncryptAutomatically => 'Salaa automaattisesti';
 
   @override
-  String get openpgpAlwaysEncryptDetail =>
-      'Estää lähettämisen, jos vastaanottajalla ei ole avainta';
+  String get openpgpAlwaysEncryptDetail => 'Estää lähettämisen, jos vastaanottajalla ei ole avainta';
 
   @override
   String get openpgpSignUnencrypted => 'Allekirjoita salaamaton posti';
@@ -2300,17 +2158,11 @@ class AppLocalizationsFi extends AppLocalizations {
   String get openpgpPreferEncryption => 'Suosi salausta';
 
   @override
-  String get openpgpPreferEncryptionDetail =>
-      'Pyydä muita salaamaan, kun he voivat';
+  String get openpgpPreferEncryptionDetail => 'Pyydä muita salaamaan, kun he voivat';
 
   @override
   String openpgpValidityYears(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count vuotta',
-      one: '$count vuosi',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count vuotta', one: '$count vuosi');
     return '$_temp0';
   }
 
@@ -2492,8 +2344,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get openpgpWrongPassphrase => 'Salalause on väärä. Yritä uudelleen.';
 
   @override
-  String get openpgpExplainLocked =>
-      'Tämä viesti on salattu. Avaa OpenPGP-avaimesi lukitus, niin voit lukea sen.';
+  String get openpgpExplainLocked => 'Tämä viesti on salattu. Avaa OpenPGP-avaimesi lukitus, niin voit lukea sen.';
 
   @override
   String get openpgpExplainNoKey =>
@@ -2504,8 +2355,7 @@ class AppLocalizationsFi extends AppLocalizations {
       'Tämä salattu viesti on vahingoittunut, joten sen salausta ei voi purkaa turvallisesti.';
 
   @override
-  String get openpgpExplainUnsupported =>
-      'Tämä viesti käyttää salausta, jota Loupe ei vielä osaa lukea.';
+  String get openpgpExplainUnsupported => 'Tämä viesti käyttää salausta, jota Loupe ei vielä osaa lukea.';
 
   @override
   String get openpgpExplainSmimeNoKey =>
@@ -2517,8 +2367,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get openpgpExplainSmimeUnlock =>
-      'Avaa S/MIME-varmenteesi lukitus, niin voit lukea sen.';
+  String get openpgpExplainSmimeUnlock => 'Avaa S/MIME-varmenteesi lukitus, niin voit lukea sen.';
 
   @override
   String get openpgpAttachmentGone => 'Tämä liite ei ole enää saatavilla.';
@@ -2542,19 +2391,16 @@ class AppLocalizationsFi extends AppLocalizations {
   String get smimeUnknownSigner => 'tuntematon';
 
   @override
-  String get smimeSignatureModified =>
-      'Virheellinen allekirjoitus: viestiä muutettu';
+  String get smimeSignatureModified => 'Virheellinen allekirjoitus: viestiä muutettu';
 
   @override
-  String get smimeSignatureWeak =>
-      'Allekirjoitus ei ole turvallinen: vanhentunut algoritmi';
+  String get smimeSignatureWeak => 'Allekirjoitus ei ole turvallinen: vanhentunut algoritmi';
 
   @override
   String get smimeSignatureUncheckable => 'Allekirjoitusta ei voi tarkistaa';
 
   @override
-  String get smimeSignedCertificateMissing =>
-      'Allekirjoitettu · varmenne puuttuu';
+  String get smimeSignedCertificateMissing => 'Allekirjoitettu · varmenne puuttuu';
 
   @override
   String smimeSignedByRevoked(String name) {
@@ -2720,38 +2566,31 @@ class AppLocalizationsFi extends AppLocalizations {
   String get smimeTrust => 'Luota';
 
   @override
-  String get smimeSummaryNoKey =>
-      'Se on salattu varmenteelle, jota ei ole tällä laitteella.';
+  String get smimeSummaryNoKey => 'Se on salattu varmenteelle, jota ei ole tällä laitteella.';
 
   @override
-  String get smimeSummaryDamaged =>
-      'Salatut tiedot ovat vahingoittuneet tai niitä on muutettu matkalla.';
+  String get smimeSummaryDamaged => 'Salatut tiedot ovat vahingoittuneet tai niitä on muutettu matkalla.';
 
   @override
-  String get smimeSummaryUnsupported =>
-      'Se käyttää algoritmia, jota Loupe ei tue.';
+  String get smimeSummaryUnsupported => 'Se käyttää algoritmia, jota Loupe ei tue.';
 
   @override
   String get smimeSummaryLocked => 'S/MIME-varmenteesi on lukittu.';
 
   @override
-  String get smimeSummaryEncrypted =>
-      'Vain sinä ja muut vastaanottajat voitte lukea sen.';
+  String get smimeSummaryEncrypted => 'Vain sinä ja muut vastaanottajat voitte lukea sen.';
 
   @override
-  String get smimeSummaryNotSigned =>
-      'Sitä ei ole allekirjoitettu, joten lähettäjää ei ole vahvistettu.';
+  String get smimeSummaryNotSigned => 'Sitä ei ole allekirjoitettu, joten lähettäjää ei ole vahvistettu.';
 
   @override
-  String get smimeSummaryModified =>
-      'Allekirjoitus ei täsmää: viestiä on muutettu allekirjoittamisen jälkeen.';
+  String get smimeSummaryModified => 'Allekirjoitus ei täsmää: viestiä on muutettu allekirjoittamisen jälkeen.';
 
   @override
   String get smimeSummaryUncheckable => 'Allekirjoitusta ei voi tarkistaa.';
 
   @override
-  String get smimeSummaryNoCertificate =>
-      'Allekirjoittajan varmenne ei ole viestissä, joten sitä ei voi tarkistaa.';
+  String get smimeSummaryNoCertificate => 'Allekirjoittajan varmenne ei ole viestissä, joten sitä ei voi tarkistaa.';
 
   @override
   String get smimeSummaryRevoked =>
@@ -2772,12 +2611,10 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get smimeProblemInvalidChain =>
-      'Varmenne tai jokin sen myöntäjistä on virheellinen.';
+  String get smimeProblemInvalidChain => 'Varmenne tai jokin sen myöntäjistä on virheellinen.';
 
   @override
-  String get smimeProblemUntrusted =>
-      'Varmenne on peräisin myöntäjältä, johon Loupe ei luota.';
+  String get smimeProblemUntrusted => 'Varmenne on peräisin myöntäjältä, johon Loupe ei luota.';
 
   @override
   String get smimeProblemExpired => 'Varmenne oli vanhentunut.';
@@ -2786,12 +2623,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get smimeProblemNotYetValid => 'Varmenne ei ollut vielä voimassa.';
 
   @override
-  String get smimeProblemWrongUsage =>
-      'Varmennetta ei ole tarkoitettu postille.';
+  String get smimeProblemWrongUsage => 'Varmennetta ei ole tarkoitettu postille.';
 
   @override
-  String get smimeProblemWrongAddress =>
-      'Varmenne kuuluu eri osoitteelle kuin lähettäjän.';
+  String get smimeProblemWrongAddress => 'Varmenne kuuluu eri osoitteelle kuin lähettäjän.';
 
   @override
   String smimeTrustedBy(String issuer) {
@@ -2865,8 +2700,7 @@ class AppLocalizationsFi extends AppLocalizations {
       'Kun avaat allekirjoitetun viestin, Loupe kysyy allekirjoittajan varmenteen myöntäjältä, onko varmenne kumottu (myöntäjän OCSP-palvelimelta tai sulkulistasta). Myöntäjä näkee silloin, milloin joku IP-osoitteestasi lukee tällä varmenteella allekirjoitettua postia. Vastaukset säilytetään tällä laitteella, kunnes ne vanhenevat. Kumottu varmenne näkyy viestin otsakkeessa merkinnällä ”varmenne kumottu”.';
 
   @override
-  String get smimeCheckRevocation =>
-      'Tarkista varmenteiden kumoaminen verkossa';
+  String get smimeCheckRevocation => 'Tarkista varmenteiden kumoaminen verkossa';
 
   @override
   String get smimeTrustedAuthorities => 'Luotetut myöntäjät';
@@ -2876,10 +2710,8 @@ class AppLocalizationsFi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          'Itse luottamasi myöntäjät. Lisäksi luotetaan $count myöntäjään, joihin Mozilla luottaa sähköpostissa.',
-      one:
-          'Itse luottamasi myöntäjät. Lisäksi luotetaan $count myöntäjään, johon Mozilla luottaa sähköpostissa.',
+      other: 'Itse luottamasi myöntäjät. Lisäksi luotetaan $count myöntäjään, joihin Mozilla luottaa sähköpostissa.',
+      one: 'Itse luottamasi myöntäjät. Lisäksi luotetaan $count myöntäjään, johon Mozilla luottaa sähköpostissa.',
     );
     return '$_temp0';
   }
@@ -2901,8 +2733,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get smimeFromFile => 'Tiedostosta';
 
   @override
-  String get smimeClipboardEmpty =>
-      'Leikepöytä on tyhjä. Kopioi varmenne ensin.';
+  String get smimeClipboardEmpty => 'Leikepöytä on tyhjä. Kopioi varmenne ensin.';
 
   @override
   String get smimeCertificate => 'Varmenne';
@@ -2948,8 +2779,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get smimeKeyOnDevice => 'Tällä laitteella';
 
   @override
-  String get smimeKeyInLoupeWithPassphrase =>
-      'Loupessa, salalauseella suojattuna';
+  String get smimeKeyInLoupeWithPassphrase => 'Loupessa, salalauseella suojattuna';
 
   @override
   String get smimeKeyInLoupe => 'Loupessa';
@@ -3056,8 +2886,7 @@ class AppLocalizationsFi extends AppLocalizations {
       'Sen yksityinen avain poistetaan tältä laitteelta: sille salattua postia ei voi enää lukea täällä, ellet tuo sitä uudelleen.';
 
   @override
-  String get smimeRemoveContactMessage =>
-      'Se palaa hänen seuraavan allekirjoitetun viestinsä mukana.';
+  String get smimeRemoveContactMessage => 'Se palaa hänen seuraavan allekirjoitetun viestinsä mukana.';
 
   @override
   String get smimeAddressImportFooter =>
@@ -3080,8 +2909,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get smimeCertificatePassword => 'Varmenteen salasana';
 
   @override
-  String get smimeCertificatePasswordPrompt =>
-      'Anna salasana, jolla varmennetiedosto vietiin.';
+  String get smimeCertificatePasswordPrompt => 'Anna salasana, jolla varmennetiedosto vietiin.';
 
   @override
   String get smimeImport => 'Tuo';
@@ -3117,10 +2945,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String smimeImportedCertificatesAndAuthorities(
-    int count,
-    String certificates,
-  ) {
+  String smimeImportedCertificatesAndAuthorities(int count, String certificates) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -3131,8 +2956,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get smimeNoPrivateKey =>
-      'Tiedostossa ei ole yksityistä avainta. Vie varmenteesi yksityisen avaimen kanssa.';
+  String get smimeNoPrivateKey => 'Tiedostossa ei ole yksityistä avainta. Vie varmenteesi yksityisen avaimen kanssa.';
 
   @override
   String get smimeImportAsYoursTitle => 'Tuodaanko omaksi varmenteeksesi?';
@@ -3217,12 +3041,10 @@ class AppLocalizationsFi extends AppLocalizations {
       'S/MIME-varmenteesi on lukittu. Avaa viesti uudelleen, niin voit avata lukituksen.';
 
   @override
-  String get smimeDeviceHasNoCertificates =>
-      'Tämä laite ei tarjoa varmenteitaan.';
+  String get smimeDeviceHasNoCertificates => 'Tämä laite ei tarjoa varmenteitaan.';
 
   @override
-  String get smimeCantReadCertificate =>
-      'Loupe ei pysty lukemaan tätä varmennetta.';
+  String get smimeCantReadCertificate => 'Loupe ei pysty lukemaan tätä varmennetta.';
 
   @override
   String get smimeCertificateNotForMail =>
@@ -3233,8 +3055,7 @@ class AppLocalizationsFi extends AppLocalizations {
       'Varmenne ei ole enää tällä laitteella, tai Loupe ei ehkä saa enää käyttää sitä. Valitse se uudelleen kohdassa Asetukset › Päästä päähän -salaus.';
 
   @override
-  String get smimeDeviceCertificateAppOnly =>
-      'Tämän laitteen varmennetta voi käyttää vain, kun Loupe on auki.';
+  String get smimeDeviceCertificateAppOnly => 'Tämän laitteen varmennetta voi käyttää vain, kun Loupe on auki.';
 
   @override
   String get smimeDeviceKeyDamaged => 'Salattu avain on vahingoittunut.';
@@ -3253,16 +3074,13 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityNotWebAddress =>
-      'Myöntäjän osoite ei ole verkko-osoite.';
+  String get smimeAuthorityNotWebAddress => 'Myöntäjän osoite ei ole verkko-osoite.';
 
   @override
-  String get smimeAuthorityTimeout =>
-      'Varmenteen myöntäjä ei vastannut ajoissa.';
+  String get smimeAuthorityTimeout => 'Varmenteen myöntäjä ei vastannut ajoissa.';
 
   @override
-  String get smimeAuthorityUnreachable =>
-      'Varmenteen myöntäjään ei saatu yhteyttä.';
+  String get smimeAuthorityUnreachable => 'Varmenteen myöntäjään ei saatu yhteyttä.';
 
   @override
   String smimeAuthorityStatus(String status) {
@@ -3270,8 +3088,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityAnswerTooLarge =>
-      'Varmenteen myöntäjän vastaus on liian suuri.';
+  String get smimeAuthorityAnswerTooLarge => 'Varmenteen myöntäjän vastaus on liian suuri.';
 
   @override
   String get smimeRevocationNotChecked =>
@@ -3290,8 +3107,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get actionsWaitingOnOthersEmpty => 'Et odota ketään';
 
   @override
-  String get actionsFolderEmptyDetail =>
-      'Jos haluat seurata jotain, napauta viestissä ⋯ ja valitse Lisää toimenpide…';
+  String get actionsFolderEmptyDetail => 'Jos haluat seurata jotain, napauta viestissä ⋯ ja valitse Lisää toimenpide…';
 
   @override
   String get actionsTitle => 'Toimenpiteet';
@@ -3309,12 +3125,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String actionsCountWaiting(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count odottaa',
-      one: '$count odottaa',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count odottaa', one: '$count odottaa');
     return '$_temp0';
   }
 
@@ -3333,8 +3144,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get actionsSettledHeader => 'Hoidetut';
 
   @override
-  String get actionsNoneInConversation =>
-      'Tässä keskustelussa ei ole toimenpiteitä.';
+  String get actionsNoneInConversation => 'Tässä keskustelussa ei ole toimenpiteitä.';
 
   @override
   String get actionsFooter =>
@@ -3487,8 +3297,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get actionsOriginManual => 'Sinun lisäämäsi';
 
   @override
-  String get actionsOriginDemo =>
-      'Ehdottanut sisäänrakennettu demo: säännöt, ei mallia';
+  String get actionsOriginDemo => 'Ehdottanut sisäänrakennettu demo: säännöt, ei mallia';
 
   @override
   String actionsOriginSuggested(String provider) {
@@ -3562,8 +3371,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get actionsSuggestNone => 'Tässä viestissä ei ole mitään seurattavaa.';
 
   @override
-  String get actionsSuggestPartial =>
-      'Viesti on pitkä: vain sen alku luettiin.';
+  String get actionsSuggestPartial => 'Viesti on pitkä: vain sen alku luettiin.';
 
   @override
   String get actionsSuggestTracked => 'Seurannassa';
@@ -3587,12 +3395,10 @@ class AppLocalizationsFi extends AppLocalizations {
       'Jokainen ehdotus lainaa viestiä, eikä mitään seurata ennen kuin lisäät sen. Lainattua aiempaa postia ei oteta huomioon.';
 
   @override
-  String get actionsSuggestTooLarge =>
-      'Viesti on liian pitkä valitulle mallille.';
+  String get actionsSuggestTooLarge => 'Viesti on liian pitkä valitulle mallille.';
 
   @override
-  String get actionsSuggestInvalid =>
-      'Vastaus ei täsmännyt viestiin, joten mitään ei ehdoteta.';
+  String get actionsSuggestInvalid => 'Vastaus ei täsmännyt viestiin, joten mitään ei ehdoteta.';
 
   @override
   String get actionsSuggestCancelled => 'Pysäytetty.';
@@ -3602,10 +3408,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String settingsIdle(String protocol) {
-    String _temp0 = intl.Intl.selectLogic(protocol, {
-      'jmap': 'Push',
-      'other': 'IDLE',
-    });
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
     return '$_temp0';
   }
 
@@ -3670,8 +3473,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsSignatureAddField => 'Lisää kenttä';
 
   @override
-  String get settingsSignatureImageFailed =>
-      'Kuvaa ei voitu lisätä. Kokeile pienempää PNG- tai JPEG-kuvaa.';
+  String get settingsSignatureImageFailed => 'Kuvaa ei voitu lisätä. Kokeile pienempää PNG- tai JPEG-kuvaa.';
 
   @override
   String get settingsSignatureWhenToUse => 'Milloin käytetään';
@@ -3687,8 +3489,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsSignatureAddCopied => 'Lisää osoite tai verkkotunnus…';
 
   @override
-  String get settingsSignatureCopiedPrompt =>
-      'Osoite tai verkkotunnus, kuten client.example.';
+  String get settingsSignatureCopiedPrompt => 'Osoite tai verkkotunnus, kuten client.example.';
 
   @override
   String get settingsSignatureScheduled => 'Ajastettu';
@@ -3749,8 +3550,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsSwipeRight => 'Pyyhkäisy oikealle';
 
   @override
-  String get settingsSwipeRightFooter =>
-      'Pitkä pyyhkäisy suorittaa tämän toiminnon.';
+  String get settingsSwipeRightFooter => 'Pitkä pyyhkäisy suorittaa tämän toiminnon.';
 
   @override
   String get settingsSwipeToggleRead => 'Merkitse luetuksi / lukemattomaksi';
@@ -3771,8 +3571,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsUndoSendDelay => 'Lähetyksen perumisaika';
 
   @override
-  String get settingsUndoSendDelayFooter =>
-      'Lähetetyt viestit odottavat näin kauan, jotta voit perua ne.';
+  String get settingsUndoSendDelayFooter => 'Lähetetyt viestit odottavat näin kauan, jotta voit perua ne.';
 
   @override
   String settingsUndoSendSeconds(int seconds) {
@@ -3816,29 +3615,25 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsReadingHeader => 'Lukeminen';
 
   @override
-  String get settingsReadingFooter =>
-      'Etäkuvat voivat kertoa lähettäjille, milloin ja missä avasit viestin.';
+  String get settingsReadingFooter => 'Etäkuvat voivat kertoa lähettäjille, milloin ja missä avasit viestin.';
 
   @override
   String get settingsDefaultView => 'Oletusnäkymä';
 
   @override
-  String get settingsDefaultViewFooter =>
-      'Voit vaihtaa minkä tahansa viestin näkymää Aa-painikkeella.';
+  String get settingsDefaultViewFooter => 'Voit vaihtaa minkä tahansa viestin näkymää Aa-painikkeella.';
 
   @override
   String get settingsViewReadable => 'Luettava';
 
   @override
-  String get settingsViewReadableDetail =>
-      'Siisti, helppolukuinen, seuraa tummaa tilaa';
+  String get settingsViewReadableDetail => 'Siisti, helppolukuinen, seuraa tummaa tilaa';
 
   @override
   String get settingsViewOriginal => 'Alkuperäinen';
 
   @override
-  String get settingsViewOriginalDetail =>
-      'Täsmälleen sellaisena kuin lähettäjä sen suunnitteli';
+  String get settingsViewOriginalDetail => 'Täsmälleen sellaisena kuin lähettäjä sen suunnitteli';
 
   @override
   String get settingsViewPlain => 'Pelkkä teksti';
@@ -3856,8 +3651,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsFontMono => 'Tasalevyinen';
 
   @override
-  String get settingsFontMonoDetail =>
-      'Pitää ASCII-taiteen ja taulukot kohdallaan';
+  String get settingsFontMonoDetail => 'Pitää ASCII-taiteen ja taulukot kohdallaan';
 
   @override
   String get settingsTechnicalLists => 'Tekniset listat';
@@ -3869,8 +3663,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsOpenLinksDirectly => 'Avaa linkit suoraan';
 
   @override
-  String get settingsOpenLinksDirectlyDetail =>
-      'Ohita klikkausseuraimet, kun kohde tiedetään';
+  String get settingsOpenLinksDirectlyDetail => 'Ohita klikkausseuraimet, kun kohde tiedetään';
 
   @override
   String get settingsSecurityHeader => 'Tietoturva';
@@ -3915,8 +3708,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsLockAfter => 'Lukitusviive';
 
   @override
-  String get settingsLockAfterFooter =>
-      'Kuinka kauan Loupe voi olla taustalla, ennen kuin se kysyy uudelleen.';
+  String get settingsLockAfterFooter => 'Kuinka kauan Loupe voi olla taustalla, ennen kuin se kysyy uudelleen.';
 
   @override
   String get settingsNotifications => 'Ilmoitukset';
@@ -3941,8 +3733,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsResetApp => 'Nollaa sovellus';
 
   @override
-  String get settingsResetFooter =>
-      'Unohtaa kaikki asetukset ja palaa tervetulonäkymään.';
+  String get settingsResetFooter => 'Unohtaa kaikki asetukset ja palaa tervetulonäkymään.';
 
   @override
   String get settingsResetTitle => 'Nollataanko Loupe?';
@@ -3968,12 +3759,10 @@ class AppLocalizationsFi extends AppLocalizations {
       'Loupessa ei ole analytiikkaa eikä seurantaa. Postisi kulkee vain sähköpostipalvelimillesi.';
 
   @override
-  String get settingsNotificationsOffIos =>
-      'Loupen ilmoitukset on poistettu käytöstä Asetuksissa.';
+  String get settingsNotificationsOffIos => 'Loupen ilmoitukset on poistettu käytöstä Asetuksissa.';
 
   @override
-  String get settingsNotificationsOffAndroid =>
-      'Loupen ilmoitukset on poistettu käytöstä Androidin asetuksissa.';
+  String get settingsNotificationsOffAndroid => 'Loupen ilmoitukset on poistettu käytöstä Androidin asetuksissa.';
 
   @override
   String settingsNotificationsBlockedFooter(String system) {
@@ -4040,8 +3829,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsComingSoon => 'Tulossa pian';
 
   @override
-  String get settingsAllowUnrestrictedBattery =>
-      'Salli rajoittamaton akun käyttö';
+  String get settingsAllowUnrestrictedBattery => 'Salli rajoittamaton akun käyttö';
 
   @override
   String get settingsPush => 'Push';
@@ -4067,16 +3855,14 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsAppIconBadge => 'Sovelluskuvakkeen merkki';
 
   @override
-  String get settingsBadgeNote =>
-      'Merkki päivittyy aina, kun Loupe tarkistaa postin, myös taustalla.';
+  String get settingsBadgeNote => 'Merkki päivittyy aina, kun Loupe tarkistaa postin, myös taustalla.';
 
   @override
   String get settingsBadgeUnsupportedFooter =>
       'Tämän puhelimen aloitusnäyttö ei näytä numeroita sovelluskuvakkeissa. Merkki päivittyy aina, kun Loupe tarkistaa postin, myös taustalla.';
 
   @override
-  String get settingsTestNotificationBody =>
-      'Uuden postin ilmoitukset näyttävät tältä.';
+  String get settingsTestNotificationBody => 'Uuden postin ilmoitukset näyttävät tältä.';
 
   @override
   String get settingsAccountRemoved => 'Tämä tili on poistettu.';
@@ -4097,8 +3883,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsColour => 'Väri';
 
   @override
-  String get settingsColourFooter =>
-      'Merkitsee tämän tilin viestit Kaikki saapuneet -näkymässä.';
+  String get settingsColourFooter => 'Merkitsee tämän tilin viestit Kaikki saapuneet -näkymässä.';
 
   @override
   String settingsColourNumber(int number) {
@@ -4190,12 +3975,10 @@ class AppLocalizationsFi extends AppLocalizations {
       'Ensimmäinen identiteetti on uusien viestien oletus. Muuta järjestystä vetämällä.';
 
   @override
-  String get settingsIdentitiesFooterSingle =>
-      'Uusien viestien oletusidentiteetti.';
+  String get settingsIdentitiesFooterSingle => 'Uusien viestien oletusidentiteetti.';
 
   @override
-  String get settingsIdentitiesReplyFooter =>
-      'Vastaus lähtee siitä identiteetistä, jolle viesti lähetettiin.';
+  String get settingsIdentitiesReplyFooter => 'Vastaus lähtee siitä identiteetistä, jolle viesti lähetettiin.';
 
   @override
   String get settingsIdentityDefault => 'Oletus';
@@ -4227,8 +4010,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsCopyToMyself => 'Kopio itselle';
 
   @override
-  String get settingsCopyToMyselfFooter =>
-      'Lisätään jokaiseen tämän identiteetin viestiin.';
+  String get settingsCopyToMyselfFooter => 'Lisätään jokaiseen tämän identiteetin viestiin.';
 
   @override
   String get settingsCc => 'Kopio';
@@ -4244,8 +4026,7 @@ class AppLocalizationsFi extends AppLocalizations {
       'Vastaukset viesteihin, jotka on lähetetty näihin osoitteisiin, lähtevät tästä identiteetistä. * tarkoittaa mitä tahansa: *@example.com, me+*@example.com.';
 
   @override
-  String get settingsReplyPatternPrompt =>
-      'Osoite tai malli, jossa * tarkoittaa mitä tahansa.';
+  String get settingsReplyPatternPrompt => 'Osoite tai malli, jossa * tarkoittaa mitä tahansa.';
 
   @override
   String get settingsAddReplyPattern => 'Lisää osoite tai malli';
@@ -4267,8 +4048,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsIdentityNoAddressTitle => 'Ei osoitetta';
 
   @override
-  String get settingsIdentityNoAddressMessage =>
-      'Anna sähköpostiosoite, josta lähetetään.';
+  String get settingsIdentityNoAddressMessage => 'Anna sähköpostiosoite, josta lähetetään.';
 
   @override
   String get settingsIdentityInvalidAddressTitle => 'Virheellinen osoite';
@@ -4276,11 +4056,9 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String settingsIdentityInvalidAddress(String field, String address) {
     String _temp0 = intl.Intl.selectLogic(field, {
-      'replyTo':
-          'Vastausosoite ”$address” ei ole kelvollinen sähköpostiosoite.',
+      'replyTo': 'Vastausosoite ”$address” ei ole kelvollinen sähköpostiosoite.',
       'cc': 'Kopio-osoite ”$address” ei ole kelvollinen sähköpostiosoite.',
-      'bcc':
-          'Piilokopio-osoite ”$address” ei ole kelvollinen sähköpostiosoite.',
+      'bcc': 'Piilokopio-osoite ”$address” ei ole kelvollinen sähköpostiosoite.',
       'other': '”$address” ei ole kelvollinen sähköpostiosoite.',
     });
     return '$_temp0';
@@ -4301,12 +4079,10 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get settingsDeleteIdentityMessage =>
-      'Siitä jo lähetetyt viestit säilyvät ennallaan.';
+  String get settingsDeleteIdentityMessage => 'Siitä jo lähetetyt viestit säilyvät ennallaan.';
 
   @override
-  String get settingsLastIdentityFooter =>
-      'Tilillä on oltava vähintään yksi identiteetti.';
+  String get settingsLastIdentityFooter => 'Tilillä on oltava vähintään yksi identiteetti.';
 
   @override
   String get rulesTitle => 'Säännöt';
@@ -4378,8 +4154,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get rulesStatusUnavailable => 'Ei käytettävissä';
 
   @override
-  String get rulesStatusNoSieve =>
-      'Tämän tilin palvelin ei tarjoa Sieveä (ManageSieve tai JMAP).';
+  String get rulesStatusNoSieve => 'Tämän tilin palvelin ei tarjoa Sieveä (ManageSieve tai JMAP).';
 
   @override
   String rulesActionMove(String folder) {
@@ -4461,8 +4236,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get rulesRemovedAccount => 'Poistettu tili';
 
   @override
-  String get rulesAccountsFooter =>
-      'Kaikkia tilejä koskeva sääntö kattaa myös myöhemmin lisäämäsi tilit.';
+  String get rulesAccountsFooter => 'Kaikkia tilejä koskeva sääntö kattaa myös myöhemmin lisäämäsi tilit.';
 
   @override
   String get rulesActionsHeader => 'Silloin';
@@ -4524,8 +4298,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get rulesMoveAccountTitle => 'Minkä tilin kansioon?';
 
   @override
-  String get rulesMoveAccountMessage =>
-      'Muiden tilien posti siirretään niiden samannimiseen kansioon.';
+  String get rulesMoveAccountMessage => 'Muiden tilien posti siirretään niiden samannimiseen kansioon.';
 
   @override
   String get rulesAddTag => 'Lisää tunniste';
@@ -4564,8 +4337,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get rulesChooseActionTitle => 'Valitse toiminto';
 
   @override
-  String get rulesChooseActionMessage =>
-      'Lisää, mitä sääntö tekee ehtoa vastaaville viesteille.';
+  String get rulesChooseActionMessage => 'Lisää, mitä sääntö tekee ehtoa vastaaville viesteille.';
 
   @override
   String get rulesSaveError => 'Sääntöä ei voitu tallentaa';
@@ -4580,8 +4352,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get rulesNothingToApplyTitle => 'Ei mitään käytettävää';
 
   @override
-  String get rulesNothingToApplyMessage =>
-      'Anna säännölle ensin toimiva ehto ja toiminto.';
+  String get rulesNothingToApplyMessage => 'Anna säännölle ensin toimiva ehto ja toiminto.';
 
   @override
   String rulesApplyScopeTitle(String rule) {
@@ -4613,8 +4384,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String rulesApplyConfirmTitle(int count, String rule) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4628,8 +4398,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String rulesApplyConfirm(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4643,8 +4412,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String rulesApplied(int count, String rule) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4686,8 +4454,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String rulesMatchingCount(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4701,8 +4468,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String rulesMatchingCountMore(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4731,8 +4497,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String rulesPreviewMore(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4825,8 +4590,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get subscriptionsNoNewsletters => 'Ei uutiskirjeitä';
 
   @override
-  String get subscriptionsNoNewslettersDetail =>
-      'Uutiskirjeet ja muu joukkoposti näkyvät täällä, kun niitä saapuu.';
+  String get subscriptionsNoNewslettersDetail => 'Uutiskirjeet ja muu joukkoposti näkyvät täällä, kun niitä saapuu.';
 
   @override
   String get subscriptionsNothingNeverRead => 'Ei kokonaan lukemattomia';
@@ -4835,8 +4599,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get subscriptionsNothingRarelyRead => 'Ei harvoin luettuja';
 
   @override
-  String get subscriptionsNothingFilteredDetail =>
-      'Luet jotain kaikesta saamastasi.';
+  String get subscriptionsNothingFilteredDetail => 'Luet jotain kaikesta saamastasi.';
 
   @override
   String get subscriptionsNoDiscussions => 'Ei keskusteluja';
@@ -4913,8 +4676,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String subscriptionsArchiveInbox(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4930,8 +4692,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get subscriptionsCreateRule => 'Luo sääntö…';
 
   @override
-  String get subscriptionsCreateRuleDetail =>
-      'Siirrä tai arkistoi sen tuleva posti';
+  String get subscriptionsCreateRuleDetail => 'Siirrä tai arkistoi sen tuleva posti';
 
   @override
   String get subscriptionsTreatAsDiscussion => 'Käsittele keskusteluna';
@@ -4972,8 +4733,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String subscriptionsUnreadCount(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -5002,12 +4762,9 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String subscriptionsReadDetail(String percent, int read, int total) {
-    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(
-      localeName,
-    );
+    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String readString = readNumberFormat.format(read);
-    final intl.NumberFormat totalNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
 
     return '$percent · $readString/$totalString';
@@ -5018,12 +4775,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String subscriptionsFolders(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Kansiot',
-      one: 'Kansio',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Kansiot', one: 'Kansio');
     return '$_temp0';
   }
 
@@ -5069,8 +4821,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickFailedTitle =>
-      'Automaattinen peruutus ei onnistunut';
+  String get subscriptionsOneClickFailedTitle => 'Automaattinen peruutus ei onnistunut';
 
   @override
   String get subscriptionsSendUnsubscribeEmail => 'Lähetä peruutusviesti';
@@ -5094,8 +4845,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsWebInsecure =>
-      'Yhteys tähän sivustoon ei ole salattu.';
+  String get subscriptionsWebInsecure => 'Yhteys tähän sivustoon ei ole salattu.';
 
   @override
   String subscriptionsHomographWarning(String site) {
@@ -5132,8 +4882,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickNotAllowed =>
-      'Peruutuslinkki ei ole suojattu internetosoite.';
+  String get subscriptionsOneClickNotAllowed => 'Peruutuslinkki ei ole suojattu internetosoite.';
 
   @override
   String subscriptionsOneClickTimeout(String site) {
@@ -5156,8 +4905,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoAccountToSend =>
-      'Ei tiliä, josta peruutusviestin voisi lähettää.';
+  String get subscriptionsNoAccountToSend => 'Ei tiliä, josta peruutusviestin voisi lähettää.';
 
   @override
   String subscriptionsMailConfirm(String to, String from, String subject) {
@@ -5228,8 +4976,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get rulesDescribeAccount => 'Tili';
 
   @override
-  String get rulesDescribeHint =>
-      'Siirrä Harbor Coffeen kuitit kansioon Receipts';
+  String get rulesDescribeHint => 'Siirrä Harbor Coffeen kuitit kansioon Receipts';
 
   @override
   String rulesDescribeSentNote(String account) {
@@ -5268,8 +5015,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get rulesDescribeScopeChoose =>
-      'Valitset suorituspaikan sääntöeditorissa.';
+  String get rulesDescribeScopeChoose => 'Valitset suorituspaikan sääntöeditorissa.';
 
   @override
   String rulesDescribeCantDoHeader(int count) {
@@ -5288,8 +5034,7 @@ class AppLocalizationsFi extends AppLocalizations {
       count,
       locale: localeName,
       other: 'Ne on jätetty pois säännöstä, eikä niiden tilalle ole laitettu mitään.',
-      one:
-          'Se on jätetty pois säännöstä, eikä sen tilalle ole laitettu mitään.',
+      one: 'Se on jätetty pois säännöstä, eikä sen tilalle ole laitettu mitään.',
     );
     return '$_temp0';
   }
@@ -5319,8 +5064,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get rulesDescribeReasonOther => 'Säännöt eivät voi tehdä tätä.';
 
   @override
-  String get rulesDescribeSuggestion =>
-      'Loupe voi sen sijaan etsiä näitä sanoja:';
+  String get rulesDescribeSuggestion => 'Loupe voi sen sijaan etsiä näitä sanoja:';
 
   @override
   String get rulesDescribeQuestions => 'Loupen täytyy tietää';
@@ -5329,25 +5073,20 @@ class AppLocalizationsFi extends AppLocalizations {
   String get rulesDescribeDryRunHeader => 'Koeajo';
 
   @override
-  String get rulesDescribeDryRunWorking =>
-      'Tarkistetaan tämän puhelimen postia…';
+  String get rulesDescribeDryRunWorking => 'Tarkistetaan tämän puhelimen postia…';
 
   @override
   String rulesDescribeDryRunCount(int total, int matched, String account) {
-    final intl.NumberFormat totalNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
-    final intl.NumberFormat matchedNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String matchedString = matchedNumberFormat.format(matched);
 
     String _temp0 = intl.Intl.pluralLogic(
       total,
       locale: localeName,
-      other:
-          'Tilin $account $totalString ladatusta viestistä $matchedString täsmäisi',
-      one:
-          'Tilin $account $totalString ladatusta viestistä $matchedString täsmäisi',
+      other: 'Tilin $account $totalString ladatusta viestistä $matchedString täsmäisi',
+      one: 'Tilin $account $totalString ladatusta viestistä $matchedString täsmäisi',
     );
     return '$_temp0';
   }
@@ -5364,8 +5103,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String rulesDescribeDryRunCapped(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -5379,30 +5117,26 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String rulesDescribeDryRunUnchecked(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          '$countString viestiä ei voitu tarkistaa lataamatta niiden tekstiä.',
+      other: '$countString viestiä ei voitu tarkistaa lataamatta niiden tekstiä.',
       one: 'Yhtä viestiä ei voitu tarkistaa lataamatta sen tekstiä.',
     );
     return '$_temp0';
   }
 
   @override
-  String get rulesDescribeDryRunFailed =>
-      'Loupe ei voinut tarkistaa tämän puhelimen postia.';
+  String get rulesDescribeDryRunFailed => 'Loupe ei voinut tarkistaa tämän puhelimen postia.';
 
   @override
   String get rulesDescribeOpenEditor => 'Avaa sääntöeditorissa';
 
   @override
-  String get rulesDescribeDemoNote =>
-      'Ehdottanut sisäänrakennettu demo, ei malli.';
+  String get rulesDescribeDemoNote => 'Ehdottanut sisäänrakennettu demo, ei malli.';
 
   @override
   String rulesDescribeProviderNote(String provider) {
@@ -5417,7 +5151,8 @@ class AppLocalizationsFi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Kuvailit nämä, mutta Loupe ei voi tehdä niitä, joten ne jätettiin pois eikä niiden tilalle laitettu mitään.',
+      other:
+          'Kuvailit nämä, mutta Loupe ei voi tehdä niitä, joten ne jätettiin pois eikä niiden tilalle laitettu mitään.',
       one: 'Kuvailit tämän, mutta Loupe ei voi tehdä sitä, joten se jätettiin pois eikä sen tilalle laitettu mitään.',
     );
     return '$_temp0';
@@ -5427,8 +5162,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get appLiveGateTitle => 'Tilejäsi ei voitu avata';
 
   @override
-  String get appLiveGateUnavailableBuild =>
-      'Oikeat tilit eivät ole vielä käytettävissä tässä versiossa.';
+  String get appLiveGateUnavailableBuild => 'Oikeat tilit eivät ole vielä käytettävissä tässä versiossa.';
 
   @override
   String get appLiveGateKeyUnreadable =>
@@ -5476,8 +5210,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get attachmentsShareMenu => 'Jaa…';
 
   @override
-  String get attachmentsDownloadError =>
-      'Liitettä ei voitu ladata. Tarkista yhteys ja yritä uudelleen.';
+  String get attachmentsDownloadError => 'Liitettä ei voitu ladata. Tarkista yhteys ja yritä uudelleen.';
 
   @override
   String get attachmentsShareError => 'Liitettä ei voitu jakaa.';
@@ -5488,8 +5221,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get attachmentsOpenInError =>
-      'Liitettä ei voitu avata toisessa sovelluksessa.';
+  String get attachmentsOpenInError => 'Liitettä ei voitu avata toisessa sovelluksessa.';
 
   @override
   String attachmentsSaved(String name) {
@@ -5507,12 +5239,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String attachmentsPageCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count sivua',
-      one: '$count sivu',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count sivua', one: '$count sivu');
     return '$_temp0';
   }
 
@@ -5522,8 +5249,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get attachmentsLargeDownload =>
-      'Tämä liite on suuri. Lataa se nyt tai myöhemmin Wi-Fi-yhteydellä.';
+  String get attachmentsLargeDownload => 'Tämä liite on suuri. Lataa se nyt tai myöhemmin Wi-Fi-yhteydellä.';
 
   @override
   String get attachmentsDownload => 'Lataa';
@@ -5545,8 +5271,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get attachmentsPdfUnavailable =>
-      'Tätä PDF-tiedostoa ei voi näyttää tässä (se voi olla suojattu salasanalla).';
+  String get attachmentsPdfUnavailable => 'Tätä PDF-tiedostoa ei voi näyttää tässä (se voi olla suojattu salasanalla).';
 
   @override
   String attachmentsPageOf(int page, int count) {
@@ -5573,12 +5298,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String attachmentsTextInfo(String charset, int count, String lines) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$lines riviä',
-      one: '$lines rivi',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$lines riviä', one: '$lines rivi');
     return '$charset · $_temp0';
   }
 
@@ -5589,8 +5309,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get attachmentsCopied => 'Kopioitu';
 
   @override
-  String get attachmentsImageUnavailable =>
-      'Tätä kuvaa ei voi näyttää tässä. Kokeile toimintoa ”Avaa sovelluksessa…”.';
+  String get attachmentsImageUnavailable => 'Tätä kuvaa ei voi näyttää tässä. Kokeile toimintoa ”Avaa sovelluksessa…”.';
 
   @override
   String get attachmentsEmlNoSubject => '(Ei aihetta)';
@@ -5612,12 +5331,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String attachmentsEmlAttachments(int count, String names) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Liitteet: $names',
-      one: 'Liite: $names',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Liitteet: $names', one: 'Liite: $names');
     return '$_temp0';
   }
 
@@ -5822,8 +5536,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get calendarCancelled => 'Peruttu';
 
   @override
-  String get calendarCancelledByOrganizer =>
-      'Järjestäjä perui tämän tapahtuman.';
+  String get calendarCancelledByOrganizer => 'Järjestäjä perui tämän tapahtuman.';
 
   @override
   String get calendarCancelledLater => 'Tämä tapahtuma peruttiin myöhemmin.';
@@ -5832,8 +5545,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get calendarOutdated => 'Vanhentunut';
 
   @override
-  String get calendarOutdatedDetail =>
-      'Tätä kutsua on päivitetty myöhemmin; uudempi on voimassa.';
+  String get calendarOutdatedDetail => 'Tätä kutsua on päivitetty myöhemmin; uudempi on voimassa.';
 
   @override
   String calendarLocationRemoved(String location) {
@@ -5841,8 +5553,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get calendarLocationRemovedNone =>
-      'Paikka poistettu (ei aiempaa paikkaa)';
+  String get calendarLocationRemovedNone => 'Paikka poistettu (ei aiempaa paikkaa)';
 
   @override
   String calendarLocationChanged(String location) {
@@ -5889,34 +5600,19 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String calendarAcceptedCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count hyväksyi',
-      one: '$count hyväksyi',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count hyväksyi', one: '$count hyväksyi');
     return '$_temp0';
   }
 
   @override
   String calendarMaybeCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count ehkä',
-      one: '$count ehkä',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count ehkä', one: '$count ehkä');
     return '$_temp0';
   }
 
   @override
   String calendarDeclinedCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count hylkäsi',
-      one: '$count hylkäsi',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count hylkäsi', one: '$count hylkäsi');
     return '$_temp0';
   }
 
@@ -5978,8 +5674,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get calendarNoCalendarApp =>
-      'Ei kalenterisovellusta, johon tapahtuman voisi lisätä.';
+  String get calendarNoCalendarApp => 'Ei kalenterisovellusta, johon tapahtuman voisi lisätä.';
 
   @override
   String get calendarCantOpenCalendar => 'Kalenteria ei voitu avata.';
@@ -6015,29 +5710,20 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get calendarNoOrganizer =>
-      'Tässä kutsussa ei ole järjestäjää, jolle vastata.';
+  String get calendarNoOrganizer => 'Tässä kutsussa ei ole järjestäjää, jolle vastata.';
 
   @override
   String get calendarNoAccount => 'Ei tiliä, josta vastata.';
 
   @override
   String calendarReplySending(String answer, String name) {
-    String _temp0 = intl.Intl.selectLogic(answer, {
-      'accepted': 'Hyväksytty',
-      'tentative': 'Ehkä',
-      'other': 'Hylätty',
-    });
+    String _temp0 = intl.Intl.selectLogic(answer, {'accepted': 'Hyväksytty', 'tentative': 'Ehkä', 'other': 'Hylätty'});
     return '$_temp0 · lähetetään vastausta henkilölle $name…';
   }
 
   @override
   String calendarReplySent(String answer) {
-    String _temp0 = intl.Intl.selectLogic(answer, {
-      'accepted': 'Hyväksytty',
-      'tentative': 'Ehkä',
-      'other': 'Hylätty',
-    });
+    String _temp0 = intl.Intl.selectLogic(answer, {'accepted': 'Hyväksytty', 'tentative': 'Ehkä', 'other': 'Hylätty'});
     return '$_temp0 · vastaus lähetetty';
   }
 
@@ -6117,8 +5803,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get keyboardKeyBackspace => 'Askelpalautin';
 
   @override
-  String get mailingListsMuted =>
-      'Ketju mykistetty. Sen uudet viestit saapuvat luettuina.';
+  String get mailingListsMuted => 'Ketju mykistetty. Sen uudet viestit saapuvat luettuina.';
 
   @override
   String get mailingListsUnmuted => 'Ketjun mykistys poistettu.';
@@ -6175,12 +5860,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String mailingListsReplyCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count vastausta',
-      one: '$count vastaus',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count vastausta', one: '$count vastaus');
     return '$_temp0';
   }
 
@@ -6194,8 +5874,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get mailingListsTechnicalTitle => 'Tekniset listat';
 
   @override
-  String get mailingListsTechnicalEmpty =>
-      'Postituslistat näkyvät täällä, kun niiden postia saapuu.';
+  String get mailingListsTechnicalEmpty => 'Postituslistat näkyvät täällä, kun niiden postia saapuu.';
 
   @override
   String get mailingListsTechnicalFooter =>
@@ -6429,8 +6108,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get searchSettingsTitle => 'Smart Mailboxit';
 
   @override
-  String get searchSettingsLocalFooter =>
-      'Smart Mailboxit pysyvät tällä laitteella.';
+  String get searchSettingsLocalFooter => 'Smart Mailboxit pysyvät tällä laitteella.';
 
   @override
   String searchSettingsServerFooter(String account) {
@@ -6447,8 +6125,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get searchGmailCantKeep => 'Gmail ei voi säilyttää Smart Mailboxeja';
 
   @override
-  String get searchKeepOnDevice =>
-      'Säilytä Smart Mailboxit vain tällä laitteella';
+  String get searchKeepOnDevice => 'Säilytä Smart Mailboxit vain tällä laitteella';
 
   @override
   String get searchOnTheServer => 'Palvelimella';
@@ -6497,12 +6174,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String sharedBytes(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count tavua',
-      one: '$count tavu',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count tavua', one: '$count tavu');
     return '$_temp0';
   }
 
@@ -6720,8 +6392,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get sharedMoveOneAccount =>
-      'Valitse siirrettävät viestit yhdeltä tililtä.';
+  String get sharedMoveOneAccount => 'Valitse siirrettävät viestit yhdeltä tililtä.';
 
   @override
   String get sharedSnoozeTitle => 'Torkuta';
@@ -6893,12 +6564,10 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get documentsStatusNotDownloaded =>
-      'Ei ladattu: avaa se, niin voit lukea sitä ja hakea siitä.';
+  String get documentsStatusNotDownloaded => 'Ei ladattu: avaa se, niin voit lukea sitä ja hakea siitä.';
 
   @override
-  String get documentsStatusEncrypted =>
-      'Salasanalla suojattu: Loupe ei voi lukea sitä.';
+  String get documentsStatusEncrypted => 'Salasanalla suojattu: Loupe ei voi lukea sitä.';
 
   @override
   String get documentsStatusNoText =>
@@ -6908,31 +6577,22 @@ class AppLocalizationsFi extends AppLocalizations {
   String get documentsStatusEmpty => 'Tässä tiedostossa ei ole tekstiä.';
 
   @override
-  String get documentsStatusUnsupported =>
-      'Loupe ei vielä osaa lukea tällaista asiakirjaa.';
+  String get documentsStatusUnsupported => 'Loupe ei vielä osaa lukea tällaista asiakirjaa.';
 
   @override
-  String get documentsStatusTooLarge =>
-      'Liian suuri luettavaksi tässä puhelimessa.';
+  String get documentsStatusTooLarge => 'Liian suuri luettavaksi tässä puhelimessa.';
 
   @override
-  String get documentsStatusDamaged =>
-      'Ei voitu lukea: tiedosto voi olla vioittunut.';
+  String get documentsStatusDamaged => 'Ei voitu lukea: tiedosto voi olla vioittunut.';
 
   @override
   String documentsStatusPartial(int read, int total) {
-    String _temp0 = intl.Intl.pluralLogic(
-      total,
-      locale: localeName,
-      other: '$total sivua',
-      one: '$total sivu',
-    );
+    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$total sivua', one: '$total sivu');
     return 'Luettu $read/$_temp0; muista sivuista ei haeta.';
   }
 
   @override
-  String get documentsStatusPartialText =>
-      'Vain alku luettiin; loppuosasta ei haeta.';
+  String get documentsStatusPartialText => 'Vain alku luettiin; loppuosasta ei haeta.';
 
   @override
   String get documentsOpenDocument => 'Avaa asiakirja';
@@ -6980,8 +6640,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get documentsNoFactChanges =>
-      'Avaintiedot ovat samat; muu teksti eroaa.';
+  String get documentsNoFactChanges => 'Avaintiedot ovat samat; muu teksti eroaa.';
 
   @override
   String get documentsKeyFacts => 'Avaintiedot';
@@ -6996,8 +6655,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get documentsKeyFactsFailed => 'Avaintietoja ei löytynyt.';
 
   @override
-  String get documentsKeyFactsDemoNote =>
-      'Tehnyt sisäänrakennettu demo, ei malli.';
+  String get documentsKeyFactsDemoNote => 'Tehnyt sisäänrakennettu demo, ei malli.';
 
   @override
   String documentsKeyFactsMadeBy(String provider) {
@@ -7005,16 +6663,13 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get documentsKeyFactsHint =>
-      'Napauta tietoa, niin näet, missä kohtaa asiakirjaa se mainitaan.';
+  String get documentsKeyFactsHint => 'Napauta tietoa, niin näet, missä kohtaa asiakirjaa se mainitaan.';
 
   @override
-  String get documentsKeyFactsNone =>
-      'Loupella ei vielä ole avaintietoja tällaiselle asiakirjalle.';
+  String get documentsKeyFactsNone => 'Loupella ei vielä ole avaintietoja tällaiselle asiakirjalle.';
 
   @override
-  String get documentsKeyFactsPartial =>
-      'Vain ensimmäiset sivut luettiin; myöhempien sivujen tietoja ei tunneta.';
+  String get documentsKeyFactsPartial => 'Vain ensimmäiset sivut luettiin; myöhempien sivujen tietoja ei tunneta.';
 
   @override
   String get documentsKeyFactsNotStated => 'Ei mainittu';
@@ -7064,8 +6719,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get documentsFieldBrokerFee => 'Välityspalkkio';
 
   @override
-  String get documentsFieldEarlyRepaymentCharges =>
-      'Ennenaikaisen takaisinmaksun kulut';
+  String get documentsFieldEarlyRepaymentCharges => 'Ennenaikaisen takaisinmaksun kulut';
 
   @override
   String get documentsFieldTotalAmountPayable => 'Maksettava kokonaismäärä';
@@ -7122,8 +6776,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get accountSetupAddressTitle => 'Lisää sähköpostitili';
 
   @override
-  String get accountSetupAddressText =>
-      'Loupe löytää asetukset useimmille palveluntarjoajille.';
+  String get accountSetupAddressText => 'Loupe löytää asetukset useimmille palveluntarjoajille.';
 
   @override
   String get accountSetupNameHint => 'Nimesi';
@@ -7152,8 +6805,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get accountSetupCheckServers =>
-      'Tarkista palvelinten nimet ja portit.';
+  String get accountSetupCheckServers => 'Tarkista palvelinten nimet ja portit.';
 
   @override
   String get accountSetupEnterPassword => 'Anna salasanasi.';
@@ -7210,15 +6862,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get accountSetupUseAppPassword => 'Käytä sovellussalasanaa';
 
   @override
-  String get accountSetupUseAppPasswordInstead =>
-      'Käytä sen sijaan sovellussalasanaa';
+  String get accountSetupUseAppPasswordInstead => 'Käytä sen sijaan sovellussalasanaa';
 
   @override
   String get accountSetupUseDifferentAddress => 'Käytä toista osoitetta';
 
   @override
-  String get accountSetupHowToCreateAppPassword =>
-      'Näin luot sovellussalasanan';
+  String get accountSetupHowToCreateAppPassword => 'Näin luot sovellussalasanan';
 
   @override
   String get accountSetupHowToCreateOne => 'Näin luot sellaisen';
@@ -7232,8 +6882,7 @@ class AppLocalizationsFi extends AppLocalizations {
       '”Kirjaudu palvelulla Google” ei ole vielä käytettävissä tässä versiossa. Voit sen sijaan yhdistää sovellussalasanalla (se vaatii Google-tililtäsi 2-vaiheisen vahvistuksen).';
 
   @override
-  String get accountSetupGmailAppPasswordNote =>
-      'Luo sovellussalasana Google-tililläsi ja liitä se alle.';
+  String get accountSetupGmailAppPasswordNote => 'Luo sovellussalasana Google-tililläsi ja liitä se alle.';
 
   @override
   String get accountSetupMicrosoftNote =>
@@ -7244,20 +6893,17 @@ class AppLocalizationsFi extends AppLocalizations {
       'Microsoft-kirjautuminen tulee myöhemmässä versiossa. Outlook-, Hotmail- ja Microsoft 365 -tilit tarvitsevat sitä: ne eivät enää hyväksy salasanoja sähköpostisovelluksista.';
 
   @override
-  String get accountSetupICloudNote =>
-      'iCloud Mail vaatii appikohtaisen salasanan, ei Apple-tilisi salasanaa.';
+  String get accountSetupICloudNote => 'iCloud Mail vaatii appikohtaisen salasanan, ei Apple-tilisi salasanaa.';
 
   @override
-  String get accountSetupYahooNote =>
-      'Yahoo Mail vaatii sovellussalasanan, ei tilisi salasanaa.';
+  String get accountSetupYahooNote => 'Yahoo Mail vaatii sovellussalasanan, ei tilisi salasanaa.';
 
   @override
   String get accountSetupFastmailJmapNote =>
       'Loupe yhdistää Fastmailiin JMAP:n kautta API-tunnuksella: Settings › Privacy & Security › Manage API tokens, JMAP-käyttöön, sähköpostin ja lähettämisen oikeuksilla.';
 
   @override
-  String get accountSetupFastmailNote =>
-      'Fastmail vaatii sähköpostisovelluksille sovellussalasanan.';
+  String get accountSetupFastmailNote => 'Fastmail vaatii sähköpostisovelluksille sovellussalasanan.';
 
   @override
   String get accountSetupServerSettings => 'Palvelimen asetukset';
@@ -7335,12 +6981,10 @@ class AppLocalizationsFi extends AppLocalizations {
       'API-tunnus hylättiin. Luo Fastmailissa JMAP-käyttöön API-tunnus, jolla on pääsy sähköpostiin, ja liitä se.';
 
   @override
-  String get accountSetupAppPasswordRejected =>
-      'Salasana hylättiin. Käytä sovellussalasanaa, älä tilisi salasanaa.';
+  String get accountSetupAppPasswordRejected => 'Salasana hylättiin. Käytä sovellussalasanaa, älä tilisi salasanaa.';
 
   @override
-  String get accountSetupPasswordRejected =>
-      'Salasana hylättiin. Tarkista se ja yritä uudelleen.';
+  String get accountSetupPasswordRejected => 'Salasana hylättiin. Tarkista se ja yritä uudelleen.';
 
   @override
   String get accountSetupServerUnreachable =>
@@ -7418,11 +7062,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get accountSetupSigningIn => 'Kirjaudutaan…';
 
   @override
-  String accountSetupSignInExpired(
-    String provider,
-    String email,
-    String account,
-  ) {
+  String accountSetupSignInExpired(String provider, String email, String account) {
     return '$provider ei enää hyväksy Loupen kirjautumista osoitteelle $email, joten tiliä $account ei synkronoida. Kirjaudu uudelleen, niin saat sen postin.';
   }
 
@@ -7430,8 +7070,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get accountImportTitle => 'Tuo Thunderbirdistä';
 
   @override
-  String get accountImportPointCamera =>
-      'Osoita kameralla Thunderbirdin näyttämää QR-koodia.';
+  String get accountImportPointCamera => 'Osoita kameralla Thunderbirdin näyttämää QR-koodia.';
 
   @override
   String accountImportProgress(int scanned, int total) {
@@ -7489,8 +7128,7 @@ class AppLocalizationsFi extends AppLocalizations {
       'Tämä koodi on uudesta viennistä, joten aiemmin skannatut koodit jätettiin sivuun.';
 
   @override
-  String get accountImportNotThunderbird =>
-      'Tämä ei ole Thunderbirdin tilikoodi.';
+  String get accountImportNotThunderbird => 'Tämä ei ole Thunderbirdin tilikoodi.';
 
   @override
   String get accountImportNewerVersion =>
@@ -7500,8 +7138,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get accountImportDamaged => 'Tätä Thunderbird-koodia ei voitu lukea.';
 
   @override
-  String get accountImportTooLarge =>
-      'Tämä koodi on liian suuri ollakseen Thunderbirdin vienti.';
+  String get accountImportTooLarge => 'Tämä koodi on liian suuri ollakseen Thunderbirdin vienti.';
 
   @override
   String get accountImportCouldNotOpenSettings => 'Asetuksia ei voitu avata.';
@@ -7517,15 +7154,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get accountImportNoCameraTitle => 'Ei kameraa';
 
   @override
-  String get accountImportNoCameraText =>
-      'Loupe ei voi käyttää kameraa tässä. Liitä koodin teksti sen sijaan.';
+  String get accountImportNoCameraText => 'Loupe ei voi käyttää kameraa tässä. Liitä koodin teksti sen sijaan.';
 
   @override
   String get accountImportCameraFailedTitle => 'Kamera ei käynnistynyt';
 
   @override
-  String get accountImportCameraFailedText =>
-      'Yritä uudelleen tai liitä koodin teksti sen sijaan.';
+  String get accountImportCameraFailedText => 'Yritä uudelleen tai liitä koodin teksti sen sijaan.';
 
   @override
   String get accountImportOpenSettings => 'Avaa asetukset';
@@ -7543,8 +7178,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get accountImportNoneReadable =>
-      'Mitään näiden koodien tileistä ei voitu lukea.';
+  String get accountImportNoneReadable => 'Mitään näiden koodien tileistä ei voitu lukea.';
 
   @override
   String get accountImportChoose => 'Valitse Loupeen lisättävät tilit.';
@@ -7554,10 +7188,8 @@ class AppLocalizationsFi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          'Koodeja $codes (yhteensä $total) ei skannattu, joten niiden tilejä ei näytetä.',
-      one:
-          'Koodia $codes (yhteensä $total) ei skannattu, joten sen tilejä ei näytetä.',
+      other: 'Koodeja $codes (yhteensä $total) ei skannattu, joten niiden tilejä ei näytetä.',
+      one: 'Koodia $codes (yhteensä $total) ei skannattu, joten sen tilejä ei näytetä.',
     );
     return '$_temp0';
   }
@@ -7575,10 +7207,8 @@ class AppLocalizationsFi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          '$count koodeissa olevaa tiliä ei voitu lukea. Ne saattavat käyttää uudemman Thunderbirdin asetuksia.',
-      one:
-          '$count koodeissa olevaa tiliä ei voitu lukea. Se saattaa käyttää uudemman Thunderbirdin asetuksia.',
+      other: '$count koodeissa olevaa tiliä ei voitu lukea. Ne saattavat käyttää uudemman Thunderbirdin asetuksia.',
+      one: '$count koodeissa olevaa tiliä ei voitu lukea. Se saattaa käyttää uudemman Thunderbirdin asetuksia.',
     );
     return '$_temp0';
   }
@@ -7587,8 +7217,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get accountImportScanAgain => 'Skannaa uudelleen';
 
   @override
-  String get accountImportAlreadyAdded =>
-      'Tällä osoitteella on jo tili Loupessa.';
+  String get accountImportAlreadyAdded => 'Tällä osoitteella on jo tili Loupessa.';
 
   @override
   String accountImportSignsInWith(String provider) {
@@ -7596,8 +7225,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get accountImportGmailAppPassword =>
-      'Lisää tili sovellussalasanalla (se vaatii 2-vaiheisen vahvistuksen).';
+  String get accountImportGmailAppPassword => 'Lisää tili sovellussalasanalla (se vaatii 2-vaiheisen vahvistuksen).';
 
   @override
   String get accountImportGmailNoSignIn =>
@@ -7608,8 +7236,7 @@ class AppLocalizationsFi extends AppLocalizations {
       'Thunderbird kirjautuu tälle tilille selaimessa. Loupe ei osaa sitä vielä: käytä sovellussalasanaa, jos palveluntarjoajasi tarjoaa sellaisen.';
 
   @override
-  String get accountImportUnencrypted =>
-      'Yhdistää ilman salausta. Käytä tätä vain omassa verkossasi.';
+  String get accountImportUnencrypted => 'Yhdistää ilman salausta. Käytä tätä vain omassa verkossasi.';
 
   @override
   String get accountImportEnterAgain => 'Anna se uudelleen';
@@ -7638,24 +7265,19 @@ class AppLocalizationsFi extends AppLocalizations {
   String get accountImportPasteTitle => 'Liitä vientiteksti';
 
   @override
-  String get accountImportPasteText =>
-      'Liitä Thunderbirdin vientikoodin teksti, yksi koodi riviä kohden.';
+  String get accountImportPasteText => 'Liitä Thunderbirdin vientikoodin teksti, yksi koodi riviä kohden.';
 
   @override
-  String get accountImportPop3 =>
-      'POP3-tilejä ei tueta. Loupe pitää postin palvelimella IMAP:n avulla.';
+  String get accountImportPop3 => 'POP3-tilejä ei tueta. Loupe pitää postin palvelimella IMAP:n avulla.';
 
   @override
-  String get accountImportKerberos =>
-      'Tämä tili kirjautuu Kerberoksella, jota Loupe ei tue.';
+  String get accountImportKerberos => 'Tämä tili kirjautuu Kerberoksella, jota Loupe ei tue.';
 
   @override
-  String get accountImportNtlm =>
-      'Tämä tili kirjautuu NTLM:llä, jota Loupe ei tue.';
+  String get accountImportNtlm => 'Tämä tili kirjautuu NTLM:llä, jota Loupe ei tue.';
 
   @override
-  String get accountImportClientCertificate =>
-      'Tämä tili kirjautuu asiakasvarmenteella, jota Loupe ei vielä tue.';
+  String get accountImportClientCertificate => 'Tämä tili kirjautuu asiakasvarmenteella, jota Loupe ei vielä tue.';
 
   @override
   String get accountImportMicrosoftSignIn =>
@@ -7671,12 +7293,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get accountImportEnterApiToken => 'Anna API-tunnus.';
 
   @override
-  String get accountImportStorageFailed =>
-      'Loupe ei voinut avata tilien tallennustilaa. Yritä myöhemmin uudelleen.';
+  String get accountImportStorageFailed => 'Loupe ei voinut avata tilien tallennustilaa. Yritä myöhemmin uudelleen.';
 
   @override
-  String get accountImportFailed =>
-      'Tiliä ei voitu lisätä. Yritä uudelleen tai lisää se käsin.';
+  String get accountImportFailed => 'Tiliä ei voitu lisätä. Yritä uudelleen tai lisää se käsin.';
 
   @override
   String get composeReplyCheckTitle => 'Vastauksen tarkistus';
@@ -7968,8 +7588,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get composeDraftNotFound => 'Luonnosta ei löytynyt.';
 
   @override
-  String get composeAttachmentsLost =>
-      'Liitteitä ei voitu palauttaa. Lisää ne uudelleen.';
+  String get composeAttachmentsLost => 'Liitteitä ei voitu palauttaa. Lisää ne uudelleen.';
 
   @override
   String composeSomeAttachmentsFailed(String error) {
@@ -7996,12 +7615,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get composeNoSubjectTitle => 'Ei aihetta';
 
   @override
-  String get composeNoSubjectText =>
-      'Tässä viestissä ei ole aihetta. Lähetetäänkö silti?';
+  String get composeNoSubjectText => 'Tässä viestissä ei ole aihetta. Lähetetäänkö silti?';
 
   @override
-  String get composeSentBeforeChanges =>
-      'Se lähetettiin ennen muutoksiasi, jotka on tallennettu luonnoksiin.';
+  String get composeSentBeforeChanges => 'Se lähetettiin ennen muutoksiasi, jotka on tallennettu luonnoksiin.';
 
   @override
   String composeScheduled(String time) {
@@ -8125,26 +7742,18 @@ class AppLocalizationsFi extends AppLocalizations {
   String composeRecoveryUntitled(String recipients, String name) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Viestiä ei lähetetty, kun Loupe suljettiin.',
-      'one':
-          'Viestiä vastaanottajalle $name ei lähetetty, kun Loupe suljettiin.',
-      'other':
-          'Viestiä vastaanottajalle $name ja muille ei lähetetty, kun Loupe suljettiin.',
+      'one': 'Viestiä vastaanottajalle $name ei lähetetty, kun Loupe suljettiin.',
+      'other': 'Viestiä vastaanottajalle $name ja muille ei lähetetty, kun Loupe suljettiin.',
     });
     return '$_temp0';
   }
 
   @override
-  String composeRecoveryWithSubject(
-    String recipients,
-    String subject,
-    String name,
-  ) {
+  String composeRecoveryWithSubject(String recipients, String subject, String name) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Viestiä ”$subject” ei lähetetty, kun Loupe suljettiin.',
-      'one':
-          'Viestiä ”$subject” vastaanottajalle $name ei lähetetty, kun Loupe suljettiin.',
-      'other':
-          'Viestiä ”$subject” vastaanottajalle $name ja muille ei lähetetty, kun Loupe suljettiin.',
+      'one': 'Viestiä ”$subject” vastaanottajalle $name ei lähetetty, kun Loupe suljettiin.',
+      'other': 'Viestiä ”$subject” vastaanottajalle $name ja muille ei lähetetty, kun Loupe suljettiin.',
     });
     return '$_temp0';
   }
@@ -8192,8 +7801,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get outboxEmptyTitle => 'Ei lähetettävää';
 
   @override
-  String get outboxEmptyText =>
-      'Myöhemmin lähetettävät viestit odottavat täällä, kunnes on aika.';
+  String get outboxEmptyText => 'Myöhemmin lähetettävät viestit odottavat täällä, kunnes on aika.';
 
   @override
   String get outboxSendNow => 'Lähetä nyt';
@@ -8240,8 +7848,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get outboxBeingSent => 'Tätä viestiä lähetetään parhaillaan.';
 
   @override
-  String get outboxActionFailed =>
-      'Se ei onnistunut. Viesti on yhä Lähtevät-kansiossa.';
+  String get outboxActionFailed => 'Se ei onnistunut. Viesti on yhä Lähtevät-kansiossa.';
 
   @override
   String get notificationsBadgeInboxes => 'Lukemattomat Saapuneet-kansioissa';
@@ -8253,8 +7860,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get notificationsVipChannel => 'VIP';
 
   @override
-  String get notificationsVipChannelDescription =>
-      'Uusi posti VIP-henkilöiltäsi millä tahansa tilillä';
+  String get notificationsVipChannelDescription => 'Uusi posti VIP-henkilöiltäsi millä tahansa tilillä';
 
   @override
   String notificationsAccountChannelDescription(String email) {
@@ -8295,8 +7901,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get platformInstantChannel => 'Välitön toimitus';
 
   @override
-  String get platformInstantChannelDescription =>
-      'Näkyy, kun Loupe odottaa uutta postia Saapuneet-kansioihisi';
+  String get platformInstantChannelDescription => 'Näkyy, kun Loupe odottaa uutta postia Saapuneet-kansioihisi';
 
   @override
   String get platformInstantTitle => 'Odotetaan uutta postia';
@@ -8305,34 +7910,28 @@ class AppLocalizationsFi extends AppLocalizations {
   String get platformInstantText => 'Välitön toimitus on päällä';
 
   @override
-  String get platformErrorBox =>
-      'Tämän näyttämisessä tapahtui virhe. Palaa takaisin ja yritä uudelleen.';
+  String get platformErrorBox => 'Tämän näyttämisessä tapahtui virhe. Palaa takaisin ja yritä uudelleen.';
 
   @override
-  String get welcomeTagline =>
-      'Sähköposti, joka on pinnalta yksinkertainen\nja pinnan alla tehokas.';
+  String get welcomeTagline => 'Sähköposti, joka on pinnalta yksinkertainen\nja pinnan alla tehokas.';
 
   @override
-  String get welcomeAccountsTitle =>
-      'Kaikki tilit, yksi rauhallinen postilaatikko';
+  String get welcomeAccountsTitle => 'Kaikki tilit, yksi rauhallinen postilaatikko';
 
   @override
-  String get welcomeAccountsText =>
-      'Gmail, Outlook, iCloud, Fastmail ja mikä tahansa IMAP- tai JMAP-palvelin.';
+  String get welcomeAccountsText => 'Gmail, Outlook, iCloud, Fastmail ja mikä tahansa IMAP- tai JMAP-palvelin.';
 
   @override
   String get welcomeSearchTitle => 'Haku, joka löytää';
 
   @override
-  String get welcomeSearchText =>
-      'Välittömät tulokset puhelimesta, sitten palvelimelta.';
+  String get welcomeSearchText => 'Välittömät tulokset puhelimesta, sitten palvelimelta.';
 
   @override
   String get welcomePrivacyTitle => 'Suunniteltu yksityiseksi';
 
   @override
-  String get welcomePrivacyText =>
-      'Ei seurantaa. Etäkuvat pysyvät estettyinä, kunnes toisin päätät.';
+  String get welcomePrivacyText => 'Ei seurantaa. Etäkuvat pysyvät estettyinä, kunnes toisin päätät.';
 
   @override
   String get welcomeAddAccount => 'Lisää tili';
@@ -8386,12 +7985,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsAiDemo => 'Sisäänrakennettu demo';
 
   @override
-  String get settingsAiDemoDetail =>
-      'Tässä puhelimessa. Ei mallia: muutama sääntö ominaisuuksien kokeilemiseen.';
+  String get settingsAiDemoDetail => 'Tässä puhelimessa. Ei mallia: muutama sääntö ominaisuuksien kokeilemiseen.';
 
   @override
-  String get settingsAiAnthropicDetail =>
-      'Pilvi: Claude omalla API-avaimellasi.';
+  String get settingsAiAnthropicDetail => 'Pilvi: Claude omalla API-avaimellasi.';
 
   @override
   String get settingsAiServer => 'Oma palvelin';
@@ -8404,8 +8001,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsAiOnPhone => 'Tässä puhelimessa';
 
   @override
-  String get settingsAiOnPhoneDetail =>
-      'Ei vielä saatavilla: laitteessa toimivaa mallia testataan vielä puhelimissa.';
+  String get settingsAiOnPhoneDetail => 'Ei vielä saatavilla: laitteessa toimivaa mallia testataan vielä puhelimissa.';
 
   @override
   String get settingsAiNotSetUp => 'Ei määritetty';
@@ -8456,15 +8052,13 @@ class AppLocalizationsFi extends AppLocalizations {
       'API-polku mukaan lukien, esimerkiksi http://192.168.1.20:11434/v1 Ollamalle.';
 
   @override
-  String get settingsAiServerAddressInvalid =>
-      'Tämä ei ole http://- tai https://-osoite.';
+  String get settingsAiServerAddressInvalid => 'Tämä ei ole http://- tai https://-osoite.';
 
   @override
   String get settingsAiServerModelTitle => 'Mallin nimi';
 
   @override
-  String get settingsAiServerModelMessage =>
-      'Niin kuin palvelimesi sitä kutsuu, esimerkiksi llama3.2.';
+  String get settingsAiServerModelMessage => 'Niin kuin palvelimesi sitä kutsuu, esimerkiksi llama3.2.';
 
   @override
   String get settingsAiTestConnection => 'Testaa yhteys';
@@ -8481,8 +8075,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsAiTestFailed => 'Testi epäonnistui';
 
   @override
-  String get settingsAiTestInvalid =>
-      'Malli vastasi, mutta ei siinä muodossa, jota Loupe pyysi.';
+  String get settingsAiTestInvalid => 'Malli vastasi, mutta ei siinä muodossa, jota Loupe pyysi.';
 
   @override
   String get settingsAiRemoveKey => 'Poista avain';
@@ -8520,15 +8113,13 @@ class AppLocalizationsFi extends AppLocalizations {
       'Pyynnöt lähtevät tästä puhelimesta palvelimellesi: se on käsittelyä verkon kautta, myös kotona. Kukin sisältää vain sen, mitä yksi ominaisuus tarvitsee: kirjoittamasi lauseen ja tiliesi nimet tai yhden viestin aiheen, lähettäjän, päivämäärän, tekstin ja liitteiden nimet. Ei koskaan itse liitteitä, tilien salasanoja eikä avainta. Tulokset pysyvät tässä puhelimessa; se, mitä palvelin säilyttää, riippuu sen asetuksista.';
 
   @override
-  String get settingsAiServerUnencrypted =>
-      'Tämä osoite ei ole salattu (http): muut verkossa voivat lukea lähetetyn.';
+  String get settingsAiServerUnencrypted => 'Tämä osoite ei ole salattu (http): muut verkossa voivat lukea lähetetyn.';
 
   @override
   String get settingsAiFeaturesHeader => 'Ominaisuudet';
 
   @override
-  String get settingsAiFeaturesFooter =>
-      'Pois päältä oleva ominaisuus ei näytä tekoälyosaa eikä kysy mitään mallia.';
+  String get settingsAiFeaturesFooter => 'Pois päältä oleva ominaisuus ei näytä tekoälyosaa eikä kysy mitään mallia.';
 
   @override
   String get settingsAiFeatureBrief => 'Lyhyesti';
@@ -8552,36 +8143,28 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsAiFeatureMatters => 'Asian tilanne';
 
   @override
-  String get settingsAiFeatureSearchDetail =>
-      'Haussa: lauseesta tulee haku, jonka voit tarkistaa.';
+  String get settingsAiFeatureSearchDetail => 'Haussa: lauseesta tulee haku, jonka voit tarkistaa.';
 
   @override
-  String get settingsAiFeatureBriefDetail =>
-      'Viestissä: mitä se pyytää sinulta, kohtineen.';
+  String get settingsAiFeatureBriefDetail => 'Viestissä: mitä se pyytää sinulta, kohtineen.';
 
   @override
-  String get settingsAiFeatureActionsDetail =>
-      'Ehdottaa kohteita kansioihin ”Odottaa minua” ja ”Odottaa muita”.';
+  String get settingsAiFeatureActionsDetail => 'Ehdottaa kohteita kansioihin ”Odottaa minua” ja ”Odottaa muita”.';
 
   @override
-  String get settingsAiFeatureRulesDetail =>
-      'Säännöissä: kuvauksesta tulee sääntö, jonka tarkistat ennen tallennusta.';
+  String get settingsAiFeatureRulesDetail => 'Säännöissä: kuvauksesta tulee sääntö, jonka tarkistat ennen tallennusta.';
 
   @override
-  String get settingsAiFeatureChangesDetail =>
-      'Viestien vertailussa: mikä muuttui merkitykseltään, lähteineen.';
+  String get settingsAiFeatureChangesDetail => 'Viestien vertailussa: mikä muuttui merkitykseltään, lähteineen.';
 
   @override
-  String get settingsAiFeatureDocumentsDetail =>
-      'Liitettyjen asiakirjojen keskeiset tiedot sivuineen.';
+  String get settingsAiFeatureDocumentsDetail => 'Liitettyjen asiakirjojen keskeiset tiedot sivuineen.';
 
   @override
-  String get settingsAiFeatureReplyCheckDetail =>
-      'Ennen lähettämistä: mitä vastaukselta on ehkä jäänyt huomaamatta.';
+  String get settingsAiFeatureReplyCheckDetail => 'Ennen lähettämistä: mitä vastaukselta on ehkä jäänyt huomaamatta.';
 
   @override
-  String get settingsAiFeatureMattersDetail =>
-      'Asian viimeisin tilanne sen viestien perusteella.';
+  String get settingsAiFeatureMattersDetail => 'Asian viimeisin tilanne sen viestien perusteella.';
 
   @override
   String get settingsAiLocalOnlyHeader => 'Pidä posti puhelimessa';
@@ -8607,12 +8190,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String settingsAiUsageRequests(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count pyyntöä',
-      one: '1 pyyntö',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count pyyntöä', one: '1 pyyntö');
     return '$_temp0';
   }
 

@@ -157,8 +157,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get changesExplainTitle => 'Što se promijenilo';
 
   @override
-  String get changesExplainIntro =>
-      'Objašnjava promijenjene činjenice, svaku povezanu s odlomcima u obje poruke.';
+  String get changesExplainIntro => 'Objašnjava promijenjene činjenice, svaku povezanu s odlomcima u obje poruke.';
 
   @override
   String get changesExplainAction => 'Objasni promjene';
@@ -180,8 +179,7 @@ class AppLocalizationsHr extends AppLocalizations {
       'Odgovor nije prošao provjere aplikacije Loupe pa se ništa od njega ne prikazuje.';
 
   @override
-  String get changesExplainNoChange =>
-      'Nije pronađena promjena značenja. Točne promjene teksta nalaze se ispod.';
+  String get changesExplainNoChange => 'Nije pronađena promjena značenja. Točne promjene teksta nalaze se ispod.';
 
   @override
   String changesExplainKind(String kind) {
@@ -206,8 +204,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get changesExplainConflictNote =>
-      'Poruke ne kažu koji od ovih podataka vrijedi.';
+  String get changesExplainConflictNote => 'Poruke ne kažu koji od ovih podataka vrijedi.';
 
   @override
   String get changesExplainPartial => 'Pročitan je samo početak duge poruke.';
@@ -237,8 +234,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get changesExplainNoPassage =>
-      'U ovoj poruci nije istaknut nijedan odlomak.';
+  String get changesExplainNoPassage => 'U ovoj poruci nije istaknut nijedan odlomak.';
 
   @override
   String get conversationCompareMessages => 'Usporedi poruke…';
@@ -275,20 +271,17 @@ class AppLocalizationsHr extends AppLocalizations {
   String get conversationChangesSameMetadata => 'Podudarni podaci';
 
   @override
-  String get conversationChangesFullTextNote =>
-      'Uspoređuje se cijeli tekst poruke, uključujući citate i potpise.';
+  String get conversationChangesFullTextNote => 'Uspoređuje se cijeli tekst poruke, uključujući citate i potpise.';
 
   @override
   String get conversationChangesLimited =>
       'Ova je poruka prevelika za detaljnu usporedbu. Dio teksta može biti izostavljen ili prikazan kao cijeli blok.';
 
   @override
-  String get conversationChangesLoadError =>
-      'Ove poruke nije bilo moguće usporediti.';
+  String get conversationChangesLoadError => 'Ove poruke nije bilo moguće usporediti.';
 
   @override
-  String get conversationSomethingWentWrong =>
-      'Nešto nije u redu. Pokušajte ponovno.';
+  String get conversationSomethingWentWrong => 'Nešto nije u redu. Pokušajte ponovno.';
 
   @override
   String get conversationReplyToList => 'Odgovori na dopisnu listu';
@@ -297,8 +290,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get conversationReplyList => 'Na listu';
 
   @override
-  String get conversationThreadMuted =>
-      'Nit je utišana. Nove poruke u njoj stižu kao pročitane.';
+  String get conversationThreadMuted => 'Nit je utišana. Nove poruke u njoj stižu kao pročitane.';
 
   @override
   String get conversationThreadUnmuted => 'Nit više nije utišana.';
@@ -325,15 +317,13 @@ class AppLocalizationsHr extends AppLocalizations {
   String get conversationTrash => 'U smeće';
 
   @override
-  String get conversationReplyHint =>
-      'Dugo pritisnite za Odgovori svima i Proslijedi';
+  String get conversationReplyHint => 'Dugo pritisnite za Odgovori svima i Proslijedi';
 
   @override
   String get conversationOfflineTitle => 'Niste na mreži';
 
   @override
-  String get conversationOfflineText =>
-      'Ovaj razgovor još nije preuzet. Učitat će se kad se ponovno povežete.';
+  String get conversationOfflineText => 'Ovaj razgovor još nije preuzet. Učitat će se kad se ponovno povežete.';
 
   @override
   String get conversationErrorTitle => 'Ova se poruka ne može prikazati';
@@ -400,8 +390,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get conversationBodyError => 'Ovu poruku nije bilo moguće učitati.';
 
   @override
-  String get conversationBodyOffline =>
-      'Niste na mreži. Poruka će se učitati kad se ponovno povežete.';
+  String get conversationBodyOffline => 'Niste na mreži. Poruka će se učitati kad se ponovno povežete.';
 
   @override
   String get conversationOriginalHint => 'Bolje izgleda u prikazu Izvorno';
@@ -581,8 +570,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get conversationSecurityBadgeHint => 'Prikazuje razlog';
 
   @override
-  String get conversationPhishingBannerTitle =>
-      'Ova poruka izgleda kao phishing';
+  String get conversationPhishingBannerTitle => 'Ova poruka izgleda kao phishing';
 
   @override
   String conversationPhishingBannerReason(String reason) {
@@ -590,8 +578,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get conversationPhishingBannerText =>
-      'Poveznice i slike su isključene.';
+  String get conversationPhishingBannerText => 'Poveznice i slike su isključene.';
 
   @override
   String get conversationPhishingWhy => 'Zašto?';
@@ -607,24 +594,20 @@ class AppLocalizationsHr extends AppLocalizations {
       'Nekoliko znakova upućuje na to da ova poruka nije ono za što se predstavlja.';
 
   @override
-  String get conversationSecurityCarefulTitle =>
-      'Budite oprezni s ovom porukom';
+  String get conversationSecurityCarefulTitle => 'Budite oprezni s ovom porukom';
 
   @override
-  String get conversationSecurityCarefulText =>
-      'Nešto u njoj zaslužuje još jedan pogled.';
+  String get conversationSecurityCarefulText => 'Nešto u njoj zaslužuje još jedan pogled.';
 
   @override
-  String get conversationSecurityVerifiedText =>
-      'Pošiljatelj je provjeren i ništa ne izgleda sumnjivo.';
+  String get conversationSecurityVerifiedText => 'Pošiljatelj je provjeren i ništa ne izgleda sumnjivo.';
 
   @override
   String get conversationSecurityUnverifiedText =>
       'Ništa ne izgleda sumnjivo. Vaš poslužitelj e-pošte nije naveo je li pošiljatelj provjeren.';
 
   @override
-  String get conversationSecurityNothingSuspicious =>
-      'Ništa ne izgleda sumnjivo.';
+  String get conversationSecurityNothingSuspicious => 'Ništa ne izgleda sumnjivo.';
 
   @override
   String get conversationSecurityWhy => 'Zašto';
@@ -648,8 +631,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityTrackingPixelsText =>
-      'Javili bi pošiljatelju kada ste otvorili ovu poruku.';
+  String get conversationSecurityTrackingPixelsText => 'Javili bi pošiljatelju kada ste otvorili ovu poruku.';
 
   @override
   String get conversationSecurityNoRemoteImages => 'Nema udaljenih slika';
@@ -694,8 +676,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get conversationSecurityTechnicalDetails => 'Tehnički detalji';
 
   @override
-  String get conversationSecurityCheckedLocally =>
-      'Provjereno na ovom uređaju. Ništa nije nikamo poslano.';
+  String get conversationSecurityCheckedLocally => 'Provjereno na ovom uređaju. Ništa nije nikamo poslano.';
 
   @override
   String get conversationSecurityTrackersLabel => 'Alati za praćenje';
@@ -737,8 +718,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityAuthFailedTitle =>
-      'Pošiljatelj nije provjeren';
+  String get conversationSecurityAuthFailedTitle => 'Pošiljatelj nije provjeren';
 
   @override
   String conversationSecurityAuthFailedText(String domain) {
@@ -763,8 +743,7 @@ class AppLocalizationsHr extends AppLocalizations {
       'Ne postupajte prema njoj ako je niste očekivali. Ako sumnjate, javite se pošiljatelju na drugi način.';
 
   @override
-  String get conversationSecurityAuthUnalignedTitle =>
-      'Potpisano drugom domenom';
+  String get conversationSecurityAuthUnalignedTitle => 'Potpisano drugom domenom';
 
   @override
   String conversationSecurityAuthUnalignedText(String signer, String domain) {
@@ -777,8 +756,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressTitle =>
-      'Ime prikazuje drugu adresu';
+  String get conversationSecurityNameShowsAddressTitle => 'Ime prikazuje drugu adresu';
 
   @override
   String conversationSecurityNameShowsAddressText(String shown, String email) {
@@ -786,8 +764,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressAdvice =>
-      'Vjerujte adresi, a ne imenu.';
+  String get conversationSecurityNameShowsAddressAdvice => 'Vjerujte adresi, a ne imenu.';
 
   @override
   String get conversationSecurityReplyToTitle => 'Odgovori idu drugamo';
@@ -798,15 +775,13 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityReplyToAdvice =>
-      'Provjerite adresu prije nego što odgovorite nečim osobnim.';
+  String get conversationSecurityReplyToAdvice => 'Provjerite adresu prije nego što odgovorite nečim osobnim.';
 
   @override
   String get conversationSecurityImpersonationYouTitle => 'Koristi vaše ime';
 
   @override
-  String get conversationSecurityImpersonationTitle =>
-      'Koristi ime nekoga koga poznajete';
+  String get conversationSecurityImpersonationTitle => 'Koristi ime nekoga koga poznajete';
 
   @override
   String conversationSecurityImpersonationYouText(String name, String email) {
@@ -814,28 +789,17 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityImpersonationVipText(
-    String name,
-    String knownName,
-    String knownEmail,
-    String email,
-  ) {
+  String conversationSecurityImpersonationVipText(String name, String knownName, String knownEmail, String email) {
     return 'Potpisana je imenom „$name“, kao da je od vašeg VIP kontakta $knownName ($knownEmail), ali dolazi s nove adrese: $email.';
   }
 
   @override
-  String conversationSecurityImpersonationText(
-    String name,
-    String knownName,
-    String knownEmail,
-    String email,
-  ) {
+  String conversationSecurityImpersonationText(String name, String knownName, String knownEmail, String email) {
     return 'Potpisana je imenom „$name“, kao da je od osobe $knownName ($knownEmail), ali dolazi s nove adrese: $email.';
   }
 
   @override
-  String get conversationSecurityImpersonationRepliesElsewhere =>
-      'A odgovori bi išli na još jednu, drugu adresu.';
+  String get conversationSecurityImpersonationRepliesElsewhere => 'A odgovori bi išli na još jednu, drugu adresu.';
 
   @override
   String get conversationSecurityImpersonationAdvice =>
@@ -852,8 +816,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeTitle =>
-      'Prva poruka od ovog pošiljatelja';
+  String get conversationSecurityFirstTimeTitle => 'Prva poruka od ovog pošiljatelja';
 
   @override
   String conversationSecurityFirstTimeText(String email) {
@@ -861,16 +824,13 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeAdvice =>
-      'Budite oprezni sa zahtjevima ljudi koje još ne poznajete.';
+  String get conversationSecurityFirstTimeAdvice => 'Budite oprezni sa zahtjevima ljudi koje još ne poznajete.';
 
   @override
-  String get conversationSecuritySenderHomographTitle =>
-      'Slova sličnog izgleda u adresi pošiljatelja';
+  String get conversationSecuritySenderHomographTitle => 'Slova sličnog izgleda u adresi pošiljatelja';
 
   @override
-  String get conversationSecurityLinkHomographTitle =>
-      'Slova sličnog izgleda u poveznici';
+  String get conversationSecurityLinkHomographTitle => 'Slova sličnog izgleda u poveznici';
 
   @override
   String conversationSecurityHomographText(String host) {
@@ -883,8 +843,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecuritySenderHomographAdvice =>
-      'Izbrišite je ili je prijavite kao neželjenu.';
+  String get conversationSecuritySenderHomographAdvice => 'Izbrišite je ili je prijavite kao neželjenu.';
 
   @override
   String get conversationSecurityLinkHomographAdvice => 'Nemojte je otvarati.';
@@ -898,8 +857,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get conversationSecurityLookalikeTitle => 'Domena sličnog izgleda';
 
   @override
-  String get conversationSecurityFamiliarNameTitle =>
-      'U domeni koristi poznato ime';
+  String get conversationSecurityFamiliarNameTitle => 'U domeni koristi poznato ime';
 
   @override
   String conversationSecurityLookalikeOwnText(String domain, String real) {
@@ -907,11 +865,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityLookalikeText(
-    String domain,
-    String brand,
-    String real,
-  ) {
+  String conversationSecurityLookalikeText(String domain, String brand, String real) {
     return '$domain izgleda kao $brand ($real), ali je riječ o drugoj domeni.';
   }
 
@@ -921,11 +875,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityFamiliarNameText(
-    String domain,
-    String brand,
-    String real,
-  ) {
+  String conversationSecurityFamiliarNameText(String domain, String brand, String real) {
     return '$domain koristi ime $brand ($real), ali nije povezana s njim.';
   }
 
@@ -976,8 +926,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLinkUncheckableTitle =>
-      'Odredište poveznice ne može se provjeriti';
+  String get conversationSecurityLinkUncheckableTitle => 'Odredište poveznice ne može se provjeriti';
 
   @override
   String conversationSecurityLinkUncheckableText(String shown, String host) {
@@ -985,8 +934,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityIpAddressTitle =>
-      'Poveznica vodi na golu IP adresu';
+  String get conversationSecurityIpAddressTitle => 'Poveznica vodi na golu IP adresu';
 
   @override
   String conversationSecurityIpAddressText(String hosts) {
@@ -1002,8 +950,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityDataLinkTitle =>
-      'Skrivena stranica je onemogućena';
+  String get conversationSecurityDataLinkTitle => 'Skrivena stranica je onemogućena';
 
   @override
   String get conversationSecurityDataLinkText =>
@@ -1013,20 +960,16 @@ class AppLocalizationsHr extends AppLocalizations {
   String get conversationSecurityPasswordFieldTitle => 'Traži lozinku';
 
   @override
-  String get conversationSecurityPasswordFieldText =>
-      'Poruka je sadržavala polje za lozinku. Loupe ga je uklonio.';
+  String get conversationSecurityPasswordFieldText => 'Poruka je sadržavala polje za lozinku. Loupe ga je uklonio.';
 
   @override
-  String get conversationSecurityPasswordFieldAdvice =>
-      'Nikada ne upisujte lozinku u e-poruku.';
+  String get conversationSecurityPasswordFieldAdvice => 'Nikada ne upisujte lozinku u e-poruku.';
 
   @override
-  String get conversationSecurityScriptLinkTitle =>
-      'Poveznica koja pokreće kod je onemogućena';
+  String get conversationSecurityScriptLinkTitle => 'Poveznica koja pokreće kod je onemogućena';
 
   @override
-  String get conversationSecurityScriptLinkText =>
-      'Loupe nikada ne pokreće kod iz poruka.';
+  String get conversationSecurityScriptLinkText => 'Loupe nikada ne pokreće kod iz poruka.';
 
   @override
   String conversationSecurityShortenerTitle(int count) {
@@ -1054,8 +997,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLotsOfHiddenTextTitle =>
-      'Mnogo skrivenog teksta';
+  String get conversationSecurityLotsOfHiddenTextTitle => 'Mnogo skrivenog teksta';
 
   @override
   String conversationSecurityLotsOfHiddenTextText(int count) {
@@ -1073,8 +1015,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityHiddenTextTitle =>
-      'Skriveni tekst je uklonjen';
+  String get conversationSecurityHiddenTextTitle => 'Skriveni tekst je uklonjen';
 
   @override
   String conversationSecurityHiddenTextText(int count) {
@@ -1089,8 +1030,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get exportDownloadFailed =>
-      'Poruku nije bilo moguće preuzeti. Provjerite vezu i pokušajte ponovno.';
+  String get exportDownloadFailed => 'Poruku nije bilo moguće preuzeti. Provjerite vezu i pokušajte ponovno.';
 
   @override
   String exportSaved(String name) {
@@ -1120,12 +1060,9 @@ class AppLocalizationsHr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          'Spremljeno „$name“ bez $formattedCount poruka koje nije bilo moguće preuzeti.',
-      few:
-          'Spremljeno „$name“ bez $formattedCount poruke koje nije bilo moguće preuzeti.',
-      one:
-          'Spremljeno „$name“ bez $count poruke koju nije bilo moguće preuzeti.',
+      other: 'Spremljeno „$name“ bez $formattedCount poruka koje nije bilo moguće preuzeti.',
+      few: 'Spremljeno „$name“ bez $formattedCount poruke koje nije bilo moguće preuzeti.',
+      one: 'Spremljeno „$name“ bez $count poruke koju nije bilo moguće preuzeti.',
     );
     return '$_temp0';
   }
@@ -1204,8 +1141,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get mailboxesSmartMailboxes => 'Smart Mailboxes';
 
   @override
-  String get mailboxesSmartMailboxesEmpty =>
-      'Spremite pretragu da biste je zadržali ovdje.';
+  String get mailboxesSmartMailboxesEmpty => 'Spremite pretragu da biste je zadržali ovdje.';
 
   @override
   String get mailboxesTags => 'Oznake';
@@ -1239,8 +1175,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get projectsDelete => 'Izbriši projekt';
 
   @override
-  String get projectsDeleteMessage =>
-      'Njegovi razgovori ostaju gdje jesu, izvan projekta.';
+  String get projectsDeleteMessage => 'Njegovi razgovori ostaju gdje jesu, izvan projekta.';
 
   @override
   String get projectsUntitled => 'Projekt';
@@ -1293,8 +1228,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get projectsAiTimeout => 'Poslužitelju je trebalo predugo.';
 
   @override
-  String get projectsAiBadAnswer =>
-      'Odgovor poslužitelja nije se mogao pročitati.';
+  String get projectsAiBadAnswer => 'Odgovor poslužitelja nije se mogao pročitati.';
 
   @override
   String projectsAiNoModel(String models) {
@@ -1356,8 +1290,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get mailboxesVipTitle => 'VIP';
 
   @override
-  String get mailboxesVipFooter =>
-      'Možete i dodirnuti ime pošiljatelja u poruci i uključiti VIP.';
+  String get mailboxesVipFooter => 'Možete i dodirnuti ime pošiljatelja u poruci i uključiti VIP.';
 
   @override
   String get mailboxesAddVip => 'Dodaj VIP…';
@@ -1366,8 +1299,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get mailboxesAddVipTitle => 'Dodaj VIP';
 
   @override
-  String get mailboxesAddVipText =>
-      'Pošta s ove adrese dobiva zvjezdicu i pojavljuje se u sandučiću VIP.';
+  String get mailboxesAddVipText => 'Pošta s ove adrese dobiva zvjezdicu i pojavljuje se u sandučiću VIP.';
 
   @override
   String get mailboxesAddVipPlaceholder => 'name@example.com';
@@ -1406,8 +1338,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get messageListLoadOlderFailed =>
-      'Stariju poštu nije bilo moguće učitati.';
+  String get messageListLoadOlderFailed => 'Stariju poštu nije bilo moguće učitati.';
 
   @override
   String get messageListSelectMessages => 'Odaberite poruke';
@@ -1558,15 +1489,13 @@ class AppLocalizationsHr extends AppLocalizations {
   String get snoozeNoTime => 'Vrijeme nije postavljeno';
 
   @override
-  String get snoozeFooter =>
-      'Odgođene poruke vraćaju se u pristiglu poštu kao nepročitane u zadano vrijeme.';
+  String get snoozeFooter => 'Odgođene poruke vraćaju se u pristiglu poštu kao nepročitane u zadano vrijeme.';
 
   @override
   String get snoozeEmptyTitle => 'Ništa nije odgođeno';
 
   @override
-  String get snoozeEmptyText =>
-      'Odgodite poruku i vratit će se u pristiglu poštu kad vam zatreba.';
+  String get snoozeEmptyText => 'Odgodite poruku i vratit će se u pristiglu poštu kad vam zatreba.';
 
   @override
   String get briefButton => 'Ukratko';
@@ -1590,15 +1519,13 @@ class AppLocalizationsHr extends AppLocalizations {
   String get briefStopped => 'Zaustavili ste sažetak.';
 
   @override
-  String get briefFailedTooLarge =>
-      'Poruka je preduga za model, pa ništa nije poslano.';
+  String get briefFailedTooLarge => 'Poruka je preduga za model, pa ništa nije poslano.';
 
   @override
   String get briefFailedProvider => 'Model nije uspio sažeti ovu poruku.';
 
   @override
-  String get briefFailedInvalid =>
-      'Odgovor nije prošao Loupeove provjere, pa se popis ne prikazuje.';
+  String get briefFailedInvalid => 'Odgovor nije prošao Loupeove provjere, pa se popis ne prikazuje.';
 
   @override
   String get briefNothingTitle => 'Nema se što sažeti';
@@ -1650,11 +1577,7 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String briefOwner(String owner) {
-    String _temp0 = intl.Intl.selectLogic(owner, {
-      'me': 'Vi',
-      'them': 'Drugi',
-      'other': 'Nije navedeno',
-    });
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Vi', 'them': 'Drugi', 'other': 'Nije navedeno'});
     return '$_temp0';
   }
 
@@ -1734,8 +1657,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get briefCaution =>
-      'Sažetak može nešto propustiti ili pogrešno shvatiti. Mjerodavna je sama poruka.';
+  String get briefCaution => 'Sažetak može nešto propustiti ili pogrešno shvatiti. Mjerodavna je sama poruka.';
 
   @override
   String briefSecurityReason(String reason) {
@@ -1743,15 +1665,13 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get briefSecurityText =>
-      'Prije nego što učinite bilo što iz ovog sažetka, provjerite samu poruku.';
+  String get briefSecurityText => 'Prije nego što učinite bilo što iz ovog sažetka, provjerite samu poruku.';
 
   @override
   String get briefSourceTitle => 'U poruci';
 
   @override
-  String get briefSourceAttachment =>
-      'Ovo potječe iz naziva priložene datoteke. Sažetak ne čita sadržaj privitaka.';
+  String get briefSourceAttachment => 'Ovo potječe iz naziva priložene datoteke. Sažetak ne čita sadržaj privitaka.';
 
   @override
   String get briefEventTitle => 'Novi događaj';
@@ -1795,8 +1715,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get appLockLockedOut => 'Previše pokušaja. Pokušajte ponovno kasnije.';
 
   @override
-  String get appLockPromptError =>
-      'Upit nije bilo moguće prikazati. Pokušajte ponovno.';
+  String get appLockPromptError => 'Upit nije bilo moguće prikazati. Pokušajte ponovno.';
 
   @override
   String get appLockNoScreenLock => 'Ovaj telefon nema zaključavanje zaslona.';
@@ -1805,15 +1724,13 @@ class AppLocalizationsHr extends AppLocalizations {
   String get appLockUnlockPromptTitle => 'Otključajte Loupe';
 
   @override
-  String get appLockUnlockPromptReason =>
-      'Potvrdite da ste to vi kako biste vidjeli svoju poštu.';
+  String get appLockUnlockPromptReason => 'Potvrdite da ste to vi kako biste vidjeli svoju poštu.';
 
   @override
   String get appLockTurnOnPromptTitle => 'Uključi zaključavanje aplikacije';
 
   @override
-  String get appLockTurnOnPromptReason =>
-      'Potvrdite da ste to vi kako biste uključili zaključavanje aplikacije.';
+  String get appLockTurnOnPromptReason => 'Potvrdite da ste to vi kako biste uključili zaključavanje aplikacije.';
 
   @override
   String get appLockScreenLockRemoved =>
@@ -1959,44 +1876,35 @@ class AppLocalizationsHr extends AppLocalizations {
   String get openpgpChangeAcceptance => 'Promijeni prihvaćanje…';
 
   @override
-  String get openpgpCheckedFooter =>
-      'Provjereno na ovom uređaju s OpenPGP-om, kompatibilno s Thunderbirdom.';
+  String get openpgpCheckedFooter => 'Provjereno na ovom uređaju s OpenPGP-om, kompatibilno s Thunderbirdom.';
 
   @override
   String get openpgpSummaryLocked =>
       'Vaš je ključ zaključan. Otključajte ga pristupnom frazom da biste pročitali ovu poruku.';
 
   @override
-  String get openpgpSummaryNoSecretKey =>
-      'Šifrirana je za ključ koji nije na ovom uređaju.';
+  String get openpgpSummaryNoSecretKey => 'Šifrirana je za ključ koji nije na ovom uređaju.';
 
   @override
-  String get openpgpSummaryDamaged =>
-      'Šifrirani podaci su oštećeni ili su promijenjeni na putu.';
+  String get openpgpSummaryDamaged => 'Šifrirani podaci su oštećeni ili su promijenjeni na putu.';
 
   @override
-  String get openpgpSummaryUnsupported =>
-      'Koristi algoritam koji Loupe ne podržava.';
+  String get openpgpSummaryUnsupported => 'Koristi algoritam koji Loupe ne podržava.';
 
   @override
-  String get openpgpSummaryEncrypted =>
-      'Mogu je pročitati samo vi i ostali primatelji.';
+  String get openpgpSummaryEncrypted => 'Mogu je pročitati samo vi i ostali primatelji.';
 
   @override
-  String get openpgpSummaryNotSigned =>
-      'Nije potpisana pa pošiljatelj nije potvrđen.';
+  String get openpgpSummaryNotSigned => 'Nije potpisana pa pošiljatelj nije potvrđen.';
 
   @override
-  String get openpgpSummaryUnknownKey =>
-      'Potpisana je, ali ključem koji nemate pa se potpis ne može provjeriti.';
+  String get openpgpSummaryUnknownKey => 'Potpisana je, ali ključem koji nemate pa se potpis ne može provjeriti.';
 
   @override
-  String get openpgpSummaryBadSignature =>
-      'Potpis se ne podudara: poruka je možda promijenjena.';
+  String get openpgpSummaryBadSignature => 'Potpis se ne podudara: poruka je možda promijenjena.';
 
   @override
-  String get openpgpSummaryMismatch =>
-      'Potpis je valjan, ali ključ pripada drugoj adresi, a ne pošiljateljevoj.';
+  String get openpgpSummaryMismatch => 'Potpis je valjan, ali ključ pripada drugoj adresi, a ne pošiljateljevoj.';
 
   @override
   String get openpgpSummaryPartial =>
@@ -2006,16 +1914,13 @@ class AppLocalizationsHr extends AppLocalizations {
   String get openpgpSummaryOwnKey => 'Potpisano vašim vlastitim ključem.';
 
   @override
-  String get openpgpSummaryVerified =>
-      'Potpis je valjan i provjerili ste otisak ključa.';
+  String get openpgpSummaryVerified => 'Potpis je valjan i provjerili ste otisak ključa.';
 
   @override
-  String get openpgpSummaryUnverified =>
-      'Potpis je valjan. Ključ ste prihvatili bez provjere njegova otiska.';
+  String get openpgpSummaryUnverified => 'Potpis je valjan. Ključ ste prihvatili bez provjere njegova otiska.';
 
   @override
-  String get openpgpSummaryRejected =>
-      'Potpis je valjan, ali ste ovaj ključ odbili.';
+  String get openpgpSummaryRejected => 'Potpis je valjan, ali ste ovaj ključ odbili.';
 
   @override
   String get openpgpSummaryUndecided =>
@@ -2075,8 +1980,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get openpgpAddresses => 'Adrese';
 
   @override
-  String get openpgpAddressesFooter =>
-      'Koji ključ koristi svaka adresa te kada šifrira i potpisuje.';
+  String get openpgpAddressesFooter => 'Koji ključ koristi svaka adresa te kada šifrira i potpisuje.';
 
   @override
   String get openpgpCorrespondentsKeys => 'OpenPGP ključevi dopisnika';
@@ -2110,8 +2014,7 @@ class AppLocalizationsHr extends AppLocalizations {
       'Pretraživanje pronalazi šifrirane poruke prema pošiljatelju, primateljima i predmetu. Kad je ovo uključeno, Loupe tekst svake šifrirane poruke koju dešifrira dodaje i u indeks pretraživanja u svojoj šifriranoj bazi podataka na ovom uređaju, pa ih pretraživanje pronalazi i prema tekstu. Isključivanjem se taj tekst uklanja iz indeksa.';
 
   @override
-  String get openpgpIndexDecrypted =>
-      'Indeksiraj dešifrirane poruke za pretraživanje';
+  String get openpgpIndexDecrypted => 'Indeksiraj dešifrirane poruke za pretraživanje';
 
   @override
   String get openpgpPassphrases => 'Pristupne fraze';
@@ -2156,8 +2059,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get openpgpAddKeyTitle => 'Dodajte OpenPGP ključ';
 
   @override
-  String get openpgpAddKeyMessage =>
-      'Uvezite ključ koji koristite u Thunderbirdu ili izradite novi.';
+  String get openpgpAddKeyMessage => 'Uvezite ključ koji koristite u Thunderbirdu ili izradite novi.';
 
   @override
   String get openpgpImportFromClipboard => 'Uvezi iz međuspremnika';
@@ -2178,8 +2080,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get openpgpFromFile => 'Iz datoteke';
 
   @override
-  String get openpgpClipboardEmpty =>
-      'Međuspremnik je prazan. Najprije kopirajte ključ.';
+  String get openpgpClipboardEmpty => 'Međuspremnik je prazan. Najprije kopirajte ključ.';
 
   @override
   String get openpgpKey => 'Ključ';
@@ -2295,8 +2196,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get openpgpEncryptAutomatically => 'Šifriraj automatski';
 
   @override
-  String get openpgpAlwaysEncryptDetail =>
-      'Ne šalje ako neki primatelj nema ključ';
+  String get openpgpAlwaysEncryptDetail => 'Ne šalje ako neki primatelj nema ključ';
 
   @override
   String get openpgpSignUnencrypted => 'Potpisuj nešifriranu poštu';
@@ -2315,8 +2215,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get openpgpPreferEncryption => 'Preferiraj šifriranje';
 
   @override
-  String get openpgpPreferEncryptionDetail =>
-      'Zamoli druge da šifriraju kad mogu';
+  String get openpgpPreferEncryptionDetail => 'Zamoli druge da šifriraju kad mogu';
 
   @override
   String openpgpValidityYears(int count) {
@@ -2507,24 +2406,20 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get openpgpWrongPassphrase =>
-      'Pristupna fraza nije točna. Pokušajte ponovno.';
+  String get openpgpWrongPassphrase => 'Pristupna fraza nije točna. Pokušajte ponovno.';
 
   @override
-  String get openpgpExplainLocked =>
-      'Ova je poruka šifrirana. Otključajte svoj OpenPGP ključ da biste je pročitali.';
+  String get openpgpExplainLocked => 'Ova je poruka šifrirana. Otključajte svoj OpenPGP ključ da biste je pročitali.';
 
   @override
   String get openpgpExplainNoKey =>
       'Ova je poruka šifrirana, ali ne za neki OpenPGP ključ na ovom uređaju. Ako je čitate u Thunderbirdu, ondje izvezite svoj ključ i uvezite ga ovdje: Postavke › End-to-end šifriranje.';
 
   @override
-  String get openpgpExplainDamaged =>
-      'Ova šifrirana poruka je oštećena pa se ne može sigurno dešifrirati.';
+  String get openpgpExplainDamaged => 'Ova šifrirana poruka je oštećena pa se ne može sigurno dešifrirati.';
 
   @override
-  String get openpgpExplainUnsupported =>
-      'Ova poruka koristi šifriranje koje Loupe još ne može pročitati.';
+  String get openpgpExplainUnsupported => 'Ova poruka koristi šifriranje koje Loupe još ne može pročitati.';
 
   @override
   String get openpgpExplainSmimeNoKey =>
@@ -2536,8 +2431,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get openpgpExplainSmimeUnlock =>
-      'Otključajte svoj S/MIME certifikat da biste je pročitali.';
+  String get openpgpExplainSmimeUnlock => 'Otključajte svoj S/MIME certifikat da biste je pročitali.';
 
   @override
   String get openpgpAttachmentGone => 'Ovaj privitak više nije dostupan.';
@@ -2546,8 +2440,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get smimeEncrypted => 'Šifrirano (S/MIME)';
 
   @override
-  String get smimeEncryptedNoCertificate =>
-      'Šifrirano (S/MIME) · nema certifikata';
+  String get smimeEncryptedNoCertificate => 'Šifrirano (S/MIME) · nema certifikata';
 
   @override
   String get smimeEncryptedDamaged => 'Šifrirano (S/MIME) · oštećeno';
@@ -2562,8 +2455,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get smimeUnknownSigner => 'nepoznat';
 
   @override
-  String get smimeSignatureModified =>
-      'Nevažeći potpis: poruka je promijenjena';
+  String get smimeSignatureModified => 'Nevažeći potpis: poruka je promijenjena';
 
   @override
   String get smimeSignatureWeak => 'Nesiguran potpis: zastarjeli algoritam';
@@ -2572,8 +2464,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get smimeSignatureUncheckable => 'Potpis se ne može provjeriti';
 
   @override
-  String get smimeSignedCertificateMissing =>
-      'Potpisano · nedostaje certifikat';
+  String get smimeSignedCertificateMissing => 'Potpisano · nedostaje certifikat';
 
   @override
   String smimeSignedByRevoked(String name) {
@@ -2740,38 +2631,31 @@ class AppLocalizationsHr extends AppLocalizations {
   String get smimeTrust => 'Vjeruj';
 
   @override
-  String get smimeSummaryNoKey =>
-      'Šifrirana je za certifikat koji nije na ovom uređaju.';
+  String get smimeSummaryNoKey => 'Šifrirana je za certifikat koji nije na ovom uređaju.';
 
   @override
-  String get smimeSummaryDamaged =>
-      'Šifrirani podaci su oštećeni ili su promijenjeni na putu.';
+  String get smimeSummaryDamaged => 'Šifrirani podaci su oštećeni ili su promijenjeni na putu.';
 
   @override
-  String get smimeSummaryUnsupported =>
-      'Koristi algoritam koji Loupe ne podržava.';
+  String get smimeSummaryUnsupported => 'Koristi algoritam koji Loupe ne podržava.';
 
   @override
   String get smimeSummaryLocked => 'Vaš je S/MIME certifikat zaključan.';
 
   @override
-  String get smimeSummaryEncrypted =>
-      'Mogu je pročitati samo vi i ostali primatelji.';
+  String get smimeSummaryEncrypted => 'Mogu je pročitati samo vi i ostali primatelji.';
 
   @override
-  String get smimeSummaryNotSigned =>
-      'Nije potpisana pa pošiljatelj nije potvrđen.';
+  String get smimeSummaryNotSigned => 'Nije potpisana pa pošiljatelj nije potvrđen.';
 
   @override
-  String get smimeSummaryModified =>
-      'Potpis se ne podudara: poruka je promijenjena nakon potpisivanja.';
+  String get smimeSummaryModified => 'Potpis se ne podudara: poruka je promijenjena nakon potpisivanja.';
 
   @override
   String get smimeSummaryUncheckable => 'Potpis se ne može provjeriti.';
 
   @override
-  String get smimeSummaryNoCertificate =>
-      'Certifikat potpisnika nije u poruci pa se ne može provjeriti.';
+  String get smimeSummaryNoCertificate => 'Certifikat potpisnika nije u poruci pa se ne može provjeriti.';
 
   @override
   String get smimeSummaryRevoked =>
@@ -2792,12 +2676,10 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get smimeProblemInvalidChain =>
-      'Certifikat ili neki od njegovih izdavatelja nije valjan.';
+  String get smimeProblemInvalidChain => 'Certifikat ili neki od njegovih izdavatelja nije valjan.';
 
   @override
-  String get smimeProblemUntrusted =>
-      'Certifikat potječe od tijela kojem Loupe ne vjeruje.';
+  String get smimeProblemUntrusted => 'Certifikat potječe od tijela kojem Loupe ne vjeruje.';
 
   @override
   String get smimeProblemExpired => 'Certifikat je istekao.';
@@ -2809,8 +2691,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get smimeProblemWrongUsage => 'Certifikat nije namijenjen za poštu.';
 
   @override
-  String get smimeProblemWrongAddress =>
-      'Certifikat pripada drugoj adresi, a ne pošiljateljevoj.';
+  String get smimeProblemWrongAddress => 'Certifikat pripada drugoj adresi, a ne pošiljateljevoj.';
 
   @override
   String smimeTrustedBy(String issuer) {
@@ -2894,12 +2775,9 @@ class AppLocalizationsHr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          'Tijela kojima vi vjerujete, uz $count kojima Mozilla vjeruje za e-poštu.',
-      few:
-          'Tijela kojima vi vjerujete, uz $count kojima Mozilla vjeruje za e-poštu.',
-      one:
-          'Tijela kojima vi vjerujete, uz $count kojem Mozilla vjeruje za e-poštu.',
+      other: 'Tijela kojima vi vjerujete, uz $count kojima Mozilla vjeruje za e-poštu.',
+      few: 'Tijela kojima vi vjerujete, uz $count kojima Mozilla vjeruje za e-poštu.',
+      one: 'Tijela kojima vi vjerujete, uz $count kojem Mozilla vjeruje za e-poštu.',
     );
     return '$_temp0';
   }
@@ -2911,8 +2789,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get smimeImportACertificate => 'Uvezite certifikat';
 
   @override
-  String get smimeImportContactMessage =>
-      'Certifikat dopisnika (.cer, .crt, .pem) ili certifikacijskog tijela.';
+  String get smimeImportContactMessage => 'Certifikat dopisnika (.cer, .crt, .pem) ili certifikacijskog tijela.';
 
   @override
   String get smimeFromClipboard => 'Iz međuspremnika';
@@ -2921,8 +2798,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get smimeFromFile => 'Iz datoteke';
 
   @override
-  String get smimeClipboardEmpty =>
-      'Međuspremnik je prazan. Najprije kopirajte certifikat.';
+  String get smimeClipboardEmpty => 'Međuspremnik je prazan. Najprije kopirajte certifikat.';
 
   @override
   String get smimeCertificate => 'Certifikat';
@@ -2968,8 +2844,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get smimeKeyOnDevice => 'Na ovom uređaju';
 
   @override
-  String get smimeKeyInLoupeWithPassphrase =>
-      'U aplikaciji Loupe, s pristupnom frazom';
+  String get smimeKeyInLoupeWithPassphrase => 'U aplikaciji Loupe, s pristupnom frazom';
 
   @override
   String get smimeKeyInLoupe => 'U aplikaciji Loupe';
@@ -3076,8 +2951,7 @@ class AppLocalizationsHr extends AppLocalizations {
       'Njegov privatni ključ briše se s ovog uređaja: poštu šifriranu za njega ovdje više nećete moći čitati, osim ako ga ponovno ne uvezete.';
 
   @override
-  String get smimeRemoveContactMessage =>
-      'Vratit će se s njegovom sljedećom potpisanom porukom.';
+  String get smimeRemoveContactMessage => 'Vratit će se s njegovom sljedećom potpisanom porukom.';
 
   @override
   String get smimeAddressImportFooter =>
@@ -3100,8 +2974,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get smimeCertificatePassword => 'Lozinka certifikata';
 
   @override
-  String get smimeCertificatePasswordPrompt =>
-      'Unesite lozinku s kojom je datoteka certifikata izvezena.';
+  String get smimeCertificatePasswordPrompt => 'Unesite lozinku s kojom je datoteka certifikata izvezena.';
 
   @override
   String get smimeImport => 'Uvezi';
@@ -3138,15 +3011,11 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String smimeImportedCertificatesAndAuthorities(
-    int count,
-    String certificates,
-  ) {
+  String smimeImportedCertificatesAndAuthorities(int count, String certificates) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          'Uvezeno: $certificates i $count pouzdanih certifikacijskih tijela.',
+      other: 'Uvezeno: $certificates i $count pouzdanih certifikacijskih tijela.',
       few: 'Uvezeno: $certificates i $count pouzdana certifikacijska tijela.',
       one: 'Uvezeno: $certificates i $count pouzdano certifikacijsko tijelo.',
     );
@@ -3154,8 +3023,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get smimeNoPrivateKey =>
-      'Ova datoteka nema privatni ključ. Izvezite certifikat zajedno s privatnim ključem.';
+  String get smimeNoPrivateKey => 'Ova datoteka nema privatni ključ. Izvezite certifikat zajedno s privatnim ključem.';
 
   @override
   String get smimeImportAsYoursTitle => 'Uvesti kao vaš certifikat?';
@@ -3212,8 +3080,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get smimeWrongPassphrase =>
-      'Pristupna fraza nije točna. Pokušajte ponovno.';
+  String get smimeWrongPassphrase => 'Pristupna fraza nije točna. Pokušajte ponovno.';
 
   @override
   String get smimeUnlock => 'Otključaj';
@@ -3242,12 +3109,10 @@ class AppLocalizationsHr extends AppLocalizations {
       'Vaš je S/MIME certifikat zaključan. Ponovno otvorite poruku da biste ga otključali.';
 
   @override
-  String get smimeDeviceHasNoCertificates =>
-      'Ovaj uređaj ne nudi svoje certifikate.';
+  String get smimeDeviceHasNoCertificates => 'Ovaj uređaj ne nudi svoje certifikate.';
 
   @override
-  String get smimeCantReadCertificate =>
-      'Loupe ne može pročitati ovaj certifikat.';
+  String get smimeCantReadCertificate => 'Loupe ne može pročitati ovaj certifikat.';
 
   @override
   String get smimeCertificateNotForMail =>
@@ -3258,8 +3123,7 @@ class AppLocalizationsHr extends AppLocalizations {
       'Certifikat više nije na ovom uređaju ili ga Loupe više ne smije koristiti. Ponovno ga odaberite u Postavke › End-to-end šifriranje.';
 
   @override
-  String get smimeDeviceCertificateAppOnly =>
-      'Certifikat na ovom uređaju može se koristiti samo dok je Loupe otvoren.';
+  String get smimeDeviceCertificateAppOnly => 'Certifikat na ovom uređaju može se koristiti samo dok je Loupe otvoren.';
 
   @override
   String get smimeDeviceKeyDamaged => 'Šifrirani ključ je oštećen.';
@@ -3278,16 +3142,13 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityNotWebAddress =>
-      'Adresa certifikacijskog tijela nije web-adresa.';
+  String get smimeAuthorityNotWebAddress => 'Adresa certifikacijskog tijela nije web-adresa.';
 
   @override
-  String get smimeAuthorityTimeout =>
-      'Certifikacijsko tijelo nije odgovorilo na vrijeme.';
+  String get smimeAuthorityTimeout => 'Certifikacijsko tijelo nije odgovorilo na vrijeme.';
 
   @override
-  String get smimeAuthorityUnreachable =>
-      'Certifikacijsko tijelo nije dostupno.';
+  String get smimeAuthorityUnreachable => 'Certifikacijsko tijelo nije dostupno.';
 
   @override
   String smimeAuthorityStatus(String status) {
@@ -3295,8 +3156,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityAnswerTooLarge =>
-      'Odgovor certifikacijskog tijela je prevelik.';
+  String get smimeAuthorityAnswerTooLarge => 'Odgovor certifikacijskog tijela je prevelik.';
 
   @override
   String get smimeRevocationNotChecked =>
@@ -3315,8 +3175,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get actionsWaitingOnOthersEmpty => 'Ne čekate nikoga';
 
   @override
-  String get actionsFolderEmptyDetail =>
-      'Da biste nešto pratili, dodirnite ⋯ na poruci i odaberite Dodaj radnju…';
+  String get actionsFolderEmptyDetail => 'Da biste nešto pratili, dodirnite ⋯ na poruci i odaberite Dodaj radnju…';
 
   @override
   String get actionsTitle => 'Radnje';
@@ -3515,8 +3374,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get actionsOriginManual => 'Dodali ste vi';
 
   @override
-  String get actionsOriginDemo =>
-      'Predložio ugrađeni demo: pravila, bez modela';
+  String get actionsOriginDemo => 'Predložio ugrađeni demo: pravila, bez modela';
 
   @override
   String actionsOriginSuggested(String provider) {
@@ -3583,15 +3441,13 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get actionsSuggestByDemo =>
-      'Predložio ugrađeni demo: pravila, bez modela. Ništa ne napušta ovaj telefon.';
+  String get actionsSuggestByDemo => 'Predložio ugrađeni demo: pravila, bez modela. Ništa ne napušta ovaj telefon.';
 
   @override
   String get actionsSuggestNone => 'U ovoj poruci nema ničega za praćenje.';
 
   @override
-  String get actionsSuggestPartial =>
-      'Ova je poruka duga: pročitan je samo njezin početak.';
+  String get actionsSuggestPartial => 'Ova je poruka duga: pročitan je samo njezin početak.';
 
   @override
   String get actionsSuggestTracked => 'Prati se';
@@ -3616,12 +3472,10 @@ class AppLocalizationsHr extends AppLocalizations {
       'Svaki prijedlog citira poruku i ništa se ne prati dok ga ne dodate. Citirana ranija pošta ne računa se.';
 
   @override
-  String get actionsSuggestTooLarge =>
-      'Ova je poruka preduga za odabrani model.';
+  String get actionsSuggestTooLarge => 'Ova je poruka preduga za odabrani model.';
 
   @override
-  String get actionsSuggestInvalid =>
-      'Odgovor se ne podudara s porukom pa ništa nije predloženo.';
+  String get actionsSuggestInvalid => 'Odgovor se ne podudara s porukom pa ništa nije predloženo.';
 
   @override
   String get actionsSuggestCancelled => 'Zaustavljeno.';
@@ -3631,10 +3485,7 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String settingsIdle(String protocol) {
-    String _temp0 = intl.Intl.selectLogic(protocol, {
-      'jmap': 'Push',
-      'other': 'IDLE',
-    });
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
     return '$_temp0';
   }
 
@@ -3699,8 +3550,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get settingsSignatureAddField => 'Dodaj polje';
 
   @override
-  String get settingsSignatureImageFailed =>
-      'Sliku nije moguće dodati. Pokušajte s manjim PNG-om ili JPEG-om.';
+  String get settingsSignatureImageFailed => 'Sliku nije moguće dodati. Pokušajte s manjim PNG-om ili JPEG-om.';
 
   @override
   String get settingsSignatureWhenToUse => 'Kada koristiti';
@@ -3716,8 +3566,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get settingsSignatureAddCopied => 'Dodaj adresu ili domenu…';
 
   @override
-  String get settingsSignatureCopiedPrompt =>
-      'Adresa ili domena, npr. client.example.';
+  String get settingsSignatureCopiedPrompt => 'Adresa ili domena, npr. client.example.';
 
   @override
   String get settingsSignatureScheduled => 'Zakazano';
@@ -3736,8 +3585,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get settingsSignatureRotation => 'U rotaciji';
 
   @override
-  String get settingsSignatureRotationFooter =>
-      'Svaka nova poruka nasumično dobiva jedan od potpisa u rotaciji.';
+  String get settingsSignatureRotationFooter => 'Svaka nova poruka nasumično dobiva jedan od potpisa u rotaciji.';
 
   @override
   String get settingsSignatureMakeDefault => 'Postavi kao zadani';
@@ -3799,8 +3647,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get settingsUndoSendDelay => 'Vrijeme za poništavanje slanja';
 
   @override
-  String get settingsUndoSendDelayFooter =>
-      'Poslane poruke čekaju ovoliko dugo kako biste ih mogli povući.';
+  String get settingsUndoSendDelayFooter => 'Poslane poruke čekaju ovoliko dugo kako biste ih mogli povući.';
 
   @override
   String settingsUndoSendSeconds(int seconds) {
@@ -3845,15 +3692,13 @@ class AppLocalizationsHr extends AppLocalizations {
   String get settingsReadingHeader => 'Čitanje';
 
   @override
-  String get settingsReadingFooter =>
-      'Udaljene slike mogu pošiljateljima otkriti kada i gdje ste otvorili poruku.';
+  String get settingsReadingFooter => 'Udaljene slike mogu pošiljateljima otkriti kada i gdje ste otvorili poruku.';
 
   @override
   String get settingsDefaultView => 'Zadani prikaz';
 
   @override
-  String get settingsDefaultViewFooter =>
-      'Prikaz bilo koje poruke možete promijeniti gumbom Aa.';
+  String get settingsDefaultViewFooter => 'Prikaz bilo koje poruke možete promijeniti gumbom Aa.';
 
   @override
   String get settingsViewReadable => 'Čitljivo';
@@ -3865,8 +3710,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get settingsViewOriginal => 'Izvorno';
 
   @override
-  String get settingsViewOriginalDetail =>
-      'Točno onako kako ju je pošiljatelj osmislio';
+  String get settingsViewOriginalDetail => 'Točno onako kako ju je pošiljatelj osmislio';
 
   @override
   String get settingsViewPlain => 'Čisti tekst';
@@ -3884,8 +3728,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get settingsFontMono => 'Fiksna širina';
 
   @override
-  String get settingsFontMonoDetail =>
-      'Zadržava poravnanje ASCII crteža i tablica';
+  String get settingsFontMonoDetail => 'Zadržava poravnanje ASCII crteža i tablica';
 
   @override
   String get settingsTechnicalLists => 'Tehničke liste';
@@ -3897,8 +3740,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get settingsOpenLinksDirectly => 'Otvaraj poveznice izravno';
 
   @override
-  String get settingsOpenLinksDirectlyDetail =>
-      'Zaobiđi praćenje klikova kad je odredište poznato';
+  String get settingsOpenLinksDirectlyDetail => 'Zaobiđi praćenje klikova kad je odredište poznato';
 
   @override
   String get settingsSecurityHeader => 'Sigurnost';
@@ -3927,8 +3769,7 @@ class AppLocalizationsHr extends AppLocalizations {
       'Zaključavanje aplikacije koristi Face ID, Touch ID ili šifru, a ovaj iPhone nema šifru. Postavite je u aplikaciji Postavke, a zatim uključite zaključavanje aplikacije.';
 
   @override
-  String get settingsScreenLockTitleAndroid =>
-      'Postavite zaključavanje zaslona';
+  String get settingsScreenLockTitleAndroid => 'Postavite zaključavanje zaslona';
 
   @override
   String get settingsScreenLockTextAndroid =>
@@ -3944,8 +3785,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get settingsLockAfter => 'Zaključaj nakon';
 
   @override
-  String get settingsLockAfterFooter =>
-      'Koliko dugo Loupe može biti u pozadini prije nego što ponovno pita.';
+  String get settingsLockAfterFooter => 'Koliko dugo Loupe može biti u pozadini prije nego što ponovno pita.';
 
   @override
   String get settingsNotifications => 'Obavijesti';
@@ -3970,8 +3810,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get settingsResetApp => 'Vrati aplikaciju na početno';
 
   @override
-  String get settingsResetFooter =>
-      'Zaboravlja sve postavke i vraća se na početni zaslon.';
+  String get settingsResetFooter => 'Zaboravlja sve postavke i vraća se na početni zaslon.';
 
   @override
   String get settingsResetTitle => 'Vratiti Loupe na početno?';
@@ -3997,12 +3836,10 @@ class AppLocalizationsHr extends AppLocalizations {
       'Loupe nema analitike ni praćenja. Vaša pošta ide samo na vaše poslužitelje e-pošte.';
 
   @override
-  String get settingsNotificationsOffIos =>
-      'Obavijesti za Loupe isključene su u Postavkama.';
+  String get settingsNotificationsOffIos => 'Obavijesti za Loupe isključene su u Postavkama.';
 
   @override
-  String get settingsNotificationsOffAndroid =>
-      'Obavijesti za Loupe isključene su u postavkama Androida.';
+  String get settingsNotificationsOffAndroid => 'Obavijesti za Loupe isključene su u postavkama Androida.';
 
   @override
   String settingsNotificationsBlockedFooter(String system) {
@@ -4045,8 +3882,7 @@ class AppLocalizationsHr extends AppLocalizations {
       'Sakrij sadržaj uklanja pošiljatelja, predmet i pretpregled sa zaključanog zaslona i iz obavijesti.';
 
   @override
-  String get settingsBackgroundAppRefresh =>
-      'Osvježavanje aplikacija u pozadini';
+  String get settingsBackgroundAppRefresh => 'Osvježavanje aplikacija u pozadini';
 
   @override
   String get settingsBackgroundRefreshFooter =>
@@ -4070,8 +3906,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get settingsComingSoon => 'Uskoro';
 
   @override
-  String get settingsAllowUnrestrictedBattery =>
-      'Dopusti neograničenu upotrebu baterije';
+  String get settingsAllowUnrestrictedBattery => 'Dopusti neograničenu upotrebu baterije';
 
   @override
   String get settingsPush => 'Push';
@@ -4097,16 +3932,14 @@ class AppLocalizationsHr extends AppLocalizations {
   String get settingsAppIconBadge => 'Značka na ikoni aplikacije';
 
   @override
-  String get settingsBadgeNote =>
-      'Značka se ažurira kad god Loupe provjerava poštu, i u pozadini.';
+  String get settingsBadgeNote => 'Značka se ažurira kad god Loupe provjerava poštu, i u pozadini.';
 
   @override
   String get settingsBadgeUnsupportedFooter =>
       'Početni zaslon ovog telefona ne prikazuje brojeve na ikonama aplikacija. Značka se ažurira kad god Loupe provjerava poštu, i u pozadini.';
 
   @override
-  String get settingsTestNotificationBody =>
-      'Obavijesti o novoj pošti izgledaju ovako.';
+  String get settingsTestNotificationBody => 'Obavijesti o novoj pošti izgledaju ovako.';
 
   @override
   String get settingsAccountRemoved => 'Ovaj je račun uklonjen.';
@@ -4127,8 +3960,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get settingsColour => 'Boja';
 
   @override
-  String get settingsColourFooter =>
-      'Označava poruke ovog računa u prikazu Sva pristigla pošta.';
+  String get settingsColourFooter => 'Označava poruke ovog računa u prikazu Sva pristigla pošta.';
 
   @override
   String settingsColourNumber(int number) {
@@ -4220,12 +4052,10 @@ class AppLocalizationsHr extends AppLocalizations {
       'Prvi identitet zadan je za nove poruke. Povucite da biste promijenili redoslijed.';
 
   @override
-  String get settingsIdentitiesFooterSingle =>
-      'Zadani identitet za nove poruke.';
+  String get settingsIdentitiesFooterSingle => 'Zadani identitet za nove poruke.';
 
   @override
-  String get settingsIdentitiesReplyFooter =>
-      'Odgovor se šalje s identiteta na koji je poruka poslana.';
+  String get settingsIdentitiesReplyFooter => 'Odgovor se šalje s identiteta na koji je poruka poslana.';
 
   @override
   String get settingsIdentityDefault => 'Zadano';
@@ -4257,8 +4087,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get settingsCopyToMyself => 'Kopija meni';
 
   @override
-  String get settingsCopyToMyselfFooter =>
-      'Dodaje se svakoj poruci s ovog identiteta.';
+  String get settingsCopyToMyselfFooter => 'Dodaje se svakoj poruci s ovog identiteta.';
 
   @override
   String get settingsCc => 'Kopija';
@@ -4274,8 +4103,7 @@ class AppLocalizationsHr extends AppLocalizations {
       'Odgovori na poruke poslane na ove adrese šalju se s ovog identiteta. * zamjenjuje bilo što: *@example.com, me+*@example.com.';
 
   @override
-  String get settingsReplyPatternPrompt =>
-      'Adresa ili uzorak u kojem * zamjenjuje bilo što.';
+  String get settingsReplyPatternPrompt => 'Adresa ili uzorak u kojem * zamjenjuje bilo što.';
 
   @override
   String get settingsAddReplyPattern => 'Dodaj adresu ili uzorak';
@@ -4297,8 +4125,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get settingsIdentityNoAddressTitle => 'Nema adrese';
 
   @override
-  String get settingsIdentityNoAddressMessage =>
-      'Unesite adresu e-pošte s koje želite slati.';
+  String get settingsIdentityNoAddressMessage => 'Unesite adresu e-pošte s koje želite slati.';
 
   @override
   String get settingsIdentityInvalidAddressTitle => 'Nevaljana adresa';
@@ -4329,12 +4156,10 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get settingsDeleteIdentityMessage =>
-      'Poruke koje su već poslane s njega ostaju kakve jesu.';
+  String get settingsDeleteIdentityMessage => 'Poruke koje su već poslane s njega ostaju kakve jesu.';
 
   @override
-  String get settingsLastIdentityFooter =>
-      'Račun treba imati barem jedan identitet.';
+  String get settingsLastIdentityFooter => 'Račun treba imati barem jedan identitet.';
 
   @override
   String get rulesTitle => 'Pravila';
@@ -4406,8 +4231,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get rulesStatusUnavailable => 'Nije dostupno';
 
   @override
-  String get rulesStatusNoSieve =>
-      'Poslužitelj ovog računa ne nudi Sieve (ManageSieve ni JMAP).';
+  String get rulesStatusNoSieve => 'Poslužitelj ovog računa ne nudi Sieve (ManageSieve ni JMAP).';
 
   @override
   String rulesActionMove(String folder) {
@@ -4489,8 +4313,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get rulesRemovedAccount => 'Uklonjeni račun';
 
   @override
-  String get rulesAccountsFooter =>
-      'Pravilo za sve račune obuhvaća i račune koje dodate kasnije.';
+  String get rulesAccountsFooter => 'Pravilo za sve račune obuhvaća i račune koje dodate kasnije.';
 
   @override
   String get rulesActionsHeader => 'Tada';
@@ -4552,8 +4375,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get rulesMoveAccountTitle => 'Mapa u kojem računu?';
 
   @override
-  String get rulesMoveAccountMessage =>
-      'Pošta ostalih računa ide u mapu istog naziva u tim računima.';
+  String get rulesMoveAccountMessage => 'Pošta ostalih računa ide u mapu istog naziva u tim računima.';
 
   @override
   String get rulesAddTag => 'Dodaj oznaku';
@@ -4592,26 +4414,22 @@ class AppLocalizationsHr extends AppLocalizations {
   String get rulesChooseActionTitle => 'Odaberite radnju';
 
   @override
-  String get rulesChooseActionMessage =>
-      'Dodajte što pravilo radi s porukama koje mu odgovaraju.';
+  String get rulesChooseActionMessage => 'Dodajte što pravilo radi s porukama koje mu odgovaraju.';
 
   @override
   String get rulesSaveError => 'Pravilo nije bilo moguće spremiti';
 
   @override
-  String get rulesSaveServerError =>
-      'Pravilo na poslužitelju nije bilo moguće spremiti';
+  String get rulesSaveServerError => 'Pravilo na poslužitelju nije bilo moguće spremiti';
 
   @override
-  String get rulesRunOnDeviceInstead =>
-      'Umjesto toga izvršavaj na ovom uređaju';
+  String get rulesRunOnDeviceInstead => 'Umjesto toga izvršavaj na ovom uređaju';
 
   @override
   String get rulesNothingToApplyTitle => 'Nema se što primijeniti';
 
   @override
-  String get rulesNothingToApplyMessage =>
-      'Najprije pravilu zadajte valjan uvjet i radnju.';
+  String get rulesNothingToApplyMessage => 'Najprije pravilu zadajte valjan uvjet i radnju.';
 
   @override
   String rulesApplyScopeTitle(String rule) {
@@ -4643,8 +4461,7 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String rulesApplyConfirmTitle(int count, String rule) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4659,8 +4476,7 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String rulesApplyConfirm(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4675,8 +4491,7 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String rulesApplied(int count, String rule) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4719,8 +4534,7 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String rulesMatchingCount(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4735,8 +4549,7 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String rulesMatchingCountMore(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4766,8 +4579,7 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String rulesPreviewMore(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4861,8 +4673,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get subscriptionsNoNewsletters => 'Nema biltena';
 
   @override
-  String get subscriptionsNoNewslettersDetail =>
-      'Bilteni i druga masovna pošta pojavit će se ovdje kad stignu.';
+  String get subscriptionsNoNewslettersDetail => 'Bilteni i druga masovna pošta pojavit će se ovdje kad stignu.';
 
   @override
   String get subscriptionsNothingNeverRead => 'Nema nikad pročitanih';
@@ -4871,8 +4682,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get subscriptionsNothingRarelyRead => 'Nema rijetko pročitanih';
 
   @override
-  String get subscriptionsNothingFilteredDetail =>
-      'Od svega što primate ponešto pročitate.';
+  String get subscriptionsNothingFilteredDetail => 'Od svega što primate ponešto pročitate.';
 
   @override
   String get subscriptionsNoDiscussions => 'Nema rasprava';
@@ -4949,8 +4759,7 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String subscriptionsArchiveInbox(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4967,15 +4776,13 @@ class AppLocalizationsHr extends AppLocalizations {
   String get subscriptionsCreateRule => 'Izradi pravilo…';
 
   @override
-  String get subscriptionsCreateRuleDetail =>
-      'Premještaj ili arhiviraj njegovu buduću poštu';
+  String get subscriptionsCreateRuleDetail => 'Premještaj ili arhiviraj njegovu buduću poštu';
 
   @override
   String get subscriptionsTreatAsDiscussion => 'Smatraj raspravom';
 
   @override
-  String get subscriptionsTreatAsDiscussionDetail =>
-      'Lista na koju ljudi pišu: čitajte je kao forum';
+  String get subscriptionsTreatAsDiscussionDetail => 'Lista na koju ljudi pišu: čitajte je kao forum';
 
   @override
   String get subscriptionsTreatAsNewsletter => 'Smatraj biltenom';
@@ -5002,16 +4809,14 @@ class AppLocalizationsHr extends AppLocalizations {
   String get subscriptionsOpenDefaultView => 'Otvori u zadanom prikazu';
 
   @override
-  String get subscriptionsOpenPlainText =>
-      'Otvori kao čisti tekst (fiksna širina)';
+  String get subscriptionsOpenPlainText => 'Otvori kao čisti tekst (fiksna širina)';
 
   @override
   String get subscriptionsPinned => 'Prikvačeno';
 
   @override
   String subscriptionsUnreadCount(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -5025,8 +4830,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoMailNow =>
-      'Trenutačno nema pošte od ovog pošiljatelja.';
+  String get subscriptionsNoMailNow => 'Trenutačno nema pošte od ovog pošiljatelja.';
 
   @override
   String get subscriptionsLatestMessages => 'NAJNOVIJE PORUKE';
@@ -5042,12 +4846,9 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String subscriptionsReadDetail(String percent, int read, int total) {
-    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(
-      localeName,
-    );
+    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String readString = readNumberFormat.format(read);
-    final intl.NumberFormat totalNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
 
     return '$percent · $readString od $totalString';
@@ -5058,11 +4859,7 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String subscriptionsFolders(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Nalazi se u',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Nalazi se u');
     return '$_temp0';
   }
 
@@ -5108,8 +4905,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickFailedTitle =>
-      'Automatska odjava nije uspjela';
+  String get subscriptionsOneClickFailedTitle => 'Automatska odjava nije uspjela';
 
   @override
   String get subscriptionsSendUnsubscribeEmail => 'Pošalji e-poruku za odjavu';
@@ -5133,8 +4929,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsWebInsecure =>
-      'Veza s ovim web-mjestom nije šifrirana.';
+  String get subscriptionsWebInsecure => 'Veza s ovim web-mjestom nije šifrirana.';
 
   @override
   String subscriptionsHomographWarning(String site) {
@@ -5171,8 +4966,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickNotAllowed =>
-      'Poveznica za odjavu nije sigurna internetska adresa.';
+  String get subscriptionsOneClickNotAllowed => 'Poveznica za odjavu nije sigurna internetska adresa.';
 
   @override
   String subscriptionsOneClickTimeout(String site) {
@@ -5195,8 +4989,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoAccountToSend =>
-      'Nema računa s kojeg bi se poslala e-poruka za odjavu.';
+  String get subscriptionsNoAccountToSend => 'Nema računa s kojeg bi se poslala e-poruka za odjavu.';
 
   @override
   String subscriptionsMailConfirm(String to, String from, String subject) {
@@ -5268,8 +5061,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get rulesDescribeAccount => 'Račun';
 
   @override
-  String get rulesDescribeHint =>
-      'Premjesti račune od Harbor Coffee u Receipts';
+  String get rulesDescribeHint => 'Premjesti račune od Harbor Coffee u Receipts';
 
   @override
   String rulesDescribeSentNote(String account) {
@@ -5308,8 +5100,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get rulesDescribeScopeChoose =>
-      'Gdje će se pravilo izvršavati, odabirete u uređivaču pravila.';
+  String get rulesDescribeScopeChoose => 'Gdje će se pravilo izvršavati, odabirete u uređivaču pravila.';
 
   @override
   String rulesDescribeCantDoHeader(int count) {
@@ -5328,12 +5119,9 @@ class AppLocalizationsHr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          'Iz pravila je izostavljeno $count dijelova i ništa nije stavljeno na njihovo mjesto.',
-      few:
-          'Iz pravila su izostavljena $count dijela i ništa nije stavljeno na njihovo mjesto.',
-      one:
-          'Iz pravila je izostavljen $count dio i ništa nije stavljeno na njegovo mjesto.',
+      other: 'Iz pravila je izostavljeno $count dijelova i ništa nije stavljeno na njihovo mjesto.',
+      few: 'Iz pravila su izostavljena $count dijela i ništa nije stavljeno na njihovo mjesto.',
+      one: 'Iz pravila je izostavljen $count dio i ništa nije stavljeno na njegovo mjesto.',
     );
     return '$_temp0';
   }
@@ -5363,8 +5151,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get rulesDescribeReasonOther => 'Pravila to ne mogu.';
 
   @override
-  String get rulesDescribeSuggestion =>
-      'Riječi koje Loupe umjesto toga može tražiti:';
+  String get rulesDescribeSuggestion => 'Riječi koje Loupe umjesto toga može tražiti:';
 
   @override
   String get rulesDescribeQuestions => 'Loupe treba znati';
@@ -5377,22 +5164,17 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String rulesDescribeDryRunCount(int total, int matched, String account) {
-    final intl.NumberFormat totalNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
-    final intl.NumberFormat matchedNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String matchedString = matchedNumberFormat.format(matched);
 
     String _temp0 = intl.Intl.pluralLogic(
       total,
       locale: localeName,
-      other:
-          'Pravilo bi obuhvatilo $matchedString od $totalString preuzetih poruka u računu $account',
-      few:
-          'Pravilo bi obuhvatilo $matchedString od $totalString preuzete poruke u računu $account',
-      one:
-          'Pravilo bi obuhvatilo $matchedString od $totalString preuzete poruke u računu $account',
+      other: 'Pravilo bi obuhvatilo $matchedString od $totalString preuzetih poruka u računu $account',
+      few: 'Pravilo bi obuhvatilo $matchedString od $totalString preuzete poruke u računu $account',
+      one: 'Pravilo bi obuhvatilo $matchedString od $totalString preuzete poruke u računu $account',
     );
     return '$_temp0';
   }
@@ -5409,8 +5191,7 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String rulesDescribeDryRunCapped(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -5425,26 +5206,21 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String rulesDescribeDryRunUnchecked(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          '$countString poruka nije bilo moguće provjeriti bez preuzimanja njihova teksta.',
-      few:
-          '$countString poruke nije bilo moguće provjeriti bez preuzimanja njihova teksta.',
-      one:
-          '$countString poruku nije bilo moguće provjeriti bez preuzimanja njezina teksta.',
+      other: '$countString poruka nije bilo moguće provjeriti bez preuzimanja njihova teksta.',
+      few: '$countString poruke nije bilo moguće provjeriti bez preuzimanja njihova teksta.',
+      one: '$countString poruku nije bilo moguće provjeriti bez preuzimanja njezina teksta.',
     );
     return '$_temp0';
   }
 
   @override
-  String get rulesDescribeDryRunFailed =>
-      'Loupe nije mogao provjeriti poštu na ovom telefonu.';
+  String get rulesDescribeDryRunFailed => 'Loupe nije mogao provjeriti poštu na ovom telefonu.';
 
   @override
   String get rulesDescribeOpenEditor => 'Otvori u uređivaču pravila';
@@ -5469,8 +5245,7 @@ class AppLocalizationsHr extends AppLocalizations {
           'Loupe ne može izvršiti $count dijelova vašeg opisa pa su izostavljeni i ništa nije stavljeno na njihovo mjesto.',
       few:
           'Loupe ne može izvršiti $count dijela vašeg opisa pa su izostavljena i ništa nije stavljeno na njihovo mjesto.',
-      one:
-          'Loupe ne može izvršiti $count dio vašeg opisa pa je izostavljen i ništa nije stavljeno na njegovo mjesto.',
+      one: 'Loupe ne može izvršiti $count dio vašeg opisa pa je izostavljen i ništa nije stavljeno na njegovo mjesto.',
     );
     return '$_temp0';
   }
@@ -5479,8 +5254,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get appLiveGateTitle => 'Vaše račune nije bilo moguće otvoriti';
 
   @override
-  String get appLiveGateUnavailableBuild =>
-      'Pravi računi još nisu dostupni u ovoj verziji.';
+  String get appLiveGateUnavailableBuild => 'Pravi računi još nisu dostupni u ovoj verziji.';
 
   @override
   String get appLiveGateKeyUnreadable =>
@@ -5528,8 +5302,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get attachmentsShareMenu => 'Dijeli…';
 
   @override
-  String get attachmentsDownloadError =>
-      'Privitak nije bilo moguće preuzeti. Provjerite vezu i pokušajte ponovno.';
+  String get attachmentsDownloadError => 'Privitak nije bilo moguće preuzeti. Provjerite vezu i pokušajte ponovno.';
 
   @override
   String get attachmentsShareError => 'Privitak nije bilo moguće podijeliti.';
@@ -5540,8 +5313,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get attachmentsOpenInError =>
-      'Privitak nije bilo moguće otvoriti u drugoj aplikaciji.';
+  String get attachmentsOpenInError => 'Privitak nije bilo moguće otvoriti u drugoj aplikaciji.';
 
   @override
   String attachmentsSaved(String name) {
@@ -5575,8 +5347,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get attachmentsLargeDownload =>
-      'Ovaj je privitak velik. Preuzmite ga sada ili kasnije putem Wi-Fija.';
+  String get attachmentsLargeDownload => 'Ovaj je privitak velik. Preuzmite ga sada ili kasnije putem Wi-Fija.';
 
   @override
   String get attachmentsDownload => 'Preuzmi';
@@ -5598,8 +5369,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get attachmentsPdfUnavailable =>
-      'Ovaj PDF ne može se ovdje prikazati (možda je zaštićen lozinkom).';
+  String get attachmentsPdfUnavailable => 'Ovaj PDF ne može se ovdje prikazati (možda je zaštićen lozinkom).';
 
   @override
   String attachmentsPageOf(int page, int count) {
@@ -5643,8 +5413,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get attachmentsCopied => 'Kopirano';
 
   @override
-  String get attachmentsImageUnavailable =>
-      'Ova se slika ne može ovdje prikazati. Pokušajte Otvori u…';
+  String get attachmentsImageUnavailable => 'Ova se slika ne može ovdje prikazati. Pokušajte Otvori u…';
 
   @override
   String get attachmentsEmlNoSubject => '(Bez predmeta)';
@@ -5878,8 +5647,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get calendarCancelled => 'Otkazano';
 
   @override
-  String get calendarCancelledByOrganizer =>
-      'Organizator je otkazao ovaj događaj.';
+  String get calendarCancelledByOrganizer => 'Organizator je otkazao ovaj događaj.';
 
   @override
   String get calendarCancelledLater => 'Ovaj je događaj kasnije otkazan.';
@@ -5888,8 +5656,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get calendarOutdated => 'Zastarjelo';
 
   @override
-  String get calendarOutdatedDetail =>
-      'Ova je pozivnica kasnije ažurirana; vrijedi novija.';
+  String get calendarOutdatedDetail => 'Ova je pozivnica kasnije ažurirana; vrijedi novija.';
 
   @override
   String calendarLocationRemoved(String location) {
@@ -5897,8 +5664,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get calendarLocationRemovedNone =>
-      'Mjesto uklonjeno (prije nije bilo navedeno)';
+  String get calendarLocationRemovedNone => 'Mjesto uklonjeno (prije nije bilo navedeno)';
 
   @override
   String calendarLocationChanged(String location) {
@@ -5946,31 +5712,19 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String calendarAcceptedCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'prihvaćeno: $count',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'prihvaćeno: $count');
     return '$_temp0';
   }
 
   @override
   String calendarMaybeCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'možda: $count',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'možda: $count');
     return '$_temp0';
   }
 
   @override
   String calendarDeclinedCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'odbijeno: $count',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'odbijeno: $count');
     return '$_temp0';
   }
 
@@ -6033,8 +5787,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get calendarNoCalendarApp =>
-      'Nema aplikacije kalendara u koju bi se dodao događaj.';
+  String get calendarNoCalendarApp => 'Nema aplikacije kalendara u koju bi se dodao događaj.';
 
   @override
   String get calendarCantOpenCalendar => 'Kalendar nije bilo moguće otvoriti.';
@@ -6061,8 +5814,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get calendarJoinHomographUnknown =>
-      'Oprez: ova adresa oponaša drugo web-mjesto slovima sličnog izgleda.';
+  String get calendarJoinHomographUnknown => 'Oprez: ova adresa oponaša drugo web-mjesto slovima sličnog izgleda.';
 
   @override
   String calendarJoinOpen(String host) {
@@ -6070,8 +5822,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get calendarNoOrganizer =>
-      'Ova pozivnica nema organizatora kojem bi se odgovorilo.';
+  String get calendarNoOrganizer => 'Ova pozivnica nema organizatora kojem bi se odgovorilo.';
 
   @override
   String get calendarNoAccount => 'Nema računa s kojeg bi se odgovorilo.';
@@ -6172,8 +5923,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get keyboardKeyBackspace => 'Backspace';
 
   @override
-  String get mailingListsMuted =>
-      'Nit je utišana. Nove poruke u njoj stižu kao pročitane.';
+  String get mailingListsMuted => 'Nit je utišana. Nove poruke u njoj stižu kao pročitane.';
 
   @override
   String get mailingListsUnmuted => 'Nit više nije utišana.';
@@ -6251,8 +6001,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get mailingListsTechnicalTitle => 'Tehničke liste';
 
   @override
-  String get mailingListsTechnicalEmpty =>
-      'Dopisne liste pojavit će se ovdje kad stigne njihova pošta.';
+  String get mailingListsTechnicalEmpty => 'Dopisne liste pojavit će se ovdje kad stigne njihova pošta.';
 
   @override
   String get mailingListsTechnicalFooter =>
@@ -6416,8 +6165,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get searchSearchingUnknownAccount =>
-      'Pretraživanje računa na poslužitelju…';
+  String get searchSearchingUnknownAccount => 'Pretraživanje računa na poslužitelju…';
 
   @override
   String searchAccountFailed(String account) {
@@ -6425,8 +6173,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get searchUnknownAccountFailed =>
-      'Pretraživanje računa na poslužitelju nije uspjelo';
+  String get searchUnknownAccountFailed => 'Pretraživanje računa na poslužitelju nije uspjelo';
 
   @override
   String searchChip(String term) {
@@ -6489,8 +6236,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get searchSettingsTitle => 'Smart Mailboxes';
 
   @override
-  String get searchSettingsLocalFooter =>
-      'Smart Mailboxes ostaju na ovom uređaju.';
+  String get searchSettingsLocalFooter => 'Smart Mailboxes ostaju na ovom uređaju.';
 
   @override
   String searchSettingsServerFooter(String account) {
@@ -6789,8 +6535,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get sharedMoveOneAccount =>
-      'Odaberite poruke s jednog računa da biste ih premjestili.';
+  String get sharedMoveOneAccount => 'Odaberite poruke s jednog računa da biste ih premjestili.';
 
   @override
   String get sharedSnoozeTitle => 'Odgodi';
@@ -6970,12 +6715,10 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get documentsStatusNotDownloaded =>
-      'Nije preuzeto: otvorite ga da biste ga mogli čitati i pretraživati.';
+  String get documentsStatusNotDownloaded => 'Nije preuzeto: otvorite ga da biste ga mogli čitati i pretraživati.';
 
   @override
-  String get documentsStatusEncrypted =>
-      'Zaštićeno lozinkom: Loupe ga ne može pročitati.';
+  String get documentsStatusEncrypted => 'Zaštićeno lozinkom: Loupe ga ne može pročitati.';
 
   @override
   String get documentsStatusNoText =>
@@ -6985,16 +6728,13 @@ class AppLocalizationsHr extends AppLocalizations {
   String get documentsStatusEmpty => 'Ova datoteka nema teksta.';
 
   @override
-  String get documentsStatusUnsupported =>
-      'Loupe još ne može čitati ovu vrstu dokumenata.';
+  String get documentsStatusUnsupported => 'Loupe još ne može čitati ovu vrstu dokumenata.';
 
   @override
-  String get documentsStatusTooLarge =>
-      'Preveliko za čitanje na ovom telefonu.';
+  String get documentsStatusTooLarge => 'Preveliko za čitanje na ovom telefonu.';
 
   @override
-  String get documentsStatusDamaged =>
-      'Nije bilo moguće pročitati: datoteka je možda oštećena.';
+  String get documentsStatusDamaged => 'Nije bilo moguće pročitati: datoteka je možda oštećena.';
 
   @override
   String documentsStatusPartial(int read, int total) {
@@ -7009,8 +6749,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get documentsStatusPartialText =>
-      'Pročitan je samo početak; ostatak se ne pretražuje.';
+  String get documentsStatusPartialText => 'Pročitan je samo početak; ostatak se ne pretražuje.';
 
   @override
   String get documentsOpenDocument => 'Otvori dokument';
@@ -7058,8 +6797,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get documentsNoFactChanges =>
-      'Ključni su podaci isti; razlikuje se drugi dio teksta.';
+  String get documentsNoFactChanges => 'Ključni su podaci isti; razlikuje se drugi dio teksta.';
 
   @override
   String get documentsKeyFacts => 'Ključni podaci';
@@ -7071,8 +6809,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get documentsKeyFactsWorking => 'Čitanje dokumenta…';
 
   @override
-  String get documentsKeyFactsFailed =>
-      'Ključne podatke nije bilo moguće pronaći.';
+  String get documentsKeyFactsFailed => 'Ključne podatke nije bilo moguće pronaći.';
 
   @override
   String get documentsKeyFactsDemoNote => 'Izradio ugrađeni demo, a ne model.';
@@ -7083,16 +6820,13 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get documentsKeyFactsHint =>
-      'Dodirnite podatak da biste vidjeli gdje ga dokument navodi.';
+  String get documentsKeyFactsHint => 'Dodirnite podatak da biste vidjeli gdje ga dokument navodi.';
 
   @override
-  String get documentsKeyFactsNone =>
-      'Loupe još nema ključne podatke za ovu vrstu dokumenata.';
+  String get documentsKeyFactsNone => 'Loupe još nema ključne podatke za ovu vrstu dokumenata.';
 
   @override
-  String get documentsKeyFactsPartial =>
-      'Pročitane su samo prve stranice; podaci na kasnijim stranicama nisu poznati.';
+  String get documentsKeyFactsPartial => 'Pročitane su samo prve stranice; podaci na kasnijim stranicama nisu poznati.';
 
   @override
   String get documentsKeyFactsNotStated => 'Nije navedeno';
@@ -7142,8 +6876,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get documentsFieldBrokerFee => 'Naknada posredniku';
 
   @override
-  String get documentsFieldEarlyRepaymentCharges =>
-      'Naknade za prijevremenu otplatu';
+  String get documentsFieldEarlyRepaymentCharges => 'Naknade za prijevremenu otplatu';
 
   @override
   String get documentsFieldTotalAmountPayable => 'Ukupan iznos za plaćanje';
@@ -7200,8 +6933,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get accountSetupAddressTitle => 'Dodajte račun e-pošte';
 
   @override
-  String get accountSetupAddressText =>
-      'Loupe pronalazi postavke za većinu pružatelja.';
+  String get accountSetupAddressText => 'Loupe pronalazi postavke za većinu pružatelja.';
 
   @override
   String get accountSetupNameHint => 'Vaše ime';
@@ -7230,8 +6962,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get accountSetupCheckServers =>
-      'Provjerite nazive poslužitelja i priključke.';
+  String get accountSetupCheckServers => 'Provjerite nazive poslužitelja i priključke.';
 
   @override
   String get accountSetupEnterPassword => 'Unesite lozinku.';
@@ -7245,8 +6976,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get accountSetupCouldNotOpenPage =>
-      'Stranicu nije bilo moguće otvoriti.';
+  String get accountSetupCouldNotOpenPage => 'Stranicu nije bilo moguće otvoriti.';
 
   @override
   String get accountSetupCouldNotSaveName => 'Ime nije bilo moguće spremiti.';
@@ -7289,15 +7019,13 @@ class AppLocalizationsHr extends AppLocalizations {
   String get accountSetupUseAppPassword => 'Koristi lozinku aplikacije';
 
   @override
-  String get accountSetupUseAppPasswordInstead =>
-      'Umjesto toga koristi lozinku aplikacije';
+  String get accountSetupUseAppPasswordInstead => 'Umjesto toga koristi lozinku aplikacije';
 
   @override
   String get accountSetupUseDifferentAddress => 'Koristi drugu adresu';
 
   @override
-  String get accountSetupHowToCreateAppPassword =>
-      'Kako izraditi lozinku aplikacije';
+  String get accountSetupHowToCreateAppPassword => 'Kako izraditi lozinku aplikacije';
 
   @override
   String get accountSetupHowToCreateOne => 'Upute za izradu';
@@ -7327,16 +7055,14 @@ class AppLocalizationsHr extends AppLocalizations {
       'iCloud Mail zahtijeva lozinku specifičnu za aplikaciju, a ne lozinku vašeg Apple računa.';
 
   @override
-  String get accountSetupYahooNote =>
-      'Yahoo Mail zahtijeva lozinku aplikacije, a ne lozinku računa.';
+  String get accountSetupYahooNote => 'Yahoo Mail zahtijeva lozinku aplikacije, a ne lozinku računa.';
 
   @override
   String get accountSetupFastmailJmapNote =>
       'Loupe se s Fastmailom povezuje putem JMAP-a uz API token: Settings › Privacy & Security › Manage API tokens, za JMAP, s pristupom e-pošti i slanju.';
 
   @override
-  String get accountSetupFastmailNote =>
-      'Fastmail za aplikacije za e-poštu zahtijeva lozinku aplikacije.';
+  String get accountSetupFastmailNote => 'Fastmail za aplikacije za e-poštu zahtijeva lozinku aplikacije.';
 
   @override
   String get accountSetupServerSettings => 'Postavke poslužitelja';
@@ -7418,12 +7144,10 @@ class AppLocalizationsHr extends AppLocalizations {
       'Lozinka je odbijena. Koristite lozinku aplikacije, a ne lozinku računa.';
 
   @override
-  String get accountSetupPasswordRejected =>
-      'Lozinka je odbijena. Provjerite je i pokušajte ponovno.';
+  String get accountSetupPasswordRejected => 'Lozinka je odbijena. Provjerite je i pokušajte ponovno.';
 
   @override
-  String get accountSetupServerUnreachable =>
-      'Poslužitelj nije dostupan. Provjerite postavke poslužitelja i vezu.';
+  String get accountSetupServerUnreachable => 'Poslužitelj nije dostupan. Provjerite postavke poslužitelja i vezu.';
 
   @override
   String accountSetupCertificateUntrusted(String details) {
@@ -7497,11 +7221,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get accountSetupSigningIn => 'Prijava…';
 
   @override
-  String accountSetupSignInExpired(
-    String provider,
-    String email,
-    String account,
-  ) {
+  String accountSetupSignInExpired(String provider, String email, String account) {
     return '$provider više ne prihvaća prijavu aplikacije Loupe za $email pa se $account ne sinkronizira. Ponovno se prijavite da biste primali njegovu poštu.';
   }
 
@@ -7509,8 +7229,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get accountImportTitle => 'Uvezi iz Thunderbirda';
 
   @override
-  String get accountImportPointCamera =>
-      'Usmjerite kameru prema QR kodu koji prikazuje Thunderbird.';
+  String get accountImportPointCamera => 'Usmjerite kameru prema QR kodu koji prikazuje Thunderbird.';
 
   @override
   String accountImportProgress(int scanned, int total) {
@@ -7567,8 +7286,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get accountImportDuplicateCode => 'Taj je kod već dodan.';
 
   @override
-  String get accountImportRestarted =>
-      'Ovaj kod potječe iz novog izvoza pa su prethodno skenirani kodovi zanemareni.';
+  String get accountImportRestarted => 'Ovaj kod potječe iz novog izvoza pa su prethodno skenirani kodovi zanemareni.';
 
   @override
   String get accountImportNotThunderbird => 'Ovo nije kod Thunderbird računa.';
@@ -7578,16 +7296,13 @@ class AppLocalizationsHr extends AppLocalizations {
       'Ovaj kod potječe iz novijeg Thunderbirda. Ažurirajte Loupe da biste ga uvezli.';
 
   @override
-  String get accountImportDamaged =>
-      'Ovaj Thunderbird kod nije bilo moguće pročitati.';
+  String get accountImportDamaged => 'Ovaj Thunderbird kod nije bilo moguće pročitati.';
 
   @override
-  String get accountImportTooLarge =>
-      'Ovaj je kod prevelik da bi bio Thunderbirdov izvoz.';
+  String get accountImportTooLarge => 'Ovaj je kod prevelik da bi bio Thunderbirdov izvoz.';
 
   @override
-  String get accountImportCouldNotOpenSettings =>
-      'Postavke nije bilo moguće otvoriti.';
+  String get accountImportCouldNotOpenSettings => 'Postavke nije bilo moguće otvoriti.';
 
   @override
   String get accountImportCameraOffTitle => 'Pristup kameri je isključen';
@@ -7600,15 +7315,13 @@ class AppLocalizationsHr extends AppLocalizations {
   String get accountImportNoCameraTitle => 'Nema kamere';
 
   @override
-  String get accountImportNoCameraText =>
-      'Loupe ovdje ne može koristiti kameru. Umjesto toga zalijepite tekst koda.';
+  String get accountImportNoCameraText => 'Loupe ovdje ne može koristiti kameru. Umjesto toga zalijepite tekst koda.';
 
   @override
   String get accountImportCameraFailedTitle => 'Kamera se nije pokrenula';
 
   @override
-  String get accountImportCameraFailedText =>
-      'Pokušajte ponovno ili umjesto toga zalijepite tekst koda.';
+  String get accountImportCameraFailedText => 'Pokušajte ponovno ili umjesto toga zalijepite tekst koda.';
 
   @override
   String get accountImportOpenSettings => 'Otvori Postavke';
@@ -7627,24 +7340,19 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get accountImportNoneReadable =>
-      'Nijedan račun u ovim kodovima nije bilo moguće pročitati.';
+  String get accountImportNoneReadable => 'Nijedan račun u ovim kodovima nije bilo moguće pročitati.';
 
   @override
-  String get accountImportChoose =>
-      'Odaberite račune koje želite dodati u Loupe.';
+  String get accountImportChoose => 'Odaberite račune koje želite dodati u Loupe.';
 
   @override
   String accountImportMissingCodes(int count, String codes, int total) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          '$count kodova nije skenirano ($codes od $total), pa njihovi računi nisu navedeni.',
-      few:
-          '$count koda nisu skenirana ($codes od $total), pa njihovi računi nisu navedeni.',
-      one:
-          '$count kod nije skeniran ($codes od $total), pa njegovi računi nisu navedeni.',
+      other: '$count kodova nije skenirano ($codes od $total), pa njihovi računi nisu navedeni.',
+      few: '$count koda nisu skenirana ($codes od $total), pa njihovi računi nisu navedeni.',
+      one: '$count kod nije skeniran ($codes od $total), pa njegovi računi nisu navedeni.',
     );
     return '$_temp0';
   }
@@ -7662,12 +7370,9 @@ class AppLocalizationsHr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          '$count računa u kodovima nije bilo moguće pročitati. Možda koriste postavke iz novijeg Thunderbirda.',
-      few:
-          '$count računa u kodovima nije bilo moguće pročitati. Možda koriste postavke iz novijeg Thunderbirda.',
-      one:
-          '$count račun u kodovima nije bilo moguće pročitati. Možda koristi postavke iz novijeg Thunderbirda.',
+      other: '$count računa u kodovima nije bilo moguće pročitati. Možda koriste postavke iz novijeg Thunderbirda.',
+      few: '$count računa u kodovima nije bilo moguće pročitati. Možda koriste postavke iz novijeg Thunderbirda.',
+      one: '$count račun u kodovima nije bilo moguće pročitati. Možda koristi postavke iz novijeg Thunderbirda.',
     );
     return '$_temp0';
   }
@@ -7676,8 +7381,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get accountImportScanAgain => 'Skeniraj ponovno';
 
   @override
-  String get accountImportAlreadyAdded =>
-      'Račun s ovom adresom već je u aplikaciji Loupe.';
+  String get accountImportAlreadyAdded => 'Račun s ovom adresom već je u aplikaciji Loupe.';
 
   @override
   String accountImportSignsInWith(String provider) {
@@ -7685,8 +7389,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get accountImportGmailAppPassword =>
-      'Dodajte račun s lozinkom aplikacije (potrebna je potvrda u dva koraka).';
+  String get accountImportGmailAppPassword => 'Dodajte račun s lozinkom aplikacije (potrebna je potvrda u dva koraka).';
 
   @override
   String get accountImportGmailNoSignIn =>
@@ -7697,8 +7400,7 @@ class AppLocalizationsHr extends AppLocalizations {
       'Thunderbird se na ovaj račun prijavljuje u pregledniku. Loupe to još ne može: koristite lozinku aplikacije ako je vaš pružatelj nudi.';
 
   @override
-  String get accountImportUnencrypted =>
-      'Povezuje se bez šifriranja. Koristite ovo samo na vlastitoj mreži.';
+  String get accountImportUnencrypted => 'Povezuje se bez šifriranja. Koristite ovo samo na vlastitoj mreži.';
 
   @override
   String get accountImportEnterAgain => 'Unesite je ponovno';
@@ -7728,20 +7430,16 @@ class AppLocalizationsHr extends AppLocalizations {
   String get accountImportPasteTitle => 'Zalijepi tekst izvoza';
 
   @override
-  String get accountImportPasteText =>
-      'Zalijepite tekst Thunderbirdova koda za izvoz, jedan kod po retku.';
+  String get accountImportPasteText => 'Zalijepite tekst Thunderbirdova koda za izvoz, jedan kod po retku.';
 
   @override
-  String get accountImportPop3 =>
-      'POP3 računi nisu podržani. Loupe drži poštu na poslužitelju putem IMAP-a.';
+  String get accountImportPop3 => 'POP3 računi nisu podržani. Loupe drži poštu na poslužitelju putem IMAP-a.';
 
   @override
-  String get accountImportKerberos =>
-      'Ovaj se račun prijavljuje putem Kerberosa, koji Loupe ne podržava.';
+  String get accountImportKerberos => 'Ovaj se račun prijavljuje putem Kerberosa, koji Loupe ne podržava.';
 
   @override
-  String get accountImportNtlm =>
-      'Ovaj se račun prijavljuje putem NTLM-a, koji Loupe ne podržava.';
+  String get accountImportNtlm => 'Ovaj se račun prijavljuje putem NTLM-a, koji Loupe ne podržava.';
 
   @override
   String get accountImportClientCertificate =>
@@ -7761,12 +7459,10 @@ class AppLocalizationsHr extends AppLocalizations {
   String get accountImportEnterApiToken => 'Unesite API token.';
 
   @override
-  String get accountImportStorageFailed =>
-      'Loupe nije mogao otvoriti pohranu računa. Pokušajte ponovno kasnije.';
+  String get accountImportStorageFailed => 'Loupe nije mogao otvoriti pohranu računa. Pokušajte ponovno kasnije.';
 
   @override
-  String get accountImportFailed =>
-      'Račun nije bilo moguće dodati. Pokušajte ponovno ili ga dodajte ručno.';
+  String get accountImportFailed => 'Račun nije bilo moguće dodati. Pokušajte ponovno ili ga dodajte ručno.';
 
   @override
   String get composeReplyCheckTitle => 'Provjera odgovora';
@@ -8061,15 +7757,13 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get composeOriginalNotFound =>
-      'Izvornu poruku nije bilo moguće pronaći.';
+  String get composeOriginalNotFound => 'Izvornu poruku nije bilo moguće pronaći.';
 
   @override
   String get composeDraftNotFound => 'Skicu nije bilo moguće pronaći.';
 
   @override
-  String get composeAttachmentsLost =>
-      'Privitke nije bilo moguće vratiti. Dodajte ih ponovno.';
+  String get composeAttachmentsLost => 'Privitke nije bilo moguće vratiti. Dodajte ih ponovno.';
 
   @override
   String composeSomeAttachmentsFailed(String error) {
@@ -8096,12 +7790,10 @@ class AppLocalizationsHr extends AppLocalizations {
   String get composeNoSubjectTitle => 'Bez predmeta';
 
   @override
-  String get composeNoSubjectText =>
-      'Ova poruka nema predmet. Ipak je poslati?';
+  String get composeNoSubjectText => 'Ova poruka nema predmet. Ipak je poslati?';
 
   @override
-  String get composeSentBeforeChanges =>
-      'Poslana je prije vaših promjena, koje su spremljene u Skice.';
+  String get composeSentBeforeChanges => 'Poslana je prije vaših promjena, koje su spremljene u Skice.';
 
   @override
   String composeScheduled(String time) {
@@ -8146,8 +7838,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get composeForwardHeader =>
-      '---------- Proslijeđena poruka ----------';
+  String get composeForwardHeader => '---------- Proslijeđena poruka ----------';
 
   @override
   String composeForwardFrom(String addresses) {
@@ -8233,16 +7924,11 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String composeRecoveryWithSubject(
-    String recipients,
-    String subject,
-    String name,
-  ) {
+  String composeRecoveryWithSubject(String recipients, String subject, String name) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Poruka „$subject“ nije poslana kad se Loupe zatvorio.',
       'one': 'Poruka „$subject“ za $name nije poslana kad se Loupe zatvorio.',
-      'other':
-          'Poruka „$subject“ za $name i ostale nije poslana kad se Loupe zatvorio.',
+      'other': 'Poruka „$subject“ za $name i ostale nije poslana kad se Loupe zatvorio.',
     });
     return '$_temp0';
   }
@@ -8290,8 +7976,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get outboxEmptyTitle => 'Ništa za slanje';
 
   @override
-  String get outboxEmptyText =>
-      'Poruke koje šaljete kasnije čekaju ovdje dok ne dođe vrijeme.';
+  String get outboxEmptyText => 'Poruke koje šaljete kasnije čekaju ovdje dok ne dođe vrijeme.';
 
   @override
   String get outboxSendNow => 'Pošalji sada';
@@ -8338,8 +8023,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get outboxBeingSent => 'Ova se poruka upravo šalje.';
 
   @override
-  String get outboxActionFailed =>
-      'To nije uspjelo. Poruka je i dalje u izlaznom spremniku.';
+  String get outboxActionFailed => 'To nije uspjelo. Poruka je i dalje u izlaznom spremniku.';
 
   @override
   String get notificationsBadgeInboxes => 'Nepročitano u pristigloj pošti';
@@ -8351,8 +8035,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get notificationsVipChannel => 'VIP';
 
   @override
-  String get notificationsVipChannelDescription =>
-      'Nova pošta vaših VIP kontakata, na bilo kojem računu';
+  String get notificationsVipChannelDescription => 'Nova pošta vaših VIP kontakata, na bilo kojem računu';
 
   @override
   String notificationsAccountChannelDescription(String email) {
@@ -8394,8 +8077,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get platformInstantChannel => 'Trenutačna dostava';
 
   @override
-  String get platformInstantChannelDescription =>
-      'Prikazuje se dok Loupe prati novu poštu u pristigloj pošti';
+  String get platformInstantChannelDescription => 'Prikazuje se dok Loupe prati novu poštu u pristigloj pošti';
 
   @override
   String get platformInstantTitle => 'Praćenje nove pošte';
@@ -8404,8 +8086,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get platformInstantText => 'Trenutačna dostava je uključena';
 
   @override
-  String get platformErrorBox =>
-      'Nešto nije u redu pri prikazu. Vratite se i pokušajte ponovno.';
+  String get platformErrorBox => 'Nešto nije u redu pri prikazu. Vratite se i pokušajte ponovno.';
 
   @override
   String get welcomeTagline => 'Pošta jednostavna izvana\ni moćna iznutra.';
@@ -8414,22 +8095,19 @@ class AppLocalizationsHr extends AppLocalizations {
   String get welcomeAccountsTitle => 'Svi računi, jedan smiren sandučić';
 
   @override
-  String get welcomeAccountsText =>
-      'Gmail, Outlook, iCloud, Fastmail i bilo koji IMAP ili JMAP poslužitelj.';
+  String get welcomeAccountsText => 'Gmail, Outlook, iCloud, Fastmail i bilo koji IMAP ili JMAP poslužitelj.';
 
   @override
   String get welcomeSearchTitle => 'Pretraživanje koje pronalazi';
 
   @override
-  String get welcomeSearchText =>
-      'Trenutačni rezultati na telefonu, zatim s poslužitelja.';
+  String get welcomeSearchText => 'Trenutačni rezultati na telefonu, zatim s poslužitelja.';
 
   @override
   String get welcomePrivacyTitle => 'Privatnost po dizajnu';
 
   @override
-  String get welcomePrivacyText =>
-      'Bez praćenja. Udaljene slike ostaju blokirane dok ne odlučite drukčije.';
+  String get welcomePrivacyText => 'Bez praćenja. Udaljene slike ostaju blokirane dok ne odlučite drukčije.';
 
   @override
   String get welcomeAddAccount => 'Dodaj račun';
@@ -8456,8 +8134,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get searchAskNeedsAnswer => 'Loupe treba znati:';
 
   @override
-  String get searchAskFailed =>
-      'Loupe to nije mogao pretvoriti u pretraživanje.';
+  String get searchAskFailed => 'Loupe to nije mogao pretvoriti u pretraživanje.';
 
   @override
   String get searchAskDemoNote => 'Preveo ugrađeni demo, a ne model.';
@@ -8484,12 +8161,10 @@ class AppLocalizationsHr extends AppLocalizations {
   String get settingsAiDemo => 'Ugrađeni demo';
 
   @override
-  String get settingsAiDemoDetail =>
-      'Na ovom telefonu. Bez modela: nekoliko pravila za isprobavanje funkcija.';
+  String get settingsAiDemoDetail => 'Na ovom telefonu. Bez modela: nekoliko pravila za isprobavanje funkcija.';
 
   @override
-  String get settingsAiAnthropicDetail =>
-      'Oblak: Claude, s vašim vlastitim API ključem.';
+  String get settingsAiAnthropicDetail => 'Oblak: Claude, s vašim vlastitim API ključem.';
 
   @override
   String get settingsAiServer => 'Moj poslužitelj';
@@ -8502,8 +8177,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get settingsAiOnPhone => 'Na ovom telefonu';
 
   @override
-  String get settingsAiOnPhoneDetail =>
-      'Još nije dostupno: model na uređaju još se testira na telefonima.';
+  String get settingsAiOnPhoneDetail => 'Još nije dostupno: model na uređaju još se testira na telefonima.';
 
   @override
   String get settingsAiNotSetUp => 'Nije postavljeno';
@@ -8554,15 +8228,13 @@ class AppLocalizationsHr extends AppLocalizations {
       'Zajedno s putanjom API-ja, na primjer http://192.168.1.20:11434/v1 za Ollamu.';
 
   @override
-  String get settingsAiServerAddressInvalid =>
-      'To nije adresa http:// ni https://.';
+  String get settingsAiServerAddressInvalid => 'To nije adresa http:// ni https://.';
 
   @override
   String get settingsAiServerModelTitle => 'Naziv modela';
 
   @override
-  String get settingsAiServerModelMessage =>
-      'Kako ga naziva vaš poslužitelj, na primjer llama3.2.';
+  String get settingsAiServerModelMessage => 'Kako ga naziva vaš poslužitelj, na primjer llama3.2.';
 
   @override
   String get settingsAiTestConnection => 'Testiraj vezu';
@@ -8579,8 +8251,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get settingsAiTestFailed => 'Test nije uspio';
 
   @override
-  String get settingsAiTestInvalid =>
-      'Model je odgovorio, ali ne u obliku koji je Loupe tražio.';
+  String get settingsAiTestInvalid => 'Model je odgovorio, ali ne u obliku koji je Loupe tražio.';
 
   @override
   String get settingsAiRemoveKey => 'Ukloni ključ';
@@ -8650,36 +8321,28 @@ class AppLocalizationsHr extends AppLocalizations {
   String get settingsAiFeatureMatters => 'Stanje predmeta';
 
   @override
-  String get settingsAiFeatureSearchDetail =>
-      'U pretraživanju: rečenica postaje pretraga koju možete provjeriti.';
+  String get settingsAiFeatureSearchDetail => 'U pretraživanju: rečenica postaje pretraga koju možete provjeriti.';
 
   @override
-  String get settingsAiFeatureBriefDetail =>
-      'U poruci: što traži od vas, s odlomcima.';
+  String get settingsAiFeatureBriefDetail => 'U poruci: što traži od vas, s odlomcima.';
 
   @override
-  String get settingsAiFeatureActionsDetail =>
-      'Predlaže stavke za „Čeka mene“ i „Čeka druge“.';
+  String get settingsAiFeatureActionsDetail => 'Predlaže stavke za „Čeka mene“ i „Čeka druge“.';
 
   @override
-  String get settingsAiFeatureRulesDetail =>
-      'U Pravilima: opis postaje pravilo koje provjerite prije spremanja.';
+  String get settingsAiFeatureRulesDetail => 'U Pravilima: opis postaje pravilo koje provjerite prije spremanja.';
 
   @override
-  String get settingsAiFeatureChangesDetail =>
-      'U Usporedi poruke: što se promijenilo u značenju, s izvorima.';
+  String get settingsAiFeatureChangesDetail => 'U Usporedi poruke: što se promijenilo u značenju, s izvorima.';
 
   @override
-  String get settingsAiFeatureDocumentsDetail =>
-      'Ključne činjenice iz priloženih dokumenata, s njihovim stranicama.';
+  String get settingsAiFeatureDocumentsDetail => 'Ključne činjenice iz priloženih dokumenata, s njihovim stranicama.';
 
   @override
-  String get settingsAiFeatureReplyCheckDetail =>
-      'Prije slanja: što je odgovor možda propustio.';
+  String get settingsAiFeatureReplyCheckDetail => 'Prije slanja: što je odgovor možda propustio.';
 
   @override
-  String get settingsAiFeatureMattersDetail =>
-      'Najnovije stanje predmeta, prema njegovoj pošti.';
+  String get settingsAiFeatureMattersDetail => 'Najnovije stanje predmeta, prema njegovoj pošti.';
 
   @override
   String get settingsAiLocalOnlyHeader => 'Zadrži poštu na telefonu';

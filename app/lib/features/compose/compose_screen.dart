@@ -719,11 +719,11 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
   bool get _answers => _replying || _mode == ComposeMode.forward;
 
   /// The user's own text: the body without the quoted or forwarded original
-  /// and the signature.
+  /// and the signature (the one the rules put in, or one the user wrote).
   String _ownText() {
     final body = _body.text;
     final head = body.substring(0, ComposeText.quoteStart(body));
-    final signature = ComposeText.signatureRange(head, block: ComposeText.signatureBlock(_identity?.signature));
+    final signature = ComposeText.signatureRange(head, block: _body.block);
     return signature == null ? head : head.replaceRange(signature.$1, signature.$2, '');
   }
 

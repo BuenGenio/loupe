@@ -83,12 +83,7 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String commonMessageCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count meldinger',
-      one: '1 melding',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count meldinger', one: '1 melding');
     return '$_temp0';
   }
 
@@ -166,23 +161,19 @@ class AppLocalizationsNb extends AppLocalizations {
   String get changesExplainWorking => 'Forklarer endringene…';
 
   @override
-  String get changesExplainFailed =>
-      'Loupe klarte ikke å forklare disse endringene.';
+  String get changesExplainFailed => 'Loupe klarte ikke å forklare disse endringene.';
 
   @override
-  String get changesExplainTooLarge =>
-      'Disse meldingene er for lange for modellen.';
+  String get changesExplainTooLarge => 'Disse meldingene er for lange for modellen.';
 
   @override
   String get changesExplainProviderError => 'Modellen svarte ikke.';
 
   @override
-  String get changesExplainInvalid =>
-      'Svaret besto ikke Loupes kontroller, så ingenting av det vises.';
+  String get changesExplainInvalid => 'Svaret besto ikke Loupes kontroller, så ingenting av det vises.';
 
   @override
-  String get changesExplainNoChange =>
-      'Ingen endring i betydning funnet. De nøyaktige tekstendringene står nedenfor.';
+  String get changesExplainNoChange => 'Ingen endring i betydning funnet. De nøyaktige tekstendringene står nedenfor.';
 
   @override
   String changesExplainKind(String kind) {
@@ -207,12 +198,10 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get changesExplainConflictNote =>
-      'Meldingene sier ikke hvilken av disse som gjelder.';
+  String get changesExplainConflictNote => 'Meldingene sier ikke hvilken av disse som gjelder.';
 
   @override
-  String get changesExplainPartial =>
-      'Bare begynnelsen av en lang melding ble lest.';
+  String get changesExplainPartial => 'Bare begynnelsen av en lang melding ble lest.';
 
   @override
   String get changesExplainQuotedNote =>
@@ -223,16 +212,14 @@ class AppLocalizationsNb extends AppLocalizations {
       'En melding kan sitere tidligere e-post uten å markere det, så noen endringer kan komme fra eldre e-post. Sjekk passasjene.';
 
   @override
-  String get changesExplainCheckNote =>
-      'Hver passasje ble funnet i sin melding. Les dem før du stoler på en endring.';
+  String get changesExplainCheckNote => 'Hver passasje ble funnet i sin melding. Les dem før du stoler på en endring.';
 
   @override
   String get changesExplainAttachmentNote =>
       'Bare meldingsteksten forklares. Vedlegg sammenlignes bare etter navn, type og størrelse.';
 
   @override
-  String get changesExplainDemoNote =>
-      'Laget av den innebygde demoen, ikke av en modell.';
+  String get changesExplainDemoNote => 'Laget av den innebygde demoen, ikke av en modell.';
 
   @override
   String changesExplainMadeBy(String provider) {
@@ -240,8 +227,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get changesExplainNoPassage =>
-      'Ingen passasje er uthevet i denne meldingen.';
+  String get changesExplainNoPassage => 'Ingen passasje er uthevet i denne meldingen.';
 
   @override
   String get conversationCompareMessages => 'Sammenlign meldinger…';
@@ -278,16 +264,14 @@ class AppLocalizationsNb extends AppLocalizations {
   String get conversationChangesSameMetadata => 'Samsvarende opplysninger';
 
   @override
-  String get conversationChangesFullTextNote =>
-      'Hele meldingsteksten sammenlignes, inkludert sitater og signaturer.';
+  String get conversationChangesFullTextNote => 'Hele meldingsteksten sammenlignes, inkludert sitater og signaturer.';
 
   @override
   String get conversationChangesLimited =>
       'Denne meldingen er for stor for en detaljert sammenligning. Noe tekst kan bli utelatt eller vist som en hel blokk.';
 
   @override
-  String get conversationChangesLoadError =>
-      'Disse meldingene kunne ikke sammenlignes.';
+  String get conversationChangesLoadError => 'Disse meldingene kunne ikke sammenlignes.';
 
   @override
   String get conversationSomethingWentWrong => 'Noe gikk galt. Prøv igjen.';
@@ -299,8 +283,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get conversationReplyList => 'Svar liste';
 
   @override
-  String get conversationThreadMuted =>
-      'Tråden er dempet. Nye meldinger i den kommer som lest.';
+  String get conversationThreadMuted => 'Tråden er dempet. Nye meldinger i den kommer som lest.';
 
   @override
   String get conversationThreadUnmuted => 'Tråden er ikke lenger dempet.';
@@ -333,8 +316,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get conversationOfflineTitle => 'Du er frakoblet';
 
   @override
-  String get conversationOfflineText =>
-      'Samtalen er ikke lastet ned ennå. Den lastes inn når du er på nett igjen.';
+  String get conversationOfflineText => 'Samtalen er ikke lastet ned ennå. Den lastes inn når du er på nett igjen.';
 
   @override
   String get conversationErrorTitle => 'Kan ikke vise meldingen';
@@ -401,8 +383,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get conversationBodyError => 'Kunne ikke laste inn meldingen.';
 
   @override
-  String get conversationBodyOffline =>
-      'Du er frakoblet. Meldingen lastes inn når du er på nett igjen.';
+  String get conversationBodyOffline => 'Du er frakoblet. Meldingen lastes inn når du er på nett igjen.';
 
   @override
   String get conversationOriginalHint => 'Ser bedre ut i visningen Original';
@@ -568,12 +549,7 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String conversationSecurityTrackers(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count sporere',
-      one: '1 sporer',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count sporere', one: '1 sporer');
     return '$_temp0';
   }
 
@@ -581,8 +557,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get conversationSecurityBadgeHint => 'Viser hvorfor';
 
   @override
-  String get conversationPhishingBannerTitle =>
-      'Denne meldingen ser ut som phishing';
+  String get conversationPhishingBannerTitle => 'Denne meldingen ser ut som phishing';
 
   @override
   String conversationPhishingBannerReason(String reason) {
@@ -606,24 +581,20 @@ class AppLocalizationsNb extends AppLocalizations {
       'Flere tegn tyder på at meldingen ikke er det den gir seg ut for å være.';
 
   @override
-  String get conversationSecurityCarefulTitle =>
-      'Vær forsiktig med denne meldingen';
+  String get conversationSecurityCarefulTitle => 'Vær forsiktig med denne meldingen';
 
   @override
-  String get conversationSecurityCarefulText =>
-      'Noe ved den fortjener en ekstra titt.';
+  String get conversationSecurityCarefulText => 'Noe ved den fortjener en ekstra titt.';
 
   @override
-  String get conversationSecurityVerifiedText =>
-      'Avsenderen er verifisert, og ingenting ser mistenkelig ut.';
+  String get conversationSecurityVerifiedText => 'Avsenderen er verifisert, og ingenting ser mistenkelig ut.';
 
   @override
   String get conversationSecurityUnverifiedText =>
       'Ingenting ser mistenkelig ut. E-postserveren din oppga ikke om avsenderen er verifisert.';
 
   @override
-  String get conversationSecurityNothingSuspicious =>
-      'Ingenting ser mistenkelig ut.';
+  String get conversationSecurityNothingSuspicious => 'Ingenting ser mistenkelig ut.';
 
   @override
   String get conversationSecurityWhy => 'Hvorfor';
@@ -646,8 +617,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityTrackingPixelsText =>
-      'De ville ha fortalt avsenderen når du åpnet denne meldingen.';
+  String get conversationSecurityTrackingPixelsText => 'De ville ha fortalt avsenderen når du åpnet denne meldingen.';
 
   @override
   String get conversationSecurityNoRemoteImages => 'Ingen eksterne bilder';
@@ -690,8 +660,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get conversationSecurityTechnicalDetails => 'Tekniske detaljer';
 
   @override
-  String get conversationSecurityCheckedLocally =>
-      'Sjekket på denne enheten. Ingenting ble sendt noe sted.';
+  String get conversationSecurityCheckedLocally => 'Sjekket på denne enheten. Ingenting ble sendt noe sted.';
 
   @override
   String get conversationSecurityTrackersLabel => 'Sporere';
@@ -715,23 +684,13 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String conversationSecurityHiddenValue(int elements, int characters) {
-    String _temp0 = intl.Intl.pluralLogic(
-      elements,
-      locale: localeName,
-      other: '$elements elementer',
-      one: '1 element',
-    );
-    String _temp1 = intl.Intl.pluralLogic(
-      characters,
-      locale: localeName,
-      other: '$characters tegn',
-    );
+    String _temp0 = intl.Intl.pluralLogic(elements, locale: localeName, other: '$elements elementer', one: '1 element');
+    String _temp1 = intl.Intl.pluralLogic(characters, locale: localeName, other: '$characters tegn');
     return '$_temp0, $_temp1';
   }
 
   @override
-  String get conversationSecurityAuthFailedTitle =>
-      'Avsenderen er ikke verifisert';
+  String get conversationSecurityAuthFailedTitle => 'Avsenderen er ikke verifisert';
 
   @override
   String conversationSecurityAuthFailedText(String domain) {
@@ -756,8 +715,7 @@ class AppLocalizationsNb extends AppLocalizations {
       'Ikke gjør det den ber om med mindre du ventet den. Kontakt avsenderen på en annen måte hvis du er i tvil.';
 
   @override
-  String get conversationSecurityAuthUnalignedTitle =>
-      'Signert av et annet domene';
+  String get conversationSecurityAuthUnalignedTitle => 'Signert av et annet domene';
 
   @override
   String conversationSecurityAuthUnalignedText(String signer, String domain) {
@@ -770,8 +728,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressTitle =>
-      'Navnet viser en annen adresse';
+  String get conversationSecurityNameShowsAddressTitle => 'Navnet viser en annen adresse';
 
   @override
   String conversationSecurityNameShowsAddressText(String shown, String email) {
@@ -779,8 +736,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressAdvice =>
-      'Stol på adressen, ikke navnet.';
+  String get conversationSecurityNameShowsAddressAdvice => 'Stol på adressen, ikke navnet.';
 
   @override
   String get conversationSecurityReplyToTitle => 'Svar går et annet sted';
@@ -791,15 +747,13 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityReplyToAdvice =>
-      'Sjekk adressen før du svarer med noe personlig.';
+  String get conversationSecurityReplyToAdvice => 'Sjekk adressen før du svarer med noe personlig.';
 
   @override
   String get conversationSecurityImpersonationYouTitle => 'Bruker navnet ditt';
 
   @override
-  String get conversationSecurityImpersonationTitle =>
-      'Bruker navnet til noen du kjenner';
+  String get conversationSecurityImpersonationTitle => 'Bruker navnet til noen du kjenner';
 
   @override
   String conversationSecurityImpersonationYouText(String name, String email) {
@@ -807,28 +761,17 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityImpersonationVipText(
-    String name,
-    String knownName,
-    String knownEmail,
-    String email,
-  ) {
+  String conversationSecurityImpersonationVipText(String name, String knownName, String knownEmail, String email) {
     return 'Den er signert «$name», som VIP-en din $knownName ($knownEmail), men kommer fra en ny adresse: $email.';
   }
 
   @override
-  String conversationSecurityImpersonationText(
-    String name,
-    String knownName,
-    String knownEmail,
-    String email,
-  ) {
+  String conversationSecurityImpersonationText(String name, String knownName, String knownEmail, String email) {
     return 'Den er signert «$name», som $knownName ($knownEmail), men kommer fra en ny adresse: $email.';
   }
 
   @override
-  String get conversationSecurityImpersonationRepliesElsewhere =>
-      'Og svar ville gått til enda en annen adresse.';
+  String get conversationSecurityImpersonationRepliesElsewhere => 'Og svar ville gått til enda en annen adresse.';
 
   @override
   String get conversationSecurityImpersonationAdvice =>
@@ -845,8 +788,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeTitle =>
-      'Første melding fra denne avsenderen';
+  String get conversationSecurityFirstTimeTitle => 'Første melding fra denne avsenderen';
 
   @override
   String conversationSecurityFirstTimeText(String email) {
@@ -854,16 +796,13 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeAdvice =>
-      'Vær forsiktig med forespørsler fra folk du ikke kjenner ennå.';
+  String get conversationSecurityFirstTimeAdvice => 'Vær forsiktig med forespørsler fra folk du ikke kjenner ennå.';
 
   @override
-  String get conversationSecuritySenderHomographTitle =>
-      'Bokstaver som ligner til forveksling i avsenderens adresse';
+  String get conversationSecuritySenderHomographTitle => 'Bokstaver som ligner til forveksling i avsenderens adresse';
 
   @override
-  String get conversationSecurityLinkHomographTitle =>
-      'Bokstaver som ligner til forveksling i en lenke';
+  String get conversationSecurityLinkHomographTitle => 'Bokstaver som ligner til forveksling i en lenke';
 
   @override
   String conversationSecurityHomographText(String host) {
@@ -876,8 +815,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get conversationSecuritySenderHomographAdvice =>
-      'Slett den, eller rapporter den som søppelpost.';
+  String get conversationSecuritySenderHomographAdvice => 'Slett den, eller rapporter den som søppelpost.';
 
   @override
   String get conversationSecurityLinkHomographAdvice => 'Ikke åpne den.';
@@ -888,12 +826,10 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLookalikeTitle =>
-      'Domene som ligner til forveksling';
+  String get conversationSecurityLookalikeTitle => 'Domene som ligner til forveksling';
 
   @override
-  String get conversationSecurityFamiliarNameTitle =>
-      'Bruker et kjent navn i domenet sitt';
+  String get conversationSecurityFamiliarNameTitle => 'Bruker et kjent navn i domenet sitt';
 
   @override
   String conversationSecurityLookalikeOwnText(String domain, String real) {
@@ -901,11 +837,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityLookalikeText(
-    String domain,
-    String brand,
-    String real,
-  ) {
+  String conversationSecurityLookalikeText(String domain, String brand, String real) {
     return '$domain ligner $brand ($real), men er et annet domene.';
   }
 
@@ -915,11 +847,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityFamiliarNameText(
-    String domain,
-    String brand,
-    String real,
-  ) {
+  String conversationSecurityFamiliarNameText(String domain, String brand, String real) {
     return '$domain bruker navnet $brand ($real), men hører ikke til det.';
   }
 
@@ -969,8 +897,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLinkUncheckableTitle =>
-      'Målet for en lenke kan ikke sjekkes';
+  String get conversationSecurityLinkUncheckableTitle => 'Målet for en lenke kan ikke sjekkes';
 
   @override
   String conversationSecurityLinkUncheckableText(String shown, String host) {
@@ -978,8 +905,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityIpAddressTitle =>
-      'En lenke peker til en ren IP-adresse';
+  String get conversationSecurityIpAddressTitle => 'En lenke peker til en ren IP-adresse';
 
   @override
   String conversationSecurityIpAddressText(String hosts) {
@@ -1005,20 +931,16 @@ class AppLocalizationsNb extends AppLocalizations {
   String get conversationSecurityPasswordFieldTitle => 'Ber om et passord';
 
   @override
-  String get conversationSecurityPasswordFieldText =>
-      'Meldingen inneholdt et passordfelt. Loupe fjernet det.';
+  String get conversationSecurityPasswordFieldText => 'Meldingen inneholdt et passordfelt. Loupe fjernet det.';
 
   @override
-  String get conversationSecurityPasswordFieldAdvice =>
-      'Skriv aldri inn et passord i en e-post.';
+  String get conversationSecurityPasswordFieldAdvice => 'Skriv aldri inn et passord i en e-post.';
 
   @override
-  String get conversationSecurityScriptLinkTitle =>
-      'En lenke som kjører kode, ble slått av';
+  String get conversationSecurityScriptLinkTitle => 'En lenke som kjører kode, ble slått av';
 
   @override
-  String get conversationSecurityScriptLinkText =>
-      'Loupe kjører aldri kode fra meldinger.';
+  String get conversationSecurityScriptLinkText => 'Loupe kjører aldri kode fra meldinger.';
 
   @override
   String conversationSecurityShortenerTitle(int count) {
@@ -1037,8 +959,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityInternationalTitle =>
-      'Internasjonal nettadresse';
+  String get conversationSecurityInternationalTitle => 'Internasjonal nettadresse';
 
   @override
   String conversationSecurityInternationalText(String hosts) {
@@ -1053,8 +974,7 @@ class AppLocalizationsNb extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          '$count tegn med usynlig tekst ble fjernet. Skjult tekst som dette skal lure søppelpostfiltre.',
+      other: '$count tegn med usynlig tekst ble fjernet. Skjult tekst som dette skal lure søppelpostfiltre.',
     );
     return '$_temp0';
   }
@@ -1073,8 +993,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get exportDownloadFailed =>
-      'Kunne ikke laste ned meldingen. Sjekk tilkoblingen og prøv igjen.';
+  String get exportDownloadFailed => 'Kunne ikke laste ned meldingen. Sjekk tilkoblingen og prøv igjen.';
 
   @override
   String exportSaved(String name) {
@@ -1104,8 +1023,7 @@ class AppLocalizationsNb extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          '«$name» er lagret uten $formattedCount meldinger som ikke kunne lastes ned.',
+      other: '«$name» er lagret uten $formattedCount meldinger som ikke kunne lastes ned.',
       one: '«$name» er lagret uten 1 melding som ikke kunne lastes ned.',
     );
     return '$_temp0';
@@ -1218,8 +1136,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get projectsDelete => 'Slett prosjekt';
 
   @override
-  String get projectsDeleteMessage =>
-      'Samtalene blir der de er, utenfor prosjektet.';
+  String get projectsDeleteMessage => 'Samtalene blir der de er, utenfor prosjektet.';
 
   @override
   String get projectsUntitled => 'Prosjekt';
@@ -1333,8 +1250,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get mailboxesVipTitle => 'VIP';
 
   @override
-  String get mailboxesVipFooter =>
-      'Du kan også trykke på navnet til en avsender i en melding og slå på VIP.';
+  String get mailboxesVipFooter => 'Du kan også trykke på navnet til en avsender i en melding og slå på VIP.';
 
   @override
   String get mailboxesAddVip => 'Legg til VIP…';
@@ -1343,8 +1259,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get mailboxesAddVipTitle => 'Legg til VIP';
 
   @override
-  String get mailboxesAddVipText =>
-      'E-post fra denne adressen får en stjerne og vises i VIP-postkassen.';
+  String get mailboxesAddVipText => 'E-post fra denne adressen får en stjerne og vises i VIP-postkassen.';
 
   @override
   String get mailboxesAddVipPlaceholder => 'navn@example.com';
@@ -1389,11 +1304,7 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String messageListSelected(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count valgt',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count valgt');
     return '$_temp0';
   }
 
@@ -1480,12 +1391,7 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String panesDragCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count meldinger',
-      one: '1 melding',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count meldinger', one: '1 melding');
     return '$_temp0';
   }
 
@@ -1529,15 +1435,13 @@ class AppLocalizationsNb extends AppLocalizations {
   String get snoozeNoTime => 'Ingen tid angitt';
 
   @override
-  String get snoozeFooter =>
-      'Slumrede meldinger kommer tilbake til innboksen som uleste på det valgte tidspunktet.';
+  String get snoozeFooter => 'Slumrede meldinger kommer tilbake til innboksen som uleste på det valgte tidspunktet.';
 
   @override
   String get snoozeEmptyTitle => 'Ingenting slumret';
 
   @override
-  String get snoozeEmptyText =>
-      'Slumre en melding, så kommer den tilbake til innboksen når du trenger den.';
+  String get snoozeEmptyText => 'Slumre en melding, så kommer den tilbake til innboksen når du trenger den.';
 
   @override
   String get briefButton => 'Kort fortalt';
@@ -1561,16 +1465,13 @@ class AppLocalizationsNb extends AppLocalizations {
   String get briefStopped => 'Du stoppet sammendraget.';
 
   @override
-  String get briefFailedTooLarge =>
-      'Denne meldingen er for lang for modellen, så ingenting ble sendt.';
+  String get briefFailedTooLarge => 'Denne meldingen er for lang for modellen, så ingenting ble sendt.';
 
   @override
-  String get briefFailedProvider =>
-      'Modellen klarte ikke å lage et sammendrag av denne meldingen.';
+  String get briefFailedProvider => 'Modellen klarte ikke å lage et sammendrag av denne meldingen.';
 
   @override
-  String get briefFailedInvalid =>
-      'Svaret besto ikke Loupes kontroller, så ingen sjekkliste vises.';
+  String get briefFailedInvalid => 'Svaret besto ikke Loupes kontroller, så ingen sjekkliste vises.';
 
   @override
   String get briefNothingTitle => 'Ingenting å oppsummere';
@@ -1622,11 +1523,7 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String briefOwner(String owner) {
-    String _temp0 = intl.Intl.selectLogic(owner, {
-      'me': 'Du',
-      'them': 'Andre',
-      'other': 'Ikke oppgitt',
-    });
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Du', 'them': 'Andre', 'other': 'Ikke oppgitt'});
     return '$_temp0';
   }
 
@@ -1692,8 +1589,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get briefCopyChecklist => 'Kopier sjekkliste';
 
   @override
-  String get briefMadeByDemo =>
-      'Laget av den innebygde demoen, ikke av en modell.';
+  String get briefMadeByDemo => 'Laget av den innebygde demoen, ikke av en modell.';
 
   @override
   String briefMadeBy(String location, String name) {
@@ -1706,8 +1602,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get briefCaution =>
-      'Et sammendrag kan overse eller misforstå ting. Det er selve meldingen som gjelder.';
+  String get briefCaution => 'Et sammendrag kan overse eller misforstå ting. Det er selve meldingen som gjelder.';
 
   @override
   String briefSecurityReason(String reason) {
@@ -1715,8 +1610,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get briefSecurityText =>
-      'Sjekk selve meldingen før du gjør noe fra dette sammendraget.';
+  String get briefSecurityText => 'Sjekk selve meldingen før du gjør noe fra dette sammendraget.';
 
   @override
   String get briefSourceTitle => 'I meldingen';
@@ -1776,15 +1670,13 @@ class AppLocalizationsNb extends AppLocalizations {
   String get appLockUnlockPromptTitle => 'Lås opp Loupe';
 
   @override
-  String get appLockUnlockPromptReason =>
-      'Bekreft at det er deg, for å se e-posten din.';
+  String get appLockUnlockPromptReason => 'Bekreft at det er deg, for å se e-posten din.';
 
   @override
   String get appLockTurnOnPromptTitle => 'Slå på Applås';
 
   @override
-  String get appLockTurnOnPromptReason =>
-      'Bekreft at det er deg, for å slå på Applås.';
+  String get appLockTurnOnPromptReason => 'Bekreft at det er deg, for å slå på Applås.';
 
   @override
   String get appLockScreenLockRemoved =>
@@ -1795,23 +1687,13 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String appLockAfterMinutes(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count minutter',
-      one: '1 minutt',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count minutter', one: '1 minutt');
     return '$_temp0';
   }
 
   @override
   String appLockAfterHours(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count timer',
-      one: '1 time',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count timer', one: '1 time');
     return '$_temp0';
   }
 
@@ -1927,44 +1809,35 @@ class AppLocalizationsNb extends AppLocalizations {
   String get openpgpChangeAcceptance => 'Endre godkjenning…';
 
   @override
-  String get openpgpCheckedFooter =>
-      'Sjekket på denne enheten med OpenPGP, kompatibelt med Thunderbird.';
+  String get openpgpCheckedFooter => 'Sjekket på denne enheten med OpenPGP, kompatibelt med Thunderbird.';
 
   @override
-  String get openpgpSummaryLocked =>
-      'Nøkkelen din er låst. Lås den opp med passordfrasen for å lese meldingen.';
+  String get openpgpSummaryLocked => 'Nøkkelen din er låst. Lås den opp med passordfrasen for å lese meldingen.';
 
   @override
-  String get openpgpSummaryNoSecretKey =>
-      'Den ble kryptert til en nøkkel som ikke finnes på denne enheten.';
+  String get openpgpSummaryNoSecretKey => 'Den ble kryptert til en nøkkel som ikke finnes på denne enheten.';
 
   @override
-  String get openpgpSummaryDamaged =>
-      'De krypterte dataene er skadet eller ble endret underveis.';
+  String get openpgpSummaryDamaged => 'De krypterte dataene er skadet eller ble endret underveis.';
 
   @override
-  String get openpgpSummaryUnsupported =>
-      'Den bruker en algoritme som Loupe ikke støtter.';
+  String get openpgpSummaryUnsupported => 'Den bruker en algoritme som Loupe ikke støtter.';
 
   @override
-  String get openpgpSummaryEncrypted =>
-      'Bare du og de andre mottakerne kan lese den.';
+  String get openpgpSummaryEncrypted => 'Bare du og de andre mottakerne kan lese den.';
 
   @override
-  String get openpgpSummaryNotSigned =>
-      'Den er ikke signert, så avsenderen er ikke bekreftet.';
+  String get openpgpSummaryNotSigned => 'Den er ikke signert, så avsenderen er ikke bekreftet.';
 
   @override
   String get openpgpSummaryUnknownKey =>
       'Den er signert, men med en nøkkel du ikke har, så signaturen kan ikke sjekkes.';
 
   @override
-  String get openpgpSummaryBadSignature =>
-      'Signaturen stemmer ikke: meldingen kan ha blitt endret.';
+  String get openpgpSummaryBadSignature => 'Signaturen stemmer ikke: meldingen kan ha blitt endret.';
 
   @override
-  String get openpgpSummaryMismatch =>
-      'Signaturen er gyldig, men nøkkelen tilhører en annen adresse enn avsenderens.';
+  String get openpgpSummaryMismatch => 'Signaturen er gyldig, men nøkkelen tilhører en annen adresse enn avsenderens.';
 
   @override
   String get openpgpSummaryPartial =>
@@ -1974,16 +1847,13 @@ class AppLocalizationsNb extends AppLocalizations {
   String get openpgpSummaryOwnKey => 'Signert med din egen nøkkel.';
 
   @override
-  String get openpgpSummaryVerified =>
-      'Signaturen er gyldig, og du har verifisert fingeravtrykket til nøkkelen.';
+  String get openpgpSummaryVerified => 'Signaturen er gyldig, og du har verifisert fingeravtrykket til nøkkelen.';
 
   @override
-  String get openpgpSummaryUnverified =>
-      'Signaturen er gyldig. Du godkjente nøkkelen uten å sjekke fingeravtrykket.';
+  String get openpgpSummaryUnverified => 'Signaturen er gyldig. Du godkjente nøkkelen uten å sjekke fingeravtrykket.';
 
   @override
-  String get openpgpSummaryRejected =>
-      'Signaturen er gyldig, men du har avvist denne nøkkelen.';
+  String get openpgpSummaryRejected => 'Signaturen er gyldig, men du har avvist denne nøkkelen.';
 
   @override
   String get openpgpSummaryUndecided =>
@@ -2043,8 +1913,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get openpgpAddresses => 'Adresser';
 
   @override
-  String get openpgpAddressesFooter =>
-      'Hvilken nøkkel hver adresse bruker, og når den krypterer og signerer.';
+  String get openpgpAddressesFooter => 'Hvilken nøkkel hver adresse bruker, og når den krypterer og signerer.';
 
   @override
   String get openpgpCorrespondentsKeys => 'Korrespondenters OpenPGP-nøkler';
@@ -2123,8 +1992,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get openpgpAddKeyTitle => 'Legg til en OpenPGP-nøkkel';
 
   @override
-  String get openpgpAddKeyMessage =>
-      'Importer nøkkelen du bruker i Thunderbird, eller lag en ny.';
+  String get openpgpAddKeyMessage => 'Importer nøkkelen du bruker i Thunderbird, eller lag en ny.';
 
   @override
   String get openpgpImportFromClipboard => 'Importer fra utklippstavlen';
@@ -2145,8 +2013,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get openpgpFromFile => 'Fra fil';
 
   @override
-  String get openpgpClipboardEmpty =>
-      'Utklippstavlen er tom. Kopier nøkkelen først.';
+  String get openpgpClipboardEmpty => 'Utklippstavlen er tom. Kopier nøkkelen først.';
 
   @override
   String get openpgpKey => 'Nøkkel';
@@ -2211,8 +2078,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get openpgpRemoveKey => 'Fjern nøkkel';
 
   @override
-  String get openpgpBackUpTitle =>
-      'Vil du sikkerhetskopiere den hemmelige nøkkelen?';
+  String get openpgpBackUpTitle => 'Vil du sikkerhetskopiere den hemmelige nøkkelen?';
 
   @override
   String get openpgpBackUpProtected =>
@@ -2263,8 +2129,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get openpgpEncryptAutomatically => 'Krypter automatisk';
 
   @override
-  String get openpgpAlwaysEncryptDetail =>
-      'Nekter å sende når en mottaker ikke har nøkkel';
+  String get openpgpAlwaysEncryptDetail => 'Nekter å sende når en mottaker ikke har nøkkel';
 
   @override
   String get openpgpSignUnencrypted => 'Signer ukryptert e-post';
@@ -2283,17 +2148,11 @@ class AppLocalizationsNb extends AppLocalizations {
   String get openpgpPreferEncryption => 'Foretrekk kryptering';
 
   @override
-  String get openpgpPreferEncryptionDetail =>
-      'Be andre om å kryptere når de kan';
+  String get openpgpPreferEncryptionDetail => 'Be andre om å kryptere når de kan';
 
   @override
   String openpgpValidityYears(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count år',
-      one: '1 år',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count år', one: '1 år');
     return '$_temp0';
   }
 
@@ -2331,8 +2190,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get openpgpExpires => 'Utløper';
 
   @override
-  String get openpgpExpiresFooter =>
-      'Du kan lage en ny nøkkel før den utløper. Thunderbird bruker også tre år.';
+  String get openpgpExpiresFooter => 'Du kan lage en ny nøkkel før den utløper. Thunderbird bruker også tre år.';
 
   @override
   String get openpgpGenerateKey => 'Generer nøkkel';
@@ -2407,8 +2265,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get openpgpNoKeyFound => 'Fant ingen OpenPGP-nøkkel.';
 
   @override
-  String get openpgpImportSecretKeyTitle =>
-      'Vil du importere en hemmelig nøkkel?';
+  String get openpgpImportSecretKeyTitle => 'Vil du importere en hemmelig nøkkel?';
 
   @override
   String openpgpImportSecretKeyMessage(String names) {
@@ -2476,20 +2333,17 @@ class AppLocalizationsNb extends AppLocalizations {
   String get openpgpWrongPassphrase => 'Passordfrasen er feil. Prøv igjen.';
 
   @override
-  String get openpgpExplainLocked =>
-      'Denne meldingen er kryptert. Lås opp OpenPGP-nøkkelen din for å lese den.';
+  String get openpgpExplainLocked => 'Denne meldingen er kryptert. Lås opp OpenPGP-nøkkelen din for å lese den.';
 
   @override
   String get openpgpExplainNoKey =>
       'Denne meldingen er kryptert, men ikke til noen OpenPGP-nøkkel på denne enheten. Hvis du leser den i Thunderbird, importer nøkkelen din derfra: Innstillinger › Ende-til-ende-kryptering.';
 
   @override
-  String get openpgpExplainDamaged =>
-      'Denne krypterte meldingen er skadet, så den kan ikke dekrypteres trygt.';
+  String get openpgpExplainDamaged => 'Denne krypterte meldingen er skadet, så den kan ikke dekrypteres trygt.';
 
   @override
-  String get openpgpExplainUnsupported =>
-      'Denne meldingen bruker kryptering som Loupe ikke kan lese ennå.';
+  String get openpgpExplainUnsupported => 'Denne meldingen bruker kryptering som Loupe ikke kan lese ennå.';
 
   @override
   String get openpgpExplainSmimeNoKey =>
@@ -2501,19 +2355,16 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get openpgpExplainSmimeUnlock =>
-      'Lås opp S/MIME-sertifikatet ditt for å lese den.';
+  String get openpgpExplainSmimeUnlock => 'Lås opp S/MIME-sertifikatet ditt for å lese den.';
 
   @override
-  String get openpgpAttachmentGone =>
-      'Dette vedlegget er ikke lenger tilgjengelig.';
+  String get openpgpAttachmentGone => 'Dette vedlegget er ikke lenger tilgjengelig.';
 
   @override
   String get smimeEncrypted => 'Kryptert (S/MIME)';
 
   @override
-  String get smimeEncryptedNoCertificate =>
-      'Kryptert (S/MIME) · ikke noe sertifikat';
+  String get smimeEncryptedNoCertificate => 'Kryptert (S/MIME) · ikke noe sertifikat';
 
   @override
   String get smimeEncryptedDamaged => 'Kryptert (S/MIME) · skadet';
@@ -2703,31 +2554,25 @@ class AppLocalizationsNb extends AppLocalizations {
   String get smimeTrust => 'Stol på';
 
   @override
-  String get smimeSummaryNoKey =>
-      'Den ble kryptert til et sertifikat som ikke finnes på denne enheten.';
+  String get smimeSummaryNoKey => 'Den ble kryptert til et sertifikat som ikke finnes på denne enheten.';
 
   @override
-  String get smimeSummaryDamaged =>
-      'De krypterte dataene er skadet eller ble endret underveis.';
+  String get smimeSummaryDamaged => 'De krypterte dataene er skadet eller ble endret underveis.';
 
   @override
-  String get smimeSummaryUnsupported =>
-      'Den bruker en algoritme som Loupe ikke støtter.';
+  String get smimeSummaryUnsupported => 'Den bruker en algoritme som Loupe ikke støtter.';
 
   @override
   String get smimeSummaryLocked => 'S/MIME-sertifikatet ditt er låst.';
 
   @override
-  String get smimeSummaryEncrypted =>
-      'Bare du og de andre mottakerne kan lese den.';
+  String get smimeSummaryEncrypted => 'Bare du og de andre mottakerne kan lese den.';
 
   @override
-  String get smimeSummaryNotSigned =>
-      'Den er ikke signert, så avsenderen er ikke bekreftet.';
+  String get smimeSummaryNotSigned => 'Den er ikke signert, så avsenderen er ikke bekreftet.';
 
   @override
-  String get smimeSummaryModified =>
-      'Signaturen stemmer ikke: meldingen ble endret etter at den ble signert.';
+  String get smimeSummaryModified => 'Signaturen stemmer ikke: meldingen ble endret etter at den ble signert.';
 
   @override
   String get smimeSummaryUncheckable => 'Signaturen kan ikke sjekkes.';
@@ -2755,12 +2600,10 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get smimeProblemInvalidChain =>
-      'Sertifikatet eller en av utstederne er ugyldig.';
+  String get smimeProblemInvalidChain => 'Sertifikatet eller en av utstederne er ugyldig.';
 
   @override
-  String get smimeProblemUntrusted =>
-      'Sertifikatet kommer fra en utsteder som Loupe ikke stoler på.';
+  String get smimeProblemUntrusted => 'Sertifikatet kommer fra en utsteder som Loupe ikke stoler på.';
 
   @override
   String get smimeProblemExpired => 'Sertifikatet var utløpt.';
@@ -2769,12 +2612,10 @@ class AppLocalizationsNb extends AppLocalizations {
   String get smimeProblemNotYetValid => 'Sertifikatet var ikke gyldig ennå.';
 
   @override
-  String get smimeProblemWrongUsage =>
-      'Sertifikatet er ikke beregnet for e-post.';
+  String get smimeProblemWrongUsage => 'Sertifikatet er ikke beregnet for e-post.';
 
   @override
-  String get smimeProblemWrongAddress =>
-      'Sertifikatet tilhører en annen adresse enn avsenderens.';
+  String get smimeProblemWrongAddress => 'Sertifikatet tilhører en annen adresse enn avsenderens.';
 
   @override
   String smimeTrustedBy(String issuer) {
@@ -2831,8 +2672,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get smimeImportCertificateEllipsis => 'Importer sertifikat…';
 
   @override
-  String get smimeUseDeviceCertificate =>
-      'Bruk et sertifikat fra denne enheten…';
+  String get smimeUseDeviceCertificate => 'Bruk et sertifikat fra denne enheten…';
 
   @override
   String get smimeCorrespondentsCertificates => 'Korrespondenters sertifikater';
@@ -2849,8 +2689,7 @@ class AppLocalizationsNb extends AppLocalizations {
       'Når du åpner signert e-post, spør Loupe utstederen av sertifikatet til den som signerte, om det er tilbakekalt (via utstederens OCSP-tjeneste eller tilbakekallingsliste). Utstederen kan da se når noen på internettadressen din leser e-post som er signert med det sertifikatet. Svarene lagres på denne enheten til de utløper. Et tilbakekalt sertifikat vises som «tilbakekalt» i meldingshodet.';
 
   @override
-  String get smimeCheckRevocation =>
-      'Sjekk tilbakekalling av sertifikater på nett';
+  String get smimeCheckRevocation => 'Sjekk tilbakekalling av sertifikater på nett';
 
   @override
   String get smimeTrustedAuthorities => 'Klarerte utstedere';
@@ -2860,8 +2699,7 @@ class AppLocalizationsNb extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          'Klarert av deg, i tillegg til de $count som Mozilla stoler på for e-post.',
+      other: 'Klarert av deg, i tillegg til de $count som Mozilla stoler på for e-post.',
     );
     return '$_temp0';
   }
@@ -2883,8 +2721,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get smimeFromFile => 'Fra fil';
 
   @override
-  String get smimeClipboardEmpty =>
-      'Utklippstavlen er tom. Kopier sertifikatet først.';
+  String get smimeClipboardEmpty => 'Utklippstavlen er tom. Kopier sertifikatet først.';
 
   @override
   String get smimeCertificate => 'Sertifikat';
@@ -3037,8 +2874,7 @@ class AppLocalizationsNb extends AppLocalizations {
       'Den private nøkkelen slettes fra denne enheten: e-post som er kryptert til den, kan ikke lenger leses her med mindre du importerer den igjen.';
 
   @override
-  String get smimeRemoveContactMessage =>
-      'Det kommer tilbake med personens neste signerte melding.';
+  String get smimeRemoveContactMessage => 'Det kommer tilbake med personens neste signerte melding.';
 
   @override
   String get smimeAddressImportFooter =>
@@ -3061,8 +2897,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get smimeCertificatePassword => 'Sertifikatpassord';
 
   @override
-  String get smimeCertificatePasswordPrompt =>
-      'Skriv inn passordet sertifikatfilen ble eksportert med.';
+  String get smimeCertificatePasswordPrompt => 'Skriv inn passordet sertifikatfilen ble eksportert med.';
 
   @override
   String get smimeImport => 'Importer';
@@ -3098,10 +2933,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String smimeImportedCertificatesAndAuthorities(
-    int count,
-    String certificates,
-  ) {
+  String smimeImportedCertificatesAndAuthorities(int count, String certificates) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -3116,8 +2948,7 @@ class AppLocalizationsNb extends AppLocalizations {
       'Denne filen har ingen privat nøkkel. Eksporter sertifikatet ditt med den private nøkkelen.';
 
   @override
-  String get smimeImportAsYoursTitle =>
-      'Vil du importere det som sertifikatet ditt?';
+  String get smimeImportAsYoursTitle => 'Vil du importere det som sertifikatet ditt?';
 
   @override
   String smimeImportAsYoursMessage(String names) {
@@ -3195,16 +3026,13 @@ class AppLocalizationsNb extends AppLocalizations {
   String get smimeSetPassphraseButton => 'Angi';
 
   @override
-  String get smimeLockedOpenAgain =>
-      'S/MIME-sertifikatet ditt er låst. Åpne meldingen på nytt for å låse det opp.';
+  String get smimeLockedOpenAgain => 'S/MIME-sertifikatet ditt er låst. Åpne meldingen på nytt for å låse det opp.';
 
   @override
-  String get smimeDeviceHasNoCertificates =>
-      'Denne enheten tilbyr ikke sertifikatene sine.';
+  String get smimeDeviceHasNoCertificates => 'Denne enheten tilbyr ikke sertifikatene sine.';
 
   @override
-  String get smimeCantReadCertificate =>
-      'Loupe kan ikke lese dette sertifikatet.';
+  String get smimeCantReadCertificate => 'Loupe kan ikke lese dette sertifikatet.';
 
   @override
   String get smimeCertificateNotForMail =>
@@ -3215,8 +3043,7 @@ class AppLocalizationsNb extends AppLocalizations {
       'Sertifikatet finnes ikke lenger på denne enheten, eller Loupe har ikke lenger lov til å bruke det. Velg det på nytt under Innstillinger › Ende-til-ende-kryptering.';
 
   @override
-  String get smimeDeviceCertificateAppOnly =>
-      'Sertifikatet på denne enheten kan bare brukes mens Loupe er åpen.';
+  String get smimeDeviceCertificateAppOnly => 'Sertifikatet på denne enheten kan bare brukes mens Loupe er åpen.';
 
   @override
   String get smimeDeviceKeyDamaged => 'Den krypterte nøkkelen er skadet.';
@@ -3235,12 +3062,10 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityNotWebAddress =>
-      'Utstederens adresse er ikke en nettadresse.';
+  String get smimeAuthorityNotWebAddress => 'Utstederens adresse er ikke en nettadresse.';
 
   @override
-  String get smimeAuthorityTimeout =>
-      'Sertifikatutstederen svarte ikke i tide.';
+  String get smimeAuthorityTimeout => 'Sertifikatutstederen svarte ikke i tide.';
 
   @override
   String get smimeAuthorityUnreachable => 'Kunne ikke nå sertifikatutstederen.';
@@ -3251,8 +3076,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityAnswerTooLarge =>
-      'Svaret fra sertifikatutstederen er for stort.';
+  String get smimeAuthorityAnswerTooLarge => 'Svaret fra sertifikatutstederen er for stort.';
 
   @override
   String get smimeRevocationNotChecked =>
@@ -3271,31 +3095,20 @@ class AppLocalizationsNb extends AppLocalizations {
   String get actionsWaitingOnOthersEmpty => 'Du venter ikke på noen';
 
   @override
-  String get actionsFolderEmptyDetail =>
-      'For å følge med på noe, trykk på ⋯ i en melding og velg Legg til handling…';
+  String get actionsFolderEmptyDetail => 'For å følge med på noe, trykk på ⋯ i en melding og velg Legg til handling…';
 
   @override
   String get actionsTitle => 'Handlinger';
 
   @override
   String actionsCountMine(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count å gjøre',
-      one: '1 å gjøre',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count å gjøre', one: '1 å gjøre');
     return '$_temp0';
   }
 
   @override
   String actionsCountWaiting(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count venter',
-      one: '1 venter',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count venter', one: '1 venter');
     return '$_temp0';
   }
 
@@ -3314,8 +3127,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get actionsSettledHeader => 'Avsluttet';
 
   @override
-  String get actionsNoneInConversation =>
-      'Denne samtalen har ingen handlinger.';
+  String get actionsNoneInConversation => 'Denne samtalen har ingen handlinger.';
 
   @override
   String get actionsFooter =>
@@ -3468,8 +3280,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get actionsOriginManual => 'Lagt til av deg';
 
   @override
-  String get actionsOriginDemo =>
-      'Foreslått av den innebygde demoen: regler, ingen modell';
+  String get actionsOriginDemo => 'Foreslått av den innebygde demoen: regler, ingen modell';
 
   @override
   String actionsOriginSuggested(String provider) {
@@ -3540,12 +3351,10 @@ class AppLocalizationsNb extends AppLocalizations {
       'Av den innebygde demoen: regler, ingen modell. Ingenting forlater denne telefonen.';
 
   @override
-  String get actionsSuggestNone =>
-      'Ingenting å følge med på i denne meldingen.';
+  String get actionsSuggestNone => 'Ingenting å følge med på i denne meldingen.';
 
   @override
-  String get actionsSuggestPartial =>
-      'Meldingen er lang: bare begynnelsen ble lest.';
+  String get actionsSuggestPartial => 'Meldingen er lang: bare begynnelsen ble lest.';
 
   @override
   String get actionsSuggestTracked => 'Følges';
@@ -3569,26 +3378,20 @@ class AppLocalizationsNb extends AppLocalizations {
       'Hvert forslag siterer meldingen, og ingenting følges før du legger det til. Sitert eldre e-post teller ikke.';
 
   @override
-  String get actionsSuggestTooLarge =>
-      'Meldingen er for lang for den valgte modellen.';
+  String get actionsSuggestTooLarge => 'Meldingen er for lang for den valgte modellen.';
 
   @override
-  String get actionsSuggestInvalid =>
-      'Svaret stemte ikke med meldingen, så ingenting foreslås.';
+  String get actionsSuggestInvalid => 'Svaret stemte ikke med meldingen, så ingenting foreslås.';
 
   @override
   String get actionsSuggestCancelled => 'Stoppet.';
 
   @override
-  String get actionsSuggestFailed =>
-      'Forslag er ikke tilgjengelige akkurat nå.';
+  String get actionsSuggestFailed => 'Forslag er ikke tilgjengelige akkurat nå.';
 
   @override
   String settingsIdle(String protocol) {
-    String _temp0 = intl.Intl.selectLogic(protocol, {
-      'jmap': 'Push',
-      'other': 'IDLE',
-    });
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
     return '$_temp0';
   }
 
@@ -3653,8 +3456,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get settingsSignatureAddField => 'Legg til felt';
 
   @override
-  String get settingsSignatureImageFailed =>
-      'Kunne ikke legge til bildet. Prøv en mindre PNG eller JPEG.';
+  String get settingsSignatureImageFailed => 'Kunne ikke legge til bildet. Prøv en mindre PNG eller JPEG.';
 
   @override
   String get settingsSignatureWhenToUse => 'Når den brukes';
@@ -3670,8 +3472,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get settingsSignatureAddCopied => 'Legg til adresse eller domene…';
 
   @override
-  String get settingsSignatureCopiedPrompt =>
-      'En adresse, eller et domene som client.example.';
+  String get settingsSignatureCopiedPrompt => 'En adresse, eller et domene som client.example.';
 
   @override
   String get settingsSignatureScheduled => 'Planlagt';
@@ -3690,8 +3491,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get settingsSignatureRotation => 'I rotasjon';
 
   @override
-  String get settingsSignatureRotationFooter =>
-      'Hver nye melding får tilfeldig én av signaturene i rotasjon.';
+  String get settingsSignatureRotationFooter => 'Hver nye melding får tilfeldig én av signaturene i rotasjon.';
 
   @override
   String get settingsSignatureMakeDefault => 'Gjør til standard';
@@ -3732,8 +3532,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get settingsSwipeRight => 'Sveip mot høyre';
 
   @override
-  String get settingsSwipeRightFooter =>
-      'Et helt sveip utfører denne handlingen.';
+  String get settingsSwipeRightFooter => 'Et helt sveip utfører denne handlingen.';
 
   @override
   String get settingsSwipeToggleRead => 'Merk som lest/ulest';
@@ -3754,17 +3553,11 @@ class AppLocalizationsNb extends AppLocalizations {
   String get settingsUndoSendDelay => 'Forsinkelse for angre sending';
 
   @override
-  String get settingsUndoSendDelayFooter =>
-      'Sendte meldinger venter så lenge, slik at du kan trekke dem tilbake.';
+  String get settingsUndoSendDelayFooter => 'Sendte meldinger venter så lenge, slik at du kan trekke dem tilbake.';
 
   @override
   String settingsUndoSendSeconds(int seconds) {
-    String _temp0 = intl.Intl.pluralLogic(
-      seconds,
-      locale: localeName,
-      other: '$seconds sekunder',
-      one: '1 sekund',
-    );
+    String _temp0 = intl.Intl.pluralLogic(seconds, locale: localeName, other: '$seconds sekunder', one: '1 sekund');
     return '$_temp0';
   }
 
@@ -3799,29 +3592,25 @@ class AppLocalizationsNb extends AppLocalizations {
   String get settingsReadingHeader => 'Lesing';
 
   @override
-  String get settingsReadingFooter =>
-      'Eksterne bilder kan fortelle avsendere når og hvor du åpnet en melding.';
+  String get settingsReadingFooter => 'Eksterne bilder kan fortelle avsendere når og hvor du åpnet en melding.';
 
   @override
   String get settingsDefaultView => 'Standardvisning';
 
   @override
-  String get settingsDefaultViewFooter =>
-      'Du kan bytte visning for hvilken som helst melding med Aa-knappen.';
+  String get settingsDefaultViewFooter => 'Du kan bytte visning for hvilken som helst melding med Aa-knappen.';
 
   @override
   String get settingsViewReadable => 'Lettlest';
 
   @override
-  String get settingsViewReadableDetail =>
-      'Ryddig og tydelig, følger mørk modus';
+  String get settingsViewReadableDetail => 'Ryddig og tydelig, følger mørk modus';
 
   @override
   String get settingsViewOriginal => 'Original';
 
   @override
-  String get settingsViewOriginalDetail =>
-      'Akkurat slik avsenderen utformet den';
+  String get settingsViewOriginalDetail => 'Akkurat slik avsenderen utformet den';
 
   @override
   String get settingsViewPlain => 'Ren tekst';
@@ -3839,8 +3628,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get settingsFontMono => 'Fast bredde';
 
   @override
-  String get settingsFontMonoDetail =>
-      'Holder ASCII-kunst og tabeller på linje';
+  String get settingsFontMonoDetail => 'Holder ASCII-kunst og tabeller på linje';
 
   @override
   String get settingsTechnicalLists => 'Tekniske lister';
@@ -3852,8 +3640,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get settingsOpenLinksDirectly => 'Åpne lenker direkte';
 
   @override
-  String get settingsOpenLinksDirectlyDetail =>
-      'Hopp over klikksporing når målet er kjent';
+  String get settingsOpenLinksDirectlyDetail => 'Hopp over klikksporing når målet er kjent';
 
   @override
   String get settingsSecurityHeader => 'Sikkerhet';
@@ -3866,8 +3653,7 @@ class AppLocalizationsNb extends AppLocalizations {
       'Loupe spør når appen starter, og når du kommer tilbake etter å ha vært borte lenger enn tiden under Lås etter.';
 
   @override
-  String get settingsAppLockFooterOff =>
-      'Applås ber om fingeravtrykk, ansikt eller skjermlås før e-posten din vises.';
+  String get settingsAppLockFooterOff => 'Applås ber om fingeravtrykk, ansikt eller skjermlås før e-posten din vises.';
 
   @override
   String settingsAppLockStillOff(String reason) {
@@ -3898,8 +3684,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get settingsLockAfter => 'Lås etter';
 
   @override
-  String get settingsLockAfterFooter =>
-      'Hvor lenge Loupe kan være i bakgrunnen før den spør igjen.';
+  String get settingsLockAfterFooter => 'Hvor lenge Loupe kan være i bakgrunnen før den spør igjen.';
 
   @override
   String get settingsNotifications => 'Varsler';
@@ -3924,8 +3709,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get settingsResetApp => 'Tilbakestill appen';
 
   @override
-  String get settingsResetFooter =>
-      'Glemmer alle innstillinger og går tilbake til velkomstskjermen.';
+  String get settingsResetFooter => 'Glemmer alle innstillinger og går tilbake til velkomstskjermen.';
 
   @override
   String get settingsResetTitle => 'Vil du tilbakestille Loupe?';
@@ -3951,12 +3735,10 @@ class AppLocalizationsNb extends AppLocalizations {
       'Loupe har ingen analyse og ingen sporing. E-posten din går bare til e-postserverne dine.';
 
   @override
-  String get settingsNotificationsOffIos =>
-      'Varsler er slått av for Loupe i Innstillinger.';
+  String get settingsNotificationsOffIos => 'Varsler er slått av for Loupe i Innstillinger.';
 
   @override
-  String get settingsNotificationsOffAndroid =>
-      'Varsler er slått av for Loupe i Android-innstillingene.';
+  String get settingsNotificationsOffAndroid => 'Varsler er slått av for Loupe i Android-innstillingene.';
 
   @override
   String settingsNotificationsBlockedFooter(String system) {
@@ -4023,8 +3805,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get settingsComingSoon => 'Kommer snart';
 
   @override
-  String get settingsAllowUnrestrictedBattery =>
-      'Tillat ubegrenset batteribruk';
+  String get settingsAllowUnrestrictedBattery => 'Tillat ubegrenset batteribruk';
 
   @override
   String get settingsPush => 'Push';
@@ -4050,16 +3831,14 @@ class AppLocalizationsNb extends AppLocalizations {
   String get settingsAppIconBadge => 'Merke på appikonet';
 
   @override
-  String get settingsBadgeNote =>
-      'Merket oppdateres hver gang Loupe ser etter e-post, også i bakgrunnen.';
+  String get settingsBadgeNote => 'Merket oppdateres hver gang Loupe ser etter e-post, også i bakgrunnen.';
 
   @override
   String get settingsBadgeUnsupportedFooter =>
       'Startskjermen på denne telefonen viser ikke tall på appikoner. Merket oppdateres hver gang Loupe ser etter e-post, også i bakgrunnen.';
 
   @override
-  String get settingsTestNotificationBody =>
-      'Varsler om ny e-post ser slik ut.';
+  String get settingsTestNotificationBody => 'Varsler om ny e-post ser slik ut.';
 
   @override
   String get settingsAccountRemoved => 'Denne kontoen er fjernet.';
@@ -4080,8 +3859,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get settingsColour => 'Farge';
 
   @override
-  String get settingsColourFooter =>
-      'Markerer meldingene fra denne kontoen i Alle innbokser.';
+  String get settingsColourFooter => 'Markerer meldingene fra denne kontoen i Alle innbokser.';
 
   @override
   String settingsColourNumber(int number) {
@@ -4173,12 +3951,10 @@ class AppLocalizationsNb extends AppLocalizations {
       'Den første identiteten er standard for nye meldinger. Dra for å endre rekkefølgen.';
 
   @override
-  String get settingsIdentitiesFooterSingle =>
-      'Standardidentiteten for nye meldinger.';
+  String get settingsIdentitiesFooterSingle => 'Standardidentiteten for nye meldinger.';
 
   @override
-  String get settingsIdentitiesReplyFooter =>
-      'Et svar sendes fra identiteten meldingen ble sendt til.';
+  String get settingsIdentitiesReplyFooter => 'Et svar sendes fra identiteten meldingen ble sendt til.';
 
   @override
   String get settingsIdentityDefault => 'Standard';
@@ -4210,8 +3986,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get settingsCopyToMyself => 'Kopi til meg selv';
 
   @override
-  String get settingsCopyToMyselfFooter =>
-      'Legges til i alle meldinger fra denne identiteten.';
+  String get settingsCopyToMyselfFooter => 'Legges til i alle meldinger fra denne identiteten.';
 
   @override
   String get settingsCc => 'Kopi';
@@ -4227,8 +4002,7 @@ class AppLocalizationsNb extends AppLocalizations {
       'Svar på meldinger sendt til disse adressene, sendes fra denne identiteten. * står for hva som helst: *@example.com, me+*@example.com.';
 
   @override
-  String get settingsReplyPatternPrompt =>
-      'En adresse eller et mønster der * står for hva som helst.';
+  String get settingsReplyPatternPrompt => 'En adresse eller et mønster der * står for hva som helst.';
 
   @override
   String get settingsAddReplyPattern => 'Legg til adresse eller mønster';
@@ -4250,8 +4024,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get settingsIdentityNoAddressTitle => 'Ingen adresse';
 
   @override
-  String get settingsIdentityNoAddressMessage =>
-      'Skriv inn e-postadressen det skal sendes fra.';
+  String get settingsIdentityNoAddressMessage => 'Skriv inn e-postadressen det skal sendes fra.';
 
   @override
   String get settingsIdentityInvalidAddressTitle => 'Ugyldig adresse';
@@ -4282,8 +4055,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get settingsDeleteIdentityMessage =>
-      'Meldinger som allerede er sendt fra den, forblir som de er.';
+  String get settingsDeleteIdentityMessage => 'Meldinger som allerede er sendt fra den, forblir som de er.';
 
   @override
   String get settingsLastIdentityFooter => 'En konto må ha minst én identitet.';
@@ -4351,15 +4123,13 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get rulesStatusNoScript =>
-      'Ingen skript er aktive på serveren. Når du lagrer en serverregel, slås Loupes på.';
+  String get rulesStatusNoScript => 'Ingen skript er aktive på serveren. Når du lagrer en serverregel, slås Loupes på.';
 
   @override
   String get rulesStatusUnavailable => 'Ikke tilgjengelig';
 
   @override
-  String get rulesStatusNoSieve =>
-      'Serveren til denne kontoen tilbyr ikke Sieve (ManageSieve eller JMAP).';
+  String get rulesStatusNoSieve => 'Serveren til denne kontoen tilbyr ikke Sieve (ManageSieve eller JMAP).';
 
   @override
   String rulesActionMove(String folder) {
@@ -4441,8 +4211,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get rulesRemovedAccount => 'Fjernet konto';
 
   @override
-  String get rulesAccountsFooter =>
-      'En regel for alle kontoer gjelder også kontoer du legger til senere.';
+  String get rulesAccountsFooter => 'En regel for alle kontoer gjelder også kontoer du legger til senere.';
 
   @override
   String get rulesActionsHeader => 'Så';
@@ -4452,8 +4221,7 @@ class AppLocalizationsNb extends AppLocalizations {
       'Videresending sender alle meldinger som samsvarer, til en annen adresse når de kommer inn, også mens telefonen er slått av. Noen leverandører begrenser hvor mye e-post som kan videresendes.';
 
   @override
-  String get rulesForwardingHiddenFooter =>
-      'Videresending kjøres bare i serverregler, så den er utelatt her.';
+  String get rulesForwardingHiddenFooter => 'Videresending kjøres bare i serverregler, så den er utelatt her.';
 
   @override
   String rulesRemoveAction(String action) {
@@ -4504,8 +4272,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get rulesMoveAccountTitle => 'Mappe i hvilken konto?';
 
   @override
-  String get rulesMoveAccountMessage =>
-      'E-post fra de andre kontoene går til mappen med samme navn der.';
+  String get rulesMoveAccountMessage => 'E-post fra de andre kontoene går til mappen med samme navn der.';
 
   @override
   String get rulesAddTag => 'Legg til etikett';
@@ -4544,8 +4311,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get rulesChooseActionTitle => 'Velg en handling';
 
   @override
-  String get rulesChooseActionMessage =>
-      'Legg til hva regelen gjør med meldingene den treffer.';
+  String get rulesChooseActionMessage => 'Legg til hva regelen gjør med meldingene den treffer.';
 
   @override
   String get rulesSaveError => 'Kunne ikke lagre regelen';
@@ -4560,8 +4326,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get rulesNothingToApplyTitle => 'Ingenting å bruke';
 
   @override
-  String get rulesNothingToApplyMessage =>
-      'Gi først regelen en betingelse som virker, og en handling.';
+  String get rulesNothingToApplyMessage => 'Gi først regelen en betingelse som virker, og en handling.';
 
   @override
   String rulesApplyScopeTitle(String rule) {
@@ -4593,8 +4358,7 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String rulesApplyConfirmTitle(int count, String rule) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4608,8 +4372,7 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String rulesApplyConfirm(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4623,8 +4386,7 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String rulesApplied(int count, String rule) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4666,8 +4428,7 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String rulesMatchingCount(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4681,8 +4442,7 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String rulesMatchingCountMore(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4711,15 +4471,10 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String rulesPreviewMore(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'og $countString til',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'og $countString til');
     return '$_temp0';
   }
 
@@ -4804,8 +4559,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get subscriptionsNoNewsletters => 'Ingen nyhetsbrev';
 
   @override
-  String get subscriptionsNoNewslettersDetail =>
-      'Nyhetsbrev og andre masseutsendelser vises her når de kommer.';
+  String get subscriptionsNoNewslettersDetail => 'Nyhetsbrev og andre masseutsendelser vises her når de kommer.';
 
   @override
   String get subscriptionsNothingNeverRead => 'Ingenting du aldri leser';
@@ -4814,15 +4568,13 @@ class AppLocalizationsNb extends AppLocalizations {
   String get subscriptionsNothingRarelyRead => 'Ingenting du sjelden leser';
 
   @override
-  String get subscriptionsNothingFilteredDetail =>
-      'Du leser noe av alt du får.';
+  String get subscriptionsNothingFilteredDetail => 'Du leser noe av alt du får.';
 
   @override
   String get subscriptionsNoDiscussions => 'Ingen diskusjoner';
 
   @override
-  String get subscriptionsNoDiscussionsDetail =>
-      'E-postlister du kan skrive til, vises her når e-posten deres kommer.';
+  String get subscriptionsNoDiscussionsDetail => 'E-postlister du kan skrive til, vises her når e-posten deres kommer.';
 
   @override
   String get subscriptionsDiscussionsFootnote =>
@@ -4892,15 +4644,10 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String subscriptionsArchiveInbox(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Arkiver $countString i innboksen',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Arkiver $countString i innboksen');
     return '$_temp0';
   }
 
@@ -4908,15 +4655,13 @@ class AppLocalizationsNb extends AppLocalizations {
   String get subscriptionsCreateRule => 'Opprett regel…';
 
   @override
-  String get subscriptionsCreateRuleDetail =>
-      'Flytt eller arkiver framtidig e-post fra avsenderen';
+  String get subscriptionsCreateRuleDetail => 'Flytt eller arkiver framtidig e-post fra avsenderen';
 
   @override
   String get subscriptionsTreatAsDiscussion => 'Behandle som diskusjon';
 
   @override
-  String get subscriptionsTreatAsDiscussionDetail =>
-      'En liste folk skriver til: les den som et forum';
+  String get subscriptionsTreatAsDiscussionDetail => 'En liste folk skriver til: les den som et forum';
 
   @override
   String get subscriptionsTreatAsNewsletter => 'Behandle som nyhetsbrev';
@@ -4950,8 +4695,7 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String subscriptionsUnreadCount(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4980,12 +4724,9 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String subscriptionsReadDetail(String percent, int read, int total) {
-    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(
-      localeName,
-    );
+    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String readString = readNumberFormat.format(read);
-    final intl.NumberFormat totalNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
 
     return '$percent · $readString av $totalString';
@@ -4996,12 +4737,7 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String subscriptionsFolders(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Mapper',
-      one: 'Mappe',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Mapper', one: 'Mappe');
     return '$_temp0';
   }
 
@@ -5047,8 +4783,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickFailedTitle =>
-      'Kunne ikke melde av automatisk';
+  String get subscriptionsOneClickFailedTitle => 'Kunne ikke melde av automatisk';
 
   @override
   String get subscriptionsSendUnsubscribeEmail => 'Send avmeldings-e-post';
@@ -5072,8 +4807,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsWebInsecure =>
-      'Tilkoblingen til dette nettstedet er ikke kryptert.';
+  String get subscriptionsWebInsecure => 'Tilkoblingen til dette nettstedet er ikke kryptert.';
 
   @override
   String subscriptionsHomographWarning(String site) {
@@ -5110,8 +4844,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickNotAllowed =>
-      'Avmeldingslenken er ikke en sikker adresse på internett.';
+  String get subscriptionsOneClickNotAllowed => 'Avmeldingslenken er ikke en sikker adresse på internett.';
 
   @override
   String subscriptionsOneClickTimeout(String site) {
@@ -5134,8 +4867,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoAccountToSend =>
-      'Det finnes ingen konto å sende avmeldings-e-posten fra.';
+  String get subscriptionsNoAccountToSend => 'Det finnes ingen konto å sende avmeldings-e-posten fra.';
 
   @override
   String subscriptionsMailConfirm(String to, String from, String subject) {
@@ -5168,11 +4900,7 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String subscriptionsMoveToJunk(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Flytt $count til Søppelpost',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Flytt $count til Søppelpost');
     return '$_temp0';
   }
 
@@ -5205,8 +4933,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get rulesDescribeAccount => 'Konto';
 
   @override
-  String get rulesDescribeHint =>
-      'Flytt kvitteringer fra Harbor Coffee til Receipts';
+  String get rulesDescribeHint => 'Flytt kvitteringer fra Harbor Coffee til Receipts';
 
   @override
   String rulesDescribeSentNote(String account) {
@@ -5220,8 +4947,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get rulesDescribeWorking => 'Lager regelen…';
 
   @override
-  String get rulesDescribeFailed =>
-      'Loupe klarte ikke å lage en regel av dette.';
+  String get rulesDescribeFailed => 'Loupe klarte ikke å lage en regel av dette.';
 
   @override
   String get rulesDescribeProposed => 'Foreslått regel';
@@ -5246,8 +4972,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get rulesDescribeScopeChoose =>
-      'I regelredigeringen velger du hvor den kjøres.';
+  String get rulesDescribeScopeChoose => 'I regelredigeringen velger du hvor den kjøres.';
 
   @override
   String rulesDescribeCantDoHeader(int count) {
@@ -5290,8 +5015,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get rulesDescribeReasonTag =>
-      'Det finnes ingen etikett med det navnet.';
+  String get rulesDescribeReasonTag => 'Det finnes ingen etikett med det navnet.';
 
   @override
   String get rulesDescribeReasonOther => 'Det kan regler ikke gjøre.';
@@ -5306,25 +5030,20 @@ class AppLocalizationsNb extends AppLocalizations {
   String get rulesDescribeDryRunHeader => 'Prøvekjøring';
 
   @override
-  String get rulesDescribeDryRunWorking =>
-      'Sjekker e-posten på denne telefonen…';
+  String get rulesDescribeDryRunWorking => 'Sjekker e-posten på denne telefonen…';
 
   @override
   String rulesDescribeDryRunCount(int total, int matched, String account) {
-    final intl.NumberFormat totalNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
-    final intl.NumberFormat matchedNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String matchedString = matchedNumberFormat.format(matched);
 
     String _temp0 = intl.Intl.pluralLogic(
       total,
       locale: localeName,
-      other:
-          'Ville samsvare med $matchedString av $totalString nedlastede meldinger i $account',
-      one:
-          'Ville samsvare med $matchedString av 1 nedlastet melding i $account',
+      other: 'Ville samsvare med $matchedString av $totalString nedlastede meldinger i $account',
+      one: 'Ville samsvare med $matchedString av 1 nedlastet melding i $account',
     );
     return '$_temp0';
   }
@@ -5341,8 +5060,7 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String rulesDescribeDryRunCapped(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -5356,30 +5074,26 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String rulesDescribeDryRunUnchecked(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          '$countString meldinger kunne ikke sjekkes uten å laste ned teksten.',
+      other: '$countString meldinger kunne ikke sjekkes uten å laste ned teksten.',
       one: '1 melding kunne ikke sjekkes uten å laste ned teksten.',
     );
     return '$_temp0';
   }
 
   @override
-  String get rulesDescribeDryRunFailed =>
-      'Loupe klarte ikke å sjekke e-posten på denne telefonen.';
+  String get rulesDescribeDryRunFailed => 'Loupe klarte ikke å sjekke e-posten på denne telefonen.';
 
   @override
   String get rulesDescribeOpenEditor => 'Åpne i regelredigering';
 
   @override
-  String get rulesDescribeDemoNote =>
-      'Foreslått av den innebygde demoen, ikke av en modell.';
+  String get rulesDescribeDemoNote => 'Foreslått av den innebygde demoen, ikke av en modell.';
 
   @override
   String rulesDescribeProviderNote(String provider) {
@@ -5404,8 +5118,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get appLiveGateTitle => 'Kunne ikke åpne kontoene dine';
 
   @override
-  String get appLiveGateUnavailableBuild =>
-      'Ekte kontoer er ikke tilgjengelige i dette bygget ennå.';
+  String get appLiveGateUnavailableBuild => 'Ekte kontoer er ikke tilgjengelige i dette bygget ennå.';
 
   @override
   String get appLiveGateKeyUnreadable =>
@@ -5453,8 +5166,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get attachmentsShareMenu => 'Del…';
 
   @override
-  String get attachmentsDownloadError =>
-      'Kunne ikke laste ned vedlegget. Sjekk tilkoblingen og prøv igjen.';
+  String get attachmentsDownloadError => 'Kunne ikke laste ned vedlegget. Sjekk tilkoblingen og prøv igjen.';
 
   @override
   String get attachmentsShareError => 'Kunne ikke dele vedlegget.';
@@ -5465,8 +5177,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get attachmentsOpenInError =>
-      'Kunne ikke åpne vedlegget i en annen app.';
+  String get attachmentsOpenInError => 'Kunne ikke åpne vedlegget i en annen app.';
 
   @override
   String attachmentsSaved(String name) {
@@ -5484,12 +5195,7 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String attachmentsPageCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count sider',
-      one: '1 side',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count sider', one: '1 side');
     return '$_temp0';
   }
 
@@ -5499,8 +5205,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get attachmentsLargeDownload =>
-      'Dette vedlegget er stort. Last det ned nå, eller senere på wifi.';
+  String get attachmentsLargeDownload => 'Dette vedlegget er stort. Last det ned nå, eller senere på wifi.';
 
   @override
   String get attachmentsDownload => 'Last ned';
@@ -5522,8 +5227,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get attachmentsPdfUnavailable =>
-      'Denne PDF-en kan ikke vises her (den kan være beskyttet med passord).';
+  String get attachmentsPdfUnavailable => 'Denne PDF-en kan ikke vises her (den kan være beskyttet med passord).';
 
   @override
   String attachmentsPageOf(int page, int count) {
@@ -5550,12 +5254,7 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String attachmentsTextInfo(String charset, int count, String lines) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$lines linjer',
-      one: '$lines linje',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$lines linjer', one: '$lines linje');
     return '$charset · $_temp0';
   }
 
@@ -5566,8 +5265,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get attachmentsCopied => 'Kopiert';
 
   @override
-  String get attachmentsImageUnavailable =>
-      'Bildet kan ikke vises her. Prøv «Åpne i…».';
+  String get attachmentsImageUnavailable => 'Bildet kan ikke vises her. Prøv «Åpne i…».';
 
   @override
   String get attachmentsEmlNoSubject => '(Uten emne)';
@@ -5589,12 +5287,7 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String attachmentsEmlAttachments(int count, String names) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Vedlegg: $names',
-      one: 'Vedlegg: $names',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Vedlegg: $names', one: 'Vedlegg: $names');
     return '$_temp0';
   }
 
@@ -5793,15 +5486,13 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get calendarRefreshUnknown =>
-      'En deltaker ber om den nyeste versjonen';
+  String get calendarRefreshUnknown => 'En deltaker ber om den nyeste versjonen';
 
   @override
   String get calendarCancelled => 'Avlyst';
 
   @override
-  String get calendarCancelledByOrganizer =>
-      'Arrangøren har avlyst denne hendelsen.';
+  String get calendarCancelledByOrganizer => 'Arrangøren har avlyst denne hendelsen.';
 
   @override
   String get calendarCancelledLater => 'Denne hendelsen ble avlyst senere.';
@@ -5810,8 +5501,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get calendarOutdated => 'Utdatert';
 
   @override
-  String get calendarOutdatedDetail =>
-      'Denne invitasjonen ble oppdatert senere; den nyeste gjelder.';
+  String get calendarOutdatedDetail => 'Denne invitasjonen ble oppdatert senere; den nyeste gjelder.';
 
   @override
   String calendarLocationRemoved(String location) {
@@ -5855,42 +5545,25 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String calendarGuestCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count gjester',
-      one: '1 gjest',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count gjester', one: '1 gjest');
     return '$_temp0';
   }
 
   @override
   String calendarAcceptedCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count ja',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count ja');
     return '$_temp0';
   }
 
   @override
   String calendarMaybeCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count kanskje',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count kanskje');
     return '$_temp0';
   }
 
   @override
   String calendarDeclinedCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count nei',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count nei');
     return '$_temp0';
   }
 
@@ -5952,8 +5625,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get calendarNoCalendarApp =>
-      'Det finnes ingen kalenderapp å legge hendelsen til i.';
+  String get calendarNoCalendarApp => 'Det finnes ingen kalenderapp å legge hendelsen til i.';
 
   @override
   String get calendarCantOpenCalendar => 'Kunne ikke åpne kalenderen.';
@@ -5989,29 +5661,20 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get calendarNoOrganizer =>
-      'Denne invitasjonen har ingen arrangør å svare til.';
+  String get calendarNoOrganizer => 'Denne invitasjonen har ingen arrangør å svare til.';
 
   @override
   String get calendarNoAccount => 'Det finnes ingen konto å svare fra.';
 
   @override
   String calendarReplySending(String answer, String name) {
-    String _temp0 = intl.Intl.selectLogic(answer, {
-      'accepted': 'Godtatt',
-      'tentative': 'Kanskje',
-      'other': 'Avslått',
-    });
+    String _temp0 = intl.Intl.selectLogic(answer, {'accepted': 'Godtatt', 'tentative': 'Kanskje', 'other': 'Avslått'});
     return '$_temp0 · sender svar til $name…';
   }
 
   @override
   String calendarReplySent(String answer) {
-    String _temp0 = intl.Intl.selectLogic(answer, {
-      'accepted': 'Godtatt',
-      'tentative': 'Kanskje',
-      'other': 'Avslått',
-    });
+    String _temp0 = intl.Intl.selectLogic(answer, {'accepted': 'Godtatt', 'tentative': 'Kanskje', 'other': 'Avslått'});
     return '$_temp0 · svar sendt';
   }
 
@@ -6091,8 +5754,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get keyboardKeyBackspace => 'Tilbake';
 
   @override
-  String get mailingListsMuted =>
-      'Tråden er dempet. Nye meldinger i den kommer som lest.';
+  String get mailingListsMuted => 'Tråden er dempet. Nye meldinger i den kommer som lest.';
 
   @override
   String get mailingListsUnmuted => 'Tråden er ikke lenger dempet.';
@@ -6149,12 +5811,7 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String mailingListsReplyCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count svar',
-      one: '1 svar',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count svar', one: '1 svar');
     return '$_temp0';
   }
 
@@ -6168,8 +5825,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get mailingListsTechnicalTitle => 'Tekniske lister';
 
   @override
-  String get mailingListsTechnicalEmpty =>
-      'E-postlister vises her når e-posten deres kommer.';
+  String get mailingListsTechnicalEmpty => 'E-postlister vises her når e-posten deres kommer.';
 
   @override
   String get mailingListsTechnicalFooter =>
@@ -6238,8 +5894,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get palettePlaceholder =>
-      'Søk i handlinger, postkasser, innstillinger';
+  String get palettePlaceholder => 'Søk i handlinger, postkasser, innstillinger';
 
   @override
   String get paletteNothingFound => 'Ingenting funnet';
@@ -6341,8 +5996,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get searchUnknownAccountFailed =>
-      'Kunne ikke søke i kontoen på serveren';
+  String get searchUnknownAccountFailed => 'Kunne ikke søke i kontoen på serveren';
 
   @override
   String searchChip(String term) {
@@ -6355,8 +6009,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get searchReadAndUnread =>
-      'Schrödingers innboks: hver melding her er både lest og ulest til du åpner den.';
+  String get searchReadAndUnread => 'Schrödingers innboks: hver melding her er både lest og ulest til du åpner den.';
 
   @override
   String searchContradiction(String term) {
@@ -6405,8 +6058,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get searchSettingsTitle => 'Smart Mailboxes';
 
   @override
-  String get searchSettingsLocalFooter =>
-      'Smart Mailboxes blir værende på denne enheten.';
+  String get searchSettingsLocalFooter => 'Smart Mailboxes blir værende på denne enheten.';
 
   @override
   String searchSettingsServerFooter(String account) {
@@ -6423,8 +6075,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get searchGmailCantKeep => 'Gmail kan ikke lagre Smart Mailboxes';
 
   @override
-  String get searchKeepOnDevice =>
-      'Lagre Smart Mailboxes bare på denne enheten';
+  String get searchKeepOnDevice => 'Lagre Smart Mailboxes bare på denne enheten';
 
   @override
   String get searchOnTheServer => 'På serveren';
@@ -6473,11 +6124,7 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String sharedBytes(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count byte',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count byte');
     return '$_temp0';
   }
 
@@ -6695,8 +6342,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get sharedMoveOneAccount =>
-      'Velg meldinger fra én konto for å flytte dem.';
+  String get sharedMoveOneAccount => 'Velg meldinger fra én konto for å flytte dem.';
 
   @override
   String get sharedSnoozeTitle => 'Slumre';
@@ -6830,8 +6476,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get documentsEmpty => 'Ingen dokumenter ennå';
 
   @override
-  String get documentsEmptyDetail =>
-      'PDF-er og tekstfiler du åpner fra e-post, vises her, så du kan søke i dem.';
+  String get documentsEmptyDetail => 'PDF-er og tekstfiler du åpner fra e-post, vises her, så du kan søke i dem.';
 
   @override
   String get documentsNoResults => 'Ingen treff';
@@ -6868,12 +6513,10 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get documentsStatusNotDownloaded =>
-      'Ikke lastet ned: åpne dokumentet for å lese og søke i det.';
+  String get documentsStatusNotDownloaded => 'Ikke lastet ned: åpne dokumentet for å lese og søke i det.';
 
   @override
-  String get documentsStatusEncrypted =>
-      'Passordbeskyttet: Loupe kan ikke lese det.';
+  String get documentsStatusEncrypted => 'Passordbeskyttet: Loupe kan ikke lese det.';
 
   @override
   String get documentsStatusNoText =>
@@ -6883,31 +6526,22 @@ class AppLocalizationsNb extends AppLocalizations {
   String get documentsStatusEmpty => 'Denne filen har ingen tekst.';
 
   @override
-  String get documentsStatusUnsupported =>
-      'Loupe kan ikke lese denne typen dokument ennå.';
+  String get documentsStatusUnsupported => 'Loupe kan ikke lese denne typen dokument ennå.';
 
   @override
-  String get documentsStatusTooLarge =>
-      'For stort til å leses på denne telefonen.';
+  String get documentsStatusTooLarge => 'For stort til å leses på denne telefonen.';
 
   @override
-  String get documentsStatusDamaged =>
-      'Kunne ikke leses: filen kan være skadet.';
+  String get documentsStatusDamaged => 'Kunne ikke leses: filen kan være skadet.';
 
   @override
   String documentsStatusPartial(int read, int total) {
-    String _temp0 = intl.Intl.pluralLogic(
-      total,
-      locale: localeName,
-      other: '$total sider',
-      one: '$total side',
-    );
+    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$total sider', one: '$total side');
     return 'Lest $read av $_temp0; det søkes ikke i resten.';
   }
 
   @override
-  String get documentsStatusPartialText =>
-      'Bare begynnelsen ble lest; det søkes ikke i resten.';
+  String get documentsStatusPartialText => 'Bare begynnelsen ble lest; det søkes ikke i resten.';
 
   @override
   String get documentsOpenDocument => 'Åpne dokument';
@@ -6955,8 +6589,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get documentsNoFactChanges =>
-      'Nøkkelopplysningene er de samme; annen tekst er forskjellig.';
+  String get documentsNoFactChanges => 'Nøkkelopplysningene er de samme; annen tekst er forskjellig.';
 
   @override
   String get documentsKeyFacts => 'Nøkkelopplysninger';
@@ -6971,8 +6604,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get documentsKeyFactsFailed => 'Fant ikke nøkkelopplysningene.';
 
   @override
-  String get documentsKeyFactsDemoNote =>
-      'Laget av den innebygde demoen, ikke av en modell.';
+  String get documentsKeyFactsDemoNote => 'Laget av den innebygde demoen, ikke av en modell.';
 
   @override
   String documentsKeyFactsMadeBy(String provider) {
@@ -6980,16 +6612,13 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get documentsKeyFactsHint =>
-      'Trykk på en opplysning for å se hvor dokumentet oppgir den.';
+  String get documentsKeyFactsHint => 'Trykk på en opplysning for å se hvor dokumentet oppgir den.';
 
   @override
-  String get documentsKeyFactsNone =>
-      'Loupe har ingen nøkkelopplysninger for denne typen dokument ennå.';
+  String get documentsKeyFactsNone => 'Loupe har ingen nøkkelopplysninger for denne typen dokument ennå.';
 
   @override
-  String get documentsKeyFactsPartial =>
-      'Bare de første sidene ble lest; opplysninger på senere sider er ukjente.';
+  String get documentsKeyFactsPartial => 'Bare de første sidene ble lest; opplysninger på senere sider er ukjente.';
 
   @override
   String get documentsKeyFactsNotStated => 'Ikke oppgitt';
@@ -7039,8 +6668,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get documentsFieldBrokerFee => 'Meglergebyr';
 
   @override
-  String get documentsFieldEarlyRepaymentCharges =>
-      'Gebyrer ved førtidig innfrielse';
+  String get documentsFieldEarlyRepaymentCharges => 'Gebyrer ved førtidig innfrielse';
 
   @override
   String get documentsFieldTotalAmountPayable => 'Totalt beløp å betale';
@@ -7097,8 +6725,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get accountSetupAddressTitle => 'Legg til en e-postkonto';
 
   @override
-  String get accountSetupAddressText =>
-      'Loupe finner innstillingene for de fleste leverandører.';
+  String get accountSetupAddressText => 'Loupe finner innstillingene for de fleste leverandører.';
 
   @override
   String get accountSetupNameHint => 'Navnet ditt';
@@ -7184,15 +6811,13 @@ class AppLocalizationsNb extends AppLocalizations {
   String get accountSetupUseAppPassword => 'Bruk et app-passord';
 
   @override
-  String get accountSetupUseAppPasswordInstead =>
-      'Bruk et app-passord i stedet';
+  String get accountSetupUseAppPasswordInstead => 'Bruk et app-passord i stedet';
 
   @override
   String get accountSetupUseDifferentAddress => 'Bruk en annen adresse';
 
   @override
-  String get accountSetupHowToCreateAppPassword =>
-      'Slik lager du et app-passord';
+  String get accountSetupHowToCreateAppPassword => 'Slik lager du et app-passord';
 
   @override
   String get accountSetupHowToCreateOne => 'Slik lager du et';
@@ -7206,8 +6831,7 @@ class AppLocalizationsNb extends AppLocalizations {
       '«Logg inn med Google» er ikke tilgjengelig i dette bygget ennå. Du kan koble til med et app-passord i stedet (det krever totrinnsbekreftelse på Google-kontoen din).';
 
   @override
-  String get accountSetupGmailAppPasswordNote =>
-      'Lag et app-passord i Google-kontoen din, og lim det inn nedenfor.';
+  String get accountSetupGmailAppPasswordNote => 'Lag et app-passord i Google-kontoen din, og lim det inn nedenfor.';
 
   @override
   String get accountSetupMicrosoftNote =>
@@ -7222,16 +6846,14 @@ class AppLocalizationsNb extends AppLocalizations {
       'iCloud Mail krever et appspesifikt passord, ikke passordet til Apple-kontoen din.';
 
   @override
-  String get accountSetupYahooNote =>
-      'Yahoo Mail krever et app-passord, ikke passordet til kontoen din.';
+  String get accountSetupYahooNote => 'Yahoo Mail krever et app-passord, ikke passordet til kontoen din.';
 
   @override
   String get accountSetupFastmailJmapNote =>
       'Loupe kobler til Fastmail over JMAP med et API-token: Settings › Privacy & Security › Manage API tokens, for JMAP, med tilgang til e-post og sending.';
 
   @override
-  String get accountSetupFastmailNote =>
-      'Fastmail krever et app-passord for e-postapper.';
+  String get accountSetupFastmailNote => 'Fastmail krever et app-passord for e-postapper.';
 
   @override
   String get accountSetupServerSettings => 'Serverinnstillinger';
@@ -7295,8 +6917,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get accountSetupUsernameHint => 'E-postadressen din';
 
   @override
-  String get accountSetupNoEncryptionTitle =>
-      'Vil du koble til uten kryptering?';
+  String get accountSetupNoEncryptionTitle => 'Vil du koble til uten kryptering?';
 
   @override
   String get accountSetupNoEncryptionText =>
@@ -7314,12 +6935,10 @@ class AppLocalizationsNb extends AppLocalizations {
       'Passordet ble avvist. Bruk et app-passord, ikke passordet til kontoen din.';
 
   @override
-  String get accountSetupPasswordRejected =>
-      'Passordet ble avvist. Sjekk det og prøv igjen.';
+  String get accountSetupPasswordRejected => 'Passordet ble avvist. Sjekk det og prøv igjen.';
 
   @override
-  String get accountSetupServerUnreachable =>
-      'Kan ikke nå serveren. Sjekk serverinnstillingene og tilkoblingen din.';
+  String get accountSetupServerUnreachable => 'Kan ikke nå serveren. Sjekk serverinnstillingene og tilkoblingen din.';
 
   @override
   String accountSetupCertificateUntrusted(String details) {
@@ -7373,8 +6992,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get accountSetupOAuthServerUnreachable =>
-      'Kan ikke nå e-postserveren. Sjekk tilkoblingen din og prøv igjen.';
+  String get accountSetupOAuthServerUnreachable => 'Kan ikke nå e-postserveren. Sjekk tilkoblingen din og prøv igjen.';
 
   @override
   String accountSetupSignInUnavailable(String provider) {
@@ -7393,11 +7011,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get accountSetupSigningIn => 'Logger inn…';
 
   @override
-  String accountSetupSignInExpired(
-    String provider,
-    String email,
-    String account,
-  ) {
+  String accountSetupSignInExpired(String provider, String email, String account) {
     return '$provider godtar ikke lenger Loupes pålogging for $email, så $account synkroniseres ikke. Logg inn på nytt for å få e-posten til kontoen.';
   }
 
@@ -7405,8 +7019,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get accountImportTitle => 'Importer fra Thunderbird';
 
   @override
-  String get accountImportPointCamera =>
-      'Rett kameraet mot QR-koden Thunderbird viser.';
+  String get accountImportPointCamera => 'Rett kameraet mot QR-koden Thunderbird viser.';
 
   @override
   String accountImportProgress(int scanned, int total) {
@@ -7415,11 +7028,7 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String accountImportProgressLabel(int scanned, int total) {
-    String _temp0 = intl.Intl.pluralLogic(
-      total,
-      locale: localeName,
-      other: 'Skannet $scanned av $total koder',
-    );
+    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: 'Skannet $scanned av $total koder');
     return '$_temp0';
   }
 
@@ -7463,24 +7072,20 @@ class AppLocalizationsNb extends AppLocalizations {
       'Denne koden er fra en ny eksport, så kodene som ble skannet tidligere, er lagt til side.';
 
   @override
-  String get accountImportNotThunderbird =>
-      'Dette er ikke en kontokode fra Thunderbird.';
+  String get accountImportNotThunderbird => 'Dette er ikke en kontokode fra Thunderbird.';
 
   @override
   String get accountImportNewerVersion =>
       'Denne koden kommer fra en nyere Thunderbird. Oppdater Loupe for å importere den.';
 
   @override
-  String get accountImportDamaged =>
-      'Denne Thunderbird-koden kunne ikke leses.';
+  String get accountImportDamaged => 'Denne Thunderbird-koden kunne ikke leses.';
 
   @override
-  String get accountImportTooLarge =>
-      'Denne koden er for stor til å være en eksport fra Thunderbird.';
+  String get accountImportTooLarge => 'Denne koden er for stor til å være en eksport fra Thunderbird.';
 
   @override
-  String get accountImportCouldNotOpenSettings =>
-      'Kunne ikke åpne Innstillinger.';
+  String get accountImportCouldNotOpenSettings => 'Kunne ikke åpne Innstillinger.';
 
   @override
   String get accountImportCameraOffTitle => 'Kameratilgang er slått av';
@@ -7493,15 +7098,13 @@ class AppLocalizationsNb extends AppLocalizations {
   String get accountImportNoCameraTitle => 'Ingen kamera';
 
   @override
-  String get accountImportNoCameraText =>
-      'Loupe kan ikke bruke et kamera her. Lim inn teksten i koden i stedet.';
+  String get accountImportNoCameraText => 'Loupe kan ikke bruke et kamera her. Lim inn teksten i koden i stedet.';
 
   @override
   String get accountImportCameraFailedTitle => 'Kameraet startet ikke';
 
   @override
-  String get accountImportCameraFailedText =>
-      'Prøv igjen, eller lim inn teksten i koden i stedet.';
+  String get accountImportCameraFailedText => 'Prøv igjen, eller lim inn teksten i koden i stedet.';
 
   @override
   String get accountImportOpenSettings => 'Åpne Innstillinger';
@@ -7519,22 +7122,18 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get accountImportNoneReadable =>
-      'Ingen av kontoene i disse kodene kunne leses.';
+  String get accountImportNoneReadable => 'Ingen av kontoene i disse kodene kunne leses.';
 
   @override
-  String get accountImportChoose =>
-      'Velg kontoene som skal legges til i Loupe.';
+  String get accountImportChoose => 'Velg kontoene som skal legges til i Loupe.';
 
   @override
   String accountImportMissingCodes(int count, String codes, int total) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          'Kodene $codes av $total ble ikke skannet, så kontoene i dem vises ikke.',
-      one:
-          'Kode $codes av $total ble ikke skannet, så kontoene i den vises ikke.',
+      other: 'Kodene $codes av $total ble ikke skannet, så kontoene i dem vises ikke.',
+      one: 'Kode $codes av $total ble ikke skannet, så kontoene i den vises ikke.',
     );
     return '$_temp0';
   }
@@ -7552,8 +7151,7 @@ class AppLocalizationsNb extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          '$count kontoer i kodene kunne ikke leses. De bruker kanskje innstillinger fra en nyere Thunderbird.',
+      other: '$count kontoer i kodene kunne ikke leses. De bruker kanskje innstillinger fra en nyere Thunderbird.',
       one: '1 konto i kodene kunne ikke leses. Den bruker kanskje innstillinger fra en nyere Thunderbird.',
     );
     return '$_temp0';
@@ -7563,8 +7161,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get accountImportScanAgain => 'Skann på nytt';
 
   @override
-  String get accountImportAlreadyAdded =>
-      'Det finnes allerede en konto med denne adressen i Loupe.';
+  String get accountImportAlreadyAdded => 'Det finnes allerede en konto med denne adressen i Loupe.';
 
   @override
   String accountImportSignsInWith(String provider) {
@@ -7572,8 +7169,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get accountImportGmailAppPassword =>
-      'Legg til kontoen med et app-passord (det krever totrinnsbekreftelse).';
+  String get accountImportGmailAppPassword => 'Legg til kontoen med et app-passord (det krever totrinnsbekreftelse).';
 
   @override
   String get accountImportGmailNoSignIn =>
@@ -7584,8 +7180,7 @@ class AppLocalizationsNb extends AppLocalizations {
       'Thunderbird logger inn på denne kontoen i nettleseren. Det kan ikke Loupe ennå: bruk et app-passord hvis leverandøren din tilbyr det.';
 
   @override
-  String get accountImportUnencrypted =>
-      'Kobler til uten kryptering. Bruk dette bare på ditt eget nettverk.';
+  String get accountImportUnencrypted => 'Kobler til uten kryptering. Bruk dette bare på ditt eget nettverk.';
 
   @override
   String get accountImportEnterAgain => 'Skriv det inn på nytt';
@@ -7614,20 +7209,16 @@ class AppLocalizationsNb extends AppLocalizations {
   String get accountImportPasteTitle => 'Lim inn eksporttekst';
 
   @override
-  String get accountImportPasteText =>
-      'Lim inn teksten fra en eksportkode fra Thunderbird, én kode per linje.';
+  String get accountImportPasteText => 'Lim inn teksten fra en eksportkode fra Thunderbird, én kode per linje.';
 
   @override
-  String get accountImportPop3 =>
-      'POP3-kontoer støttes ikke. Loupe lar e-posten ligge på serveren med IMAP.';
+  String get accountImportPop3 => 'POP3-kontoer støttes ikke. Loupe lar e-posten ligge på serveren med IMAP.';
 
   @override
-  String get accountImportKerberos =>
-      'Denne kontoen logger inn med Kerberos, som Loupe ikke støtter.';
+  String get accountImportKerberos => 'Denne kontoen logger inn med Kerberos, som Loupe ikke støtter.';
 
   @override
-  String get accountImportNtlm =>
-      'Denne kontoen logger inn med NTLM, som Loupe ikke støtter.';
+  String get accountImportNtlm => 'Denne kontoen logger inn med NTLM, som Loupe ikke støtter.';
 
   @override
   String get accountImportClientCertificate =>
@@ -7647,12 +7238,10 @@ class AppLocalizationsNb extends AppLocalizations {
   String get accountImportEnterApiToken => 'Skriv inn API-tokenet.';
 
   @override
-  String get accountImportStorageFailed =>
-      'Loupe kunne ikke åpne kontolageret sitt. Prøv igjen senere.';
+  String get accountImportStorageFailed => 'Loupe kunne ikke åpne kontolageret sitt. Prøv igjen senere.';
 
   @override
-  String get accountImportFailed =>
-      'Kunne ikke legge til kontoen. Prøv igjen, eller legg den til manuelt.';
+  String get accountImportFailed => 'Kunne ikke legge til kontoen. Prøv igjen, eller legg den til manuelt.';
 
   @override
   String get composeReplyCheckTitle => 'Svarsjekk';
@@ -7941,8 +7530,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get composeDraftNotFound => 'Fant ikke utkastet.';
 
   @override
-  String get composeAttachmentsLost =>
-      'Vedleggene kunne ikke gjenopprettes. Legg dem til på nytt.';
+  String get composeAttachmentsLost => 'Vedleggene kunne ikke gjenopprettes. Legg dem til på nytt.';
 
   @override
   String composeSomeAttachmentsFailed(String error) {
@@ -7969,12 +7557,10 @@ class AppLocalizationsNb extends AppLocalizations {
   String get composeNoSubjectTitle => 'Uten emne';
 
   @override
-  String get composeNoSubjectText =>
-      'Denne meldingen har ikke noe emne. Vil du sende den likevel?';
+  String get composeNoSubjectText => 'Denne meldingen har ikke noe emne. Vil du sende den likevel?';
 
   @override
-  String get composeSentBeforeChanges =>
-      'Den ble sendt før endringene dine, som er lagret i Utkast.';
+  String get composeSentBeforeChanges => 'Den ble sendt før endringene dine, som er lagret i Utkast.';
 
   @override
   String composeScheduled(String time) {
@@ -8019,8 +7605,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get composeForwardHeader =>
-      '---------- Videresendt melding ----------';
+  String get composeForwardHeader => '---------- Videresendt melding ----------';
 
   @override
   String composeForwardFrom(String addresses) {
@@ -8093,31 +7678,24 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get composeRecoveryTitle =>
-      'Vil du fortsette å redigere utkastet ditt?';
+  String get composeRecoveryTitle => 'Vil du fortsette å redigere utkastet ditt?';
 
   @override
   String composeRecoveryUntitled(String recipients, String name) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'En melding ble ikke sendt da Loupe ble lukket.',
       'one': 'En melding til $name ble ikke sendt da Loupe ble lukket.',
-      'other':
-          'En melding til $name og andre ble ikke sendt da Loupe ble lukket.',
+      'other': 'En melding til $name og andre ble ikke sendt da Loupe ble lukket.',
     });
     return '$_temp0';
   }
 
   @override
-  String composeRecoveryWithSubject(
-    String recipients,
-    String subject,
-    String name,
-  ) {
+  String composeRecoveryWithSubject(String recipients, String subject, String name) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': '«$subject» ble ikke sendt da Loupe ble lukket.',
       'one': '«$subject» til $name ble ikke sendt da Loupe ble lukket.',
-      'other':
-          '«$subject» til $name og andre ble ikke sendt da Loupe ble lukket.',
+      'other': '«$subject» til $name og andre ble ikke sendt da Loupe ble lukket.',
     });
     return '$_temp0';
   }
@@ -8165,8 +7743,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get outboxEmptyTitle => 'Ingenting å sende';
 
   @override
-  String get outboxEmptyText =>
-      'Meldinger du sender senere, venter her til det er tid.';
+  String get outboxEmptyText => 'Meldinger du sender senere, venter her til det er tid.';
 
   @override
   String get outboxSendNow => 'Send nå';
@@ -8213,8 +7790,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get outboxBeingSent => 'Denne meldingen sendes nå.';
 
   @override
-  String get outboxActionFailed =>
-      'Det fungerte ikke. Meldingen er fortsatt i utboksen.';
+  String get outboxActionFailed => 'Det fungerte ikke. Meldingen er fortsatt i utboksen.';
 
   @override
   String get notificationsBadgeInboxes => 'Uleste i innbokser';
@@ -8226,8 +7802,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get notificationsVipChannel => 'VIP';
 
   @override
-  String get notificationsVipChannelDescription =>
-      'Ny e-post fra VIP-ene dine, på alle kontoer';
+  String get notificationsVipChannelDescription => 'Ny e-post fra VIP-ene dine, på alle kontoer';
 
   @override
   String notificationsAccountChannelDescription(String email) {
@@ -8268,8 +7843,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get platformInstantChannel => 'Umiddelbar levering';
 
   @override
-  String get platformInstantChannelDescription =>
-      'Vises mens Loupe ser etter ny e-post i innboksene dine';
+  String get platformInstantChannelDescription => 'Vises mens Loupe ser etter ny e-post i innboksene dine';
 
   @override
   String get platformInstantTitle => 'Ser etter ny e-post';
@@ -8278,33 +7852,28 @@ class AppLocalizationsNb extends AppLocalizations {
   String get platformInstantText => 'Umiddelbar levering er på';
 
   @override
-  String get platformErrorBox =>
-      'Noe gikk galt da dette skulle vises. Gå tilbake og prøv igjen.';
+  String get platformErrorBox => 'Noe gikk galt da dette skulle vises. Gå tilbake og prøv igjen.';
 
   @override
-  String get welcomeTagline =>
-      'E-post som er enkel på overflaten\nog kraftig under panseret.';
+  String get welcomeTagline => 'E-post som er enkel på overflaten\nog kraftig under panseret.';
 
   @override
   String get welcomeAccountsTitle => 'Alle kontoer, én rolig innboks';
 
   @override
-  String get welcomeAccountsText =>
-      'Gmail, Outlook, iCloud, Fastmail og alle IMAP- eller JMAP-servere.';
+  String get welcomeAccountsText => 'Gmail, Outlook, iCloud, Fastmail og alle IMAP- eller JMAP-servere.';
 
   @override
   String get welcomeSearchTitle => 'Søk som finner det';
 
   @override
-  String get welcomeSearchText =>
-      'Umiddelbare treff på telefonen, deretter serverens.';
+  String get welcomeSearchText => 'Umiddelbare treff på telefonen, deretter serverens.';
 
   @override
   String get welcomePrivacyTitle => 'Privat fra grunnen av';
 
   @override
-  String get welcomePrivacyText =>
-      'Ingen sporing. Eksterne bilder forblir blokkert til du tillater dem.';
+  String get welcomePrivacyText => 'Ingen sporing. Eksterne bilder forblir blokkert til du tillater dem.';
 
   @override
   String get welcomeAddAccount => 'Legg til konto';
@@ -8334,8 +7903,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get searchAskFailed => 'Loupe klarte ikke å lage et søk av dette.';
 
   @override
-  String get searchAskDemoNote =>
-      'Oversatt av den innebygde demoen, ikke av en modell.';
+  String get searchAskDemoNote => 'Oversatt av den innebygde demoen, ikke av en modell.';
 
   @override
   String get settingsAiHeader => 'Privat KI';
@@ -8359,12 +7927,10 @@ class AppLocalizationsNb extends AppLocalizations {
   String get settingsAiDemo => 'Innebygd demo';
 
   @override
-  String get settingsAiDemoDetail =>
-      'På denne telefonen. Ingen modell: noen få regler, for å prøve funksjonene.';
+  String get settingsAiDemoDetail => 'På denne telefonen. Ingen modell: noen få regler, for å prøve funksjonene.';
 
   @override
-  String get settingsAiAnthropicDetail =>
-      'Sky: Claude, med din egen API-nøkkel.';
+  String get settingsAiAnthropicDetail => 'Sky: Claude, med din egen API-nøkkel.';
 
   @override
   String get settingsAiServer => 'Min server';
@@ -8377,8 +7943,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get settingsAiOnPhone => 'På denne telefonen';
 
   @override
-  String get settingsAiOnPhoneDetail =>
-      'Ikke tilgjengelig ennå: modellen på enheten testes fortsatt på telefoner.';
+  String get settingsAiOnPhoneDetail => 'Ikke tilgjengelig ennå: modellen på enheten testes fortsatt på telefoner.';
 
   @override
   String get settingsAiNotSetUp => 'Ikke satt opp';
@@ -8429,15 +7994,13 @@ class AppLocalizationsNb extends AppLocalizations {
       'Til og med API-banen, for eksempel http://192.168.1.20:11434/v1 for Ollama.';
 
   @override
-  String get settingsAiServerAddressInvalid =>
-      'Det er ikke en http://- eller https://-adresse.';
+  String get settingsAiServerAddressInvalid => 'Det er ikke en http://- eller https://-adresse.';
 
   @override
   String get settingsAiServerModelTitle => 'Modellnavn';
 
   @override
-  String get settingsAiServerModelMessage =>
-      'Slik serveren din kaller den, for eksempel llama3.2.';
+  String get settingsAiServerModelMessage => 'Slik serveren din kaller den, for eksempel llama3.2.';
 
   @override
   String get settingsAiTestConnection => 'Test tilkoblingen';
@@ -8454,8 +8017,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get settingsAiTestFailed => 'Testen mislyktes';
 
   @override
-  String get settingsAiTestInvalid =>
-      'Modellen svarte, men ikke i den formen Loupe ba om.';
+  String get settingsAiTestInvalid => 'Modellen svarte, men ikke i den formen Loupe ba om.';
 
   @override
   String get settingsAiRemoveKey => 'Fjern nøkkelen';
@@ -8500,8 +8062,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get settingsAiFeaturesHeader => 'Funksjoner';
 
   @override
-  String get settingsAiFeaturesFooter =>
-      'En funksjon som er slått av, viser ingen KI-del og spør ingen modell.';
+  String get settingsAiFeaturesFooter => 'En funksjon som er slått av, viser ingen KI-del og spør ingen modell.';
 
   @override
   String get settingsAiFeatureBrief => 'Kort fortalt';
@@ -8525,36 +8086,28 @@ class AppLocalizationsNb extends AppLocalizations {
   String get settingsAiFeatureMatters => 'Status for en sak';
 
   @override
-  String get settingsAiFeatureSearchDetail =>
-      'I søk: En setning blir et søk du kan sjekke.';
+  String get settingsAiFeatureSearchDetail => 'I søk: En setning blir et søk du kan sjekke.';
 
   @override
-  String get settingsAiFeatureBriefDetail =>
-      'I en melding: hva den ber deg om, med tekststedene.';
+  String get settingsAiFeatureBriefDetail => 'I en melding: hva den ber deg om, med tekststedene.';
 
   @override
-  String get settingsAiFeatureActionsDetail =>
-      'Foreslår punkter til «Venter på meg» og «Venter på andre».';
+  String get settingsAiFeatureActionsDetail => 'Foreslår punkter til «Venter på meg» og «Venter på andre».';
 
   @override
-  String get settingsAiFeatureRulesDetail =>
-      'I Regler: En beskrivelse blir en regel du sjekker før du lagrer.';
+  String get settingsAiFeatureRulesDetail => 'I Regler: En beskrivelse blir en regel du sjekker før du lagrer.';
 
   @override
-  String get settingsAiFeatureChangesDetail =>
-      'I Sammenlign meldinger: hva som er endret i innhold, med kilder.';
+  String get settingsAiFeatureChangesDetail => 'I Sammenlign meldinger: hva som er endret i innhold, med kilder.';
 
   @override
-  String get settingsAiFeatureDocumentsDetail =>
-      'De viktigste faktaene fra vedlagte dokumenter, med sidene deres.';
+  String get settingsAiFeatureDocumentsDetail => 'De viktigste faktaene fra vedlagte dokumenter, med sidene deres.';
 
   @override
-  String get settingsAiFeatureReplyCheckDetail =>
-      'Før du sender: hva et svar kan ha oversett.';
+  String get settingsAiFeatureReplyCheckDetail => 'Før du sender: hva et svar kan ha oversett.';
 
   @override
-  String get settingsAiFeatureMattersDetail =>
-      'Siste status for en sak, ut fra e-posten i den.';
+  String get settingsAiFeatureMattersDetail => 'Siste status for en sak, ut fra e-posten i den.';
 
   @override
   String get settingsAiLocalOnlyHeader => 'Behold e-post på telefonen';

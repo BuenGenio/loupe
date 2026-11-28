@@ -83,12 +83,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String commonMessageCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count üzenet',
-      one: '$count üzenet',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count üzenet', one: '$count üzenet');
     return '$_temp0';
   }
 
@@ -166,19 +161,16 @@ class AppLocalizationsHu extends AppLocalizations {
   String get changesExplainWorking => 'A változások magyarázata folyamatban…';
 
   @override
-  String get changesExplainFailed =>
-      'A Loupe nem tudta elmagyarázni ezeket a változásokat.';
+  String get changesExplainFailed => 'A Loupe nem tudta elmagyarázni ezeket a változásokat.';
 
   @override
-  String get changesExplainTooLarge =>
-      'Ezek az üzenetek túl hosszúak a modellnek.';
+  String get changesExplainTooLarge => 'Ezek az üzenetek túl hosszúak a modellnek.';
 
   @override
   String get changesExplainProviderError => 'A modell nem válaszolt.';
 
   @override
-  String get changesExplainInvalid =>
-      'A válasz nem ment át a Loupe ellenőrzésein, ezért semmi sem jelenik meg belőle.';
+  String get changesExplainInvalid => 'A válasz nem ment át a Loupe ellenőrzésein, ezért semmi sem jelenik meg belőle.';
 
   @override
   String get changesExplainNoChange =>
@@ -207,12 +199,10 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get changesExplainConflictNote =>
-      'Az üzenetekből nem derül ki, melyik érvényes ezek közül.';
+  String get changesExplainConflictNote => 'Az üzenetekből nem derül ki, melyik érvényes ezek közül.';
 
   @override
-  String get changesExplainPartial =>
-      'Egy hosszú üzenetnek csak az elejét olvastuk el.';
+  String get changesExplainPartial => 'Egy hosszú üzenetnek csak az elejét olvastuk el.';
 
   @override
   String get changesExplainQuotedNote =>
@@ -231,8 +221,7 @@ class AppLocalizationsHu extends AppLocalizations {
       'Csak az üzenetek szövegét magyarázzuk. A mellékleteket csak név, típus és méret alapján hasonlítjuk össze.';
 
   @override
-  String get changesExplainDemoNote =>
-      'A beépített demó készítette, nem modell.';
+  String get changesExplainDemoNote => 'A beépített demó készítette, nem modell.';
 
   @override
   String changesExplainMadeBy(String provider) {
@@ -240,8 +229,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get changesExplainNoPassage =>
-      'Ebben az üzenetben nincs kiemelt szövegrész.';
+  String get changesExplainNoPassage => 'Ebben az üzenetben nincs kiemelt szövegrész.';
 
   @override
   String get conversationCompareMessages => 'Üzenetek összehasonlítása…';
@@ -286,8 +274,7 @@ class AppLocalizationsHu extends AppLocalizations {
       'Ez az üzenet túl nagy a részletes összehasonlításhoz. Előfordulhat, hogy a szöveg egy része kimarad, vagy egyetlen teljes blokként jelenik meg.';
 
   @override
-  String get conversationChangesLoadError =>
-      'Ezeket az üzeneteket nem sikerült összehasonlítani.';
+  String get conversationChangesLoadError => 'Ezeket az üzeneteket nem sikerült összehasonlítani.';
 
   @override
   String get conversationSomethingWentWrong => 'Hiba történt. Próbáld újra.';
@@ -299,8 +286,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get conversationReplyList => 'Válasz listára';
 
   @override
-  String get conversationThreadMuted =>
-      'Szál némítva. Az új üzenetei olvasottként érkeznek.';
+  String get conversationThreadMuted => 'Szál némítva. Az új üzenetei olvasottként érkeznek.';
 
   @override
   String get conversationThreadUnmuted => 'Szál némítása feloldva.';
@@ -312,8 +298,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get conversationGoneTitle => 'Nincs üzenet';
 
   @override
-  String get conversationGoneText =>
-      'Ezt az üzenetet áthelyezték vagy törölték.';
+  String get conversationGoneText => 'Ezt az üzenetet áthelyezték vagy törölték.';
 
   @override
   String get conversationMuted => 'Némítva';
@@ -328,15 +313,13 @@ class AppLocalizationsHu extends AppLocalizations {
   String get conversationTrash => 'Kukába';
 
   @override
-  String get conversationReplyHint =>
-      'Nyomd hosszan a Válasz mindenkinek és a Továbbítás eléréséhez';
+  String get conversationReplyHint => 'Nyomd hosszan a Válasz mindenkinek és a Továbbítás eléréséhez';
 
   @override
   String get conversationOfflineTitle => 'Offline vagy';
 
   @override
-  String get conversationOfflineText =>
-      'Ez a beszélgetés még nincs letöltve. Betöltődik, amint újra online leszel.';
+  String get conversationOfflineText => 'Ez a beszélgetés még nincs letöltve. Betöltődik, amint újra online leszel.';
 
   @override
   String get conversationErrorTitle => 'Ez az üzenet nem jeleníthető meg';
@@ -403,8 +386,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get conversationBodyError => 'Az üzenetet nem sikerült betölteni.';
 
   @override
-  String get conversationBodyOffline =>
-      'Offline vagy. Az üzenet betöltődik, amint újra online leszel.';
+  String get conversationBodyOffline => 'Offline vagy. Az üzenet betöltődik, amint újra online leszel.';
 
   @override
   String get conversationOriginalHint => 'Eredeti nézetben jobban mutat';
@@ -533,8 +515,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get conversationMoveTo => 'Áthelyezés ide…';
 
   @override
-  String get conversationMailboxesError =>
-      'Nem sikerült betölteni a postafiókokat.';
+  String get conversationMailboxesError => 'Nem sikerült betölteni a postafiókokat.';
 
   @override
   String get conversationReaderReadable => 'Olvasóbarát';
@@ -584,8 +565,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get conversationSecurityBadgeHint => 'Megmutatja, miért';
 
   @override
-  String get conversationPhishingBannerTitle =>
-      'Ez az üzenet adathalászatnak tűnik';
+  String get conversationPhishingBannerTitle => 'Ez az üzenet adathalászatnak tűnik';
 
   @override
   String conversationPhishingBannerReason(String reason) {
@@ -593,8 +573,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get conversationPhishingBannerText =>
-      'A linkek és a képek ki vannak kapcsolva.';
+  String get conversationPhishingBannerText => 'A linkek és a képek ki vannak kapcsolva.';
 
   @override
   String get conversationPhishingWhy => 'Miért?';
@@ -610,24 +589,20 @@ class AppLocalizationsHu extends AppLocalizations {
       'Több jel is arra utal, hogy ez az üzenet nem az, aminek mondja magát.';
 
   @override
-  String get conversationSecurityCarefulTitle =>
-      'Légy óvatos ezzel az üzenettel';
+  String get conversationSecurityCarefulTitle => 'Légy óvatos ezzel az üzenettel';
 
   @override
-  String get conversationSecurityCarefulText =>
-      'Van benne valami, amit érdemes még egyszer megnézni.';
+  String get conversationSecurityCarefulText => 'Van benne valami, amit érdemes még egyszer megnézni.';
 
   @override
-  String get conversationSecurityVerifiedText =>
-      'A feladó ellenőrzött, és semmi sem tűnik gyanúsnak.';
+  String get conversationSecurityVerifiedText => 'A feladó ellenőrzött, és semmi sem tűnik gyanúsnak.';
 
   @override
   String get conversationSecurityUnverifiedText =>
       'Semmi sem tűnik gyanúsnak. A levelezőszervered nem jelezte, hogy a feladó ellenőrzött-e.';
 
   @override
-  String get conversationSecurityNothingSuspicious =>
-      'Semmi sem tűnik gyanúsnak.';
+  String get conversationSecurityNothingSuspicious => 'Semmi sem tűnik gyanúsnak.';
 
   @override
   String get conversationSecurityWhy => 'Miért';
@@ -694,8 +669,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get conversationSecurityTechnicalDetails => 'Technikai részletek';
 
   @override
-  String get conversationSecurityCheckedLocally =>
-      'Az ellenőrzés ezen az eszközön történt. Semmi sem lett elküldve.';
+  String get conversationSecurityCheckedLocally => 'Az ellenőrzés ezen az eszközön történt. Semmi sem lett elküldve.';
 
   @override
   String get conversationSecurityTrackersLabel => 'Nyomkövetők';
@@ -719,12 +693,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String conversationSecurityHiddenValue(int elements, int characters) {
-    String _temp0 = intl.Intl.pluralLogic(
-      elements,
-      locale: localeName,
-      other: '$elements elem',
-      one: '$elements elem',
-    );
+    String _temp0 = intl.Intl.pluralLogic(elements, locale: localeName, other: '$elements elem', one: '$elements elem');
     String _temp1 = intl.Intl.pluralLogic(
       characters,
       locale: localeName,
@@ -773,8 +742,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressTitle =>
-      'A név egy másik címet mutat';
+  String get conversationSecurityNameShowsAddressTitle => 'A név egy másik címet mutat';
 
   @override
   String conversationSecurityNameShowsAddressText(String shown, String email) {
@@ -782,8 +750,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressAdvice =>
-      'A címben bízz, ne a névben.';
+  String get conversationSecurityNameShowsAddressAdvice => 'A címben bízz, ne a névben.';
 
   @override
   String get conversationSecurityReplyToTitle => 'A válaszok máshová mennek';
@@ -794,16 +761,13 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityReplyToAdvice =>
-      'Ellenőrizd a címet, mielőtt bármi személyeset írnál válaszul.';
+  String get conversationSecurityReplyToAdvice => 'Ellenőrizd a címet, mielőtt bármi személyeset írnál válaszul.';
 
   @override
-  String get conversationSecurityImpersonationYouTitle =>
-      'A te nevedet használja';
+  String get conversationSecurityImpersonationYouTitle => 'A te nevedet használja';
 
   @override
-  String get conversationSecurityImpersonationTitle =>
-      'Egy ismerősöd nevét használja';
+  String get conversationSecurityImpersonationTitle => 'Egy ismerősöd nevét használja';
 
   @override
   String conversationSecurityImpersonationYouText(String name, String email) {
@@ -811,28 +775,17 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityImpersonationVipText(
-    String name,
-    String knownName,
-    String knownEmail,
-    String email,
-  ) {
+  String conversationSecurityImpersonationVipText(String name, String knownName, String knownEmail, String email) {
     return 'Az aláírás „$name”, akárcsak VIP-partnered, $knownName ($knownEmail) neve, de egy új címről érkezik: $email.';
   }
 
   @override
-  String conversationSecurityImpersonationText(
-    String name,
-    String knownName,
-    String knownEmail,
-    String email,
-  ) {
+  String conversationSecurityImpersonationText(String name, String knownName, String knownEmail, String email) {
     return 'Az aláírás „$name”, akárcsak $knownName ($knownEmail) neve, de egy új címről érkezik: $email.';
   }
 
   @override
-  String get conversationSecurityImpersonationRepliesElsewhere =>
-      'Ráadásul a válaszok egy harmadik címre mennének.';
+  String get conversationSecurityImpersonationRepliesElsewhere => 'Ráadásul a válaszok egy harmadik címre mennének.';
 
   @override
   String get conversationSecurityImpersonationAdvice =>
@@ -849,8 +802,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeTitle =>
-      'Első üzenet ettől a feladótól';
+  String get conversationSecurityFirstTimeTitle => 'Első üzenet ettől a feladótól';
 
   @override
   String conversationSecurityFirstTimeText(String email) {
@@ -858,16 +810,13 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeAdvice =>
-      'Légy óvatos azok kéréseivel, akiket még nem ismersz.';
+  String get conversationSecurityFirstTimeAdvice => 'Légy óvatos azok kéréseivel, akiket még nem ismersz.';
 
   @override
-  String get conversationSecuritySenderHomographTitle =>
-      'Megtévesztően hasonló betűk a feladó címében';
+  String get conversationSecuritySenderHomographTitle => 'Megtévesztően hasonló betűk a feladó címében';
 
   @override
-  String get conversationSecurityLinkHomographTitle =>
-      'Megtévesztően hasonló betűk egy linkben';
+  String get conversationSecurityLinkHomographTitle => 'Megtévesztően hasonló betűk egy linkben';
 
   @override
   String conversationSecurityHomographText(String host) {
@@ -880,8 +829,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get conversationSecuritySenderHomographAdvice =>
-      'Töröld, vagy jelentsd levélszemétként.';
+  String get conversationSecuritySenderHomographAdvice => 'Töröld, vagy jelentsd levélszemétként.';
 
   @override
   String get conversationSecurityLinkHomographAdvice => 'Ne nyisd meg.';
@@ -892,12 +840,10 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLookalikeTitle =>
-      'Megtévesztően hasonló domain';
+  String get conversationSecurityLookalikeTitle => 'Megtévesztően hasonló domain';
 
   @override
-  String get conversationSecurityFamiliarNameTitle =>
-      'Ismert nevet használ a domainjében';
+  String get conversationSecurityFamiliarNameTitle => 'Ismert nevet használ a domainjében';
 
   @override
   String conversationSecurityLookalikeOwnText(String domain, String real) {
@@ -905,11 +851,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityLookalikeText(
-    String domain,
-    String brand,
-    String real,
-  ) {
+  String conversationSecurityLookalikeText(String domain, String brand, String real) {
     return '$domain úgy néz ki, mint $brand ($real), de ez egy másik domain.';
   }
 
@@ -919,11 +861,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityFamiliarNameText(
-    String domain,
-    String brand,
-    String real,
-  ) {
+  String conversationSecurityFamiliarNameText(String domain, String brand, String real) {
     return '$domain ezt a nevet használja: $brand ($real), de nem tartozik hozzá.';
   }
 
@@ -973,8 +911,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLinkUncheckableTitle =>
-      'Egy link célja nem ellenőrizhető';
+  String get conversationSecurityLinkUncheckableTitle => 'Egy link célja nem ellenőrizhető';
 
   @override
   String conversationSecurityLinkUncheckableText(String shown, String host) {
@@ -982,8 +919,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityIpAddressTitle =>
-      'Egy link puszta IP-címre mutat';
+  String get conversationSecurityIpAddressTitle => 'Egy link puszta IP-címre mutat';
 
   @override
   String conversationSecurityIpAddressText(String hosts) {
@@ -1009,20 +945,16 @@ class AppLocalizationsHu extends AppLocalizations {
   String get conversationSecurityPasswordFieldTitle => 'Jelszót kér';
 
   @override
-  String get conversationSecurityPasswordFieldText =>
-      'Az üzenet jelszómezőt tartalmazott. A Loupe eltávolította.';
+  String get conversationSecurityPasswordFieldText => 'Az üzenet jelszómezőt tartalmazott. A Loupe eltávolította.';
 
   @override
-  String get conversationSecurityPasswordFieldAdvice =>
-      'Soha ne írj be jelszót egy e-mailbe.';
+  String get conversationSecurityPasswordFieldAdvice => 'Soha ne írj be jelszót egy e-mailbe.';
 
   @override
-  String get conversationSecurityScriptLinkTitle =>
-      'Kódot futtató link letiltva';
+  String get conversationSecurityScriptLinkTitle => 'Kódot futtató link letiltva';
 
   @override
-  String get conversationSecurityScriptLinkText =>
-      'A Loupe soha nem futtat kódot az üzenetekből.';
+  String get conversationSecurityScriptLinkText => 'A Loupe soha nem futtat kódot az üzenetekből.';
 
   @override
   String conversationSecurityShortenerTitle(int count) {
@@ -1065,8 +997,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityHiddenTextTitle =>
-      'Rejtett szöveg eltávolítva';
+  String get conversationSecurityHiddenTextTitle => 'Rejtett szöveg eltávolítva';
 
   @override
   String conversationSecurityHiddenTextText(int count) {
@@ -1080,8 +1011,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get exportDownloadFailed =>
-      'Nem sikerült letölteni az üzenetet. Ellenőrizd a kapcsolatot, és próbáld újra.';
+  String get exportDownloadFailed => 'Nem sikerült letölteni az üzenetet. Ellenőrizd a kapcsolatot, és próbáld újra.';
 
   @override
   String exportSaved(String name) {
@@ -1111,10 +1041,8 @@ class AppLocalizationsHu extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          'Mentve: „$name”, $formattedCount üzenet nélkül, amelyeket nem sikerült letölteni.',
-      one:
-          'Mentve: „$name”, $formattedCount üzenet nélkül, amelyet nem sikerült letölteni.',
+      other: 'Mentve: „$name”, $formattedCount üzenet nélkül, amelyeket nem sikerült letölteni.',
+      one: 'Mentve: „$name”, $formattedCount üzenet nélkül, amelyet nem sikerült letölteni.',
     );
     return '$_temp0';
   }
@@ -1192,8 +1120,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get mailboxesSmartMailboxes => 'Smart Mailboxes';
 
   @override
-  String get mailboxesSmartMailboxesEmpty =>
-      'Ments el egy keresést, hogy itt legyen.';
+  String get mailboxesSmartMailboxesEmpty => 'Ments el egy keresést, hogy itt legyen.';
 
   @override
   String get mailboxesTags => 'Címkék';
@@ -1227,8 +1154,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get projectsDelete => 'Projekt törlése';
 
   @override
-  String get projectsDeleteMessage =>
-      'A beszélgetései ott maradnak, ahol vannak, a projekten kívül.';
+  String get projectsDeleteMessage => 'A beszélgetései ott maradnak, ahol vannak, a projekten kívül.';
 
   @override
   String get projectsUntitled => 'Projekt';
@@ -1342,8 +1268,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get mailboxesVipTitle => 'VIP';
 
   @override
-  String get mailboxesVipFooter =>
-      'Ha egy üzenetben a feladó nevére koppintasz, ott is bekapcsolhatod a VIP-et.';
+  String get mailboxesVipFooter => 'Ha egy üzenetben a feladó nevére koppintasz, ott is bekapcsolhatod a VIP-et.';
 
   @override
   String get mailboxesAddVip => 'VIP hozzáadása…';
@@ -1391,8 +1316,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get messageListLoadOlderFailed =>
-      'Nem sikerült betölteni a régebbi leveleket.';
+  String get messageListLoadOlderFailed => 'Nem sikerült betölteni a régebbi leveleket.';
 
   @override
   String get messageListSelectMessages => 'Üzenetek kijelölése';
@@ -1491,12 +1415,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String panesDragCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count üzenet',
-      one: '$count üzenet',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count üzenet', one: '$count üzenet');
     return '$_temp0';
   }
 
@@ -1572,16 +1491,13 @@ class AppLocalizationsHu extends AppLocalizations {
   String get briefStopped => 'Leállítottad az összefoglalót.';
 
   @override
-  String get briefFailedTooLarge =>
-      'Az üzenet túl hosszú a modellnek, ezért semmi sem lett elküldve.';
+  String get briefFailedTooLarge => 'Az üzenet túl hosszú a modellnek, ezért semmi sem lett elküldve.';
 
   @override
-  String get briefFailedProvider =>
-      'A modell nem tudta összefoglalni ezt az üzenetet.';
+  String get briefFailedProvider => 'A modell nem tudta összefoglalni ezt az üzenetet.';
 
   @override
-  String get briefFailedInvalid =>
-      'A válasz nem ment át a Loupe ellenőrzésein, ezért nem jelenik meg lista.';
+  String get briefFailedInvalid => 'A válasz nem ment át a Loupe ellenőrzésein, ezért nem jelenik meg lista.';
 
   @override
   String get briefNothingTitle => 'Nincs mit összefoglalni';
@@ -1633,11 +1549,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String briefOwner(String owner) {
-    String _temp0 = intl.Intl.selectLogic(owner, {
-      'me': 'Te',
-      'them': 'Mások',
-      'other': 'Nincs megadva',
-    });
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Te', 'them': 'Mások', 'other': 'Nincs megadva'});
     return '$_temp0';
   }
 
@@ -1716,8 +1628,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get briefCaution =>
-      'Az összefoglaló kihagyhat vagy félreérthet dolgokat. Maga az üzenet a mérvadó.';
+  String get briefCaution => 'Az összefoglaló kihagyhat vagy félreérthet dolgokat. Maga az üzenet a mérvadó.';
 
   @override
   String briefSecurityReason(String reason) {
@@ -1725,8 +1636,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get briefSecurityText =>
-      'Mielőtt bármit megtennél ebből az összefoglalóból, ellenőrizd magát az üzenetet.';
+  String get briefSecurityText => 'Mielőtt bármit megtennél ebből az összefoglalóból, ellenőrizd magát az üzenetet.';
 
   @override
   String get briefSourceTitle => 'Az üzenetben';
@@ -1771,15 +1681,13 @@ class AppLocalizationsHu extends AppLocalizations {
   String get appLockUnlock => 'Feloldás';
 
   @override
-  String get appLockFailed =>
-      'A Loupe nem tudta megerősíteni, hogy te vagy az.';
+  String get appLockFailed => 'A Loupe nem tudta megerősíteni, hogy te vagy az.';
 
   @override
   String get appLockLockedOut => 'Túl sok próbálkozás. Próbáld újra később.';
 
   @override
-  String get appLockPromptError =>
-      'A kérést nem sikerült megjeleníteni. Próbáld újra.';
+  String get appLockPromptError => 'A kérést nem sikerült megjeleníteni. Próbáld újra.';
 
   @override
   String get appLockNoScreenLock => 'Ezen a telefonon nincs képernyőzár.';
@@ -1788,15 +1696,13 @@ class AppLocalizationsHu extends AppLocalizations {
   String get appLockUnlockPromptTitle => 'A Loupe feloldása';
 
   @override
-  String get appLockUnlockPromptReason =>
-      'Erősítsd meg, hogy te vagy az, és láthatod a leveleidet.';
+  String get appLockUnlockPromptReason => 'Erősítsd meg, hogy te vagy az, és láthatod a leveleidet.';
 
   @override
   String get appLockTurnOnPromptTitle => 'Alkalmazászár bekapcsolása';
 
   @override
-  String get appLockTurnOnPromptReason =>
-      'Erősítsd meg, hogy te vagy az, az alkalmazászár bekapcsolásához.';
+  String get appLockTurnOnPromptReason => 'Erősítsd meg, hogy te vagy az, az alkalmazászár bekapcsolásához.';
 
   @override
   String get appLockScreenLockRemoved =>
@@ -1807,23 +1713,13 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String appLockAfterMinutes(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count perc',
-      one: '$count perc',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count perc', one: '$count perc');
     return '$_temp0';
   }
 
   @override
   String appLockAfterHours(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count óra',
-      one: '$count óra',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count óra', one: '$count óra');
     return '$_temp0';
   }
 
@@ -1900,12 +1796,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String openpgpForKeys(int count, String keys) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Kulcsok: $keys',
-      one: 'Kulcs: $keys',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Kulcsok: $keys', one: 'Kulcs: $keys');
     return '$_temp0';
   }
 
@@ -1939,40 +1830,32 @@ class AppLocalizationsHu extends AppLocalizations {
   String get openpgpChangeAcceptance => 'Elfogadás módosítása…';
 
   @override
-  String get openpgpCheckedFooter =>
-      'Ezen az eszközön ellenőrizve OpenPGP-vel, a Thunderbirddel kompatibilis módon.';
+  String get openpgpCheckedFooter => 'Ezen az eszközön ellenőrizve OpenPGP-vel, a Thunderbirddel kompatibilis módon.';
 
   @override
-  String get openpgpSummaryLocked =>
-      'A kulcsod zárolva van. Az üzenet elolvasásához oldd fel a jelmondatával.';
+  String get openpgpSummaryLocked => 'A kulcsod zárolva van. Az üzenet elolvasásához oldd fel a jelmondatával.';
 
   @override
-  String get openpgpSummaryNoSecretKey =>
-      'Olyan kulcshoz titkosították, amely nincs ezen az eszközön.';
+  String get openpgpSummaryNoSecretKey => 'Olyan kulcshoz titkosították, amely nincs ezen az eszközön.';
 
   @override
-  String get openpgpSummaryDamaged =>
-      'A titkosított adat sérült, vagy útközben módosult.';
+  String get openpgpSummaryDamaged => 'A titkosított adat sérült, vagy útközben módosult.';
 
   @override
-  String get openpgpSummaryUnsupported =>
-      'Olyan algoritmust használ, amelyet a Loupe nem támogat.';
+  String get openpgpSummaryUnsupported => 'Olyan algoritmust használ, amelyet a Loupe nem támogat.';
 
   @override
-  String get openpgpSummaryEncrypted =>
-      'Csak te és a többi címzett olvashatja.';
+  String get openpgpSummaryEncrypted => 'Csak te és a többi címzett olvashatja.';
 
   @override
-  String get openpgpSummaryNotSigned =>
-      'Nincs aláírva, így a feladó nincs megerősítve.';
+  String get openpgpSummaryNotSigned => 'Nincs aláírva, így a feladó nincs megerősítve.';
 
   @override
   String get openpgpSummaryUnknownKey =>
       'Alá van írva, de olyan kulccsal, amely nincs meg neked, így az aláírás nem ellenőrizhető.';
 
   @override
-  String get openpgpSummaryBadSignature =>
-      'Az aláírás nem egyezik: lehet, hogy az üzenetet módosították.';
+  String get openpgpSummaryBadSignature => 'Az aláírás nem egyezik: lehet, hogy az üzenetet módosították.';
 
   @override
   String get openpgpSummaryMismatch =>
@@ -1986,16 +1869,14 @@ class AppLocalizationsHu extends AppLocalizations {
   String get openpgpSummaryOwnKey => 'A saját kulcsoddal aláírva.';
 
   @override
-  String get openpgpSummaryVerified =>
-      'Az aláírás érvényes, és ellenőrizted a kulcs ujjlenyomatát.';
+  String get openpgpSummaryVerified => 'Az aláírás érvényes, és ellenőrizted a kulcs ujjlenyomatát.';
 
   @override
   String get openpgpSummaryUnverified =>
       'Az aláírás érvényes. A kulcsot az ujjlenyomata ellenőrzése nélkül fogadtad el.';
 
   @override
-  String get openpgpSummaryRejected =>
-      'Az aláírás érvényes, de elutasítottad ezt a kulcsot.';
+  String get openpgpSummaryRejected => 'Az aláírás érvényes, de elutasítottad ezt a kulcsot.';
 
   @override
   String get openpgpSummaryUndecided =>
@@ -2055,8 +1936,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get openpgpAddresses => 'Címek';
 
   @override
-  String get openpgpAddressesFooter =>
-      'Melyik címhez melyik kulcs tartozik, és mikor titkosít és ír alá.';
+  String get openpgpAddressesFooter => 'Melyik címhez melyik kulcs tartozik, és mikor titkosít és ír alá.';
 
   @override
   String get openpgpCorrespondentsKeys => 'Levelezőpartnerek OpenPGP-kulcsai';
@@ -2090,8 +1970,7 @@ class AppLocalizationsHu extends AppLocalizations {
       'A keresés a titkosított üzeneteket a feladójuk, a címzettjeik és a tárgyuk alapján találja meg. Ha ez be van kapcsolva, a Loupe minden általa visszafejtett titkosított üzenet szövegét is felveszi a keresési indexbe az eszközön lévő titkosított adatbázisában, így a keresés a szövegük alapján is megtalálja őket. Kikapcsolásakor ez a szöveg törlődik az indexből.';
 
   @override
-  String get openpgpIndexDecrypted =>
-      'Visszafejtett üzenetek indexelése a kereséshez';
+  String get openpgpIndexDecrypted => 'Visszafejtett üzenetek indexelése a kereséshez';
 
   @override
   String get openpgpPassphrases => 'Jelmondatok';
@@ -2136,8 +2015,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get openpgpAddKeyTitle => 'OpenPGP-kulcs hozzáadása';
 
   @override
-  String get openpgpAddKeyMessage =>
-      'Importáld a Thunderbirdben használt kulcsodat, vagy hozz létre egy újat.';
+  String get openpgpAddKeyMessage => 'Importáld a Thunderbirdben használt kulcsodat, vagy hozz létre egy újat.';
 
   @override
   String get openpgpImportFromClipboard => 'Importálás vágólapról';
@@ -2158,8 +2036,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get openpgpFromFile => 'Fájlból';
 
   @override
-  String get openpgpClipboardEmpty =>
-      'A vágólap üres. Előbb másold ki a kulcsot.';
+  String get openpgpClipboardEmpty => 'A vágólap üres. Előbb másold ki a kulcsot.';
 
   @override
   String get openpgpKey => 'Kulcs';
@@ -2275,8 +2152,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get openpgpEncryptAutomatically => 'Automatikus titkosítás';
 
   @override
-  String get openpgpAlwaysEncryptDetail =>
-      'Nem küld, ha egy címzettnek nincs kulcsa';
+  String get openpgpAlwaysEncryptDetail => 'Nem küld, ha egy címzettnek nincs kulcsa';
 
   @override
   String get openpgpSignUnencrypted => 'Titkosítatlan levelek aláírása';
@@ -2295,17 +2171,11 @@ class AppLocalizationsHu extends AppLocalizations {
   String get openpgpPreferEncryption => 'Titkosítás előnyben részesítése';
 
   @override
-  String get openpgpPreferEncryptionDetail =>
-      'Arra kéri a többieket, hogy titkosítsanak, ha tudnak';
+  String get openpgpPreferEncryptionDetail => 'Arra kéri a többieket, hogy titkosítsanak, ha tudnak';
 
   @override
   String openpgpValidityYears(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count év',
-      one: '$count év',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count év', one: '$count év');
     return '$_temp0';
   }
 
@@ -2343,8 +2213,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get openpgpExpires => 'Lejárat';
 
   @override
-  String get openpgpExpiresFooter =>
-      'Lejárat előtt létrehozhatsz egy új kulcsot. A Thunderbird is három évet használ.';
+  String get openpgpExpiresFooter => 'Lejárat előtt létrehozhatsz egy új kulcsot. A Thunderbird is három évet használ.';
 
   @override
   String get openpgpGenerateKey => 'Kulcs létrehozása';
@@ -2402,8 +2271,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get openpgpComposeEveryoneHasKey => 'Mindenkinek van kulcsa';
 
   @override
-  String get openpgpComposeEveryoneHasCertificate =>
-      'Mindenkinek van tanúsítványa';
+  String get openpgpComposeEveryoneHasCertificate => 'Mindenkinek van tanúsítványa';
 
   @override
   String get openpgpComposeEncrypt => 'Titkosítás';
@@ -2488,16 +2356,14 @@ class AppLocalizationsHu extends AppLocalizations {
   String get openpgpWrongPassphrase => 'Hibás jelmondat. Próbáld újra.';
 
   @override
-  String get openpgpExplainLocked =>
-      'Ez az üzenet titkosított. Az elolvasásához oldd fel az OpenPGP-kulcsodat.';
+  String get openpgpExplainLocked => 'Ez az üzenet titkosított. Az elolvasásához oldd fel az OpenPGP-kulcsodat.';
 
   @override
   String get openpgpExplainNoKey =>
       'Ez az üzenet titkosított, de egyik, ezen az eszközön lévő OpenPGP-kulcshoz sem. Ha a Thunderbirdben olvasod, importáld onnan a kulcsodat: Beállítások › Végpontok közötti titkosítás.';
 
   @override
-  String get openpgpExplainDamaged =>
-      'Ez a titkosított üzenet sérült, ezért nem fejthető vissza biztonságosan.';
+  String get openpgpExplainDamaged => 'Ez a titkosított üzenet sérült, ezért nem fejthető vissza biztonságosan.';
 
   @override
   String get openpgpExplainUnsupported =>
@@ -2513,8 +2379,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get openpgpExplainSmimeUnlock =>
-      'Az elolvasásához oldd fel az S/MIME-tanúsítványodat.';
+  String get openpgpExplainSmimeUnlock => 'Az elolvasásához oldd fel az S/MIME-tanúsítványodat.';
 
   @override
   String get openpgpAttachmentGone => 'Ez a melléklet már nem érhető el.';
@@ -2523,15 +2388,13 @@ class AppLocalizationsHu extends AppLocalizations {
   String get smimeEncrypted => 'Titkosított (S/MIME)';
 
   @override
-  String get smimeEncryptedNoCertificate =>
-      'Titkosított (S/MIME) · nincs tanúsítvány';
+  String get smimeEncryptedNoCertificate => 'Titkosított (S/MIME) · nincs tanúsítvány';
 
   @override
   String get smimeEncryptedDamaged => 'Titkosított (S/MIME) · sérült';
 
   @override
-  String get smimeEncryptedUnsupported =>
-      'Titkosított (S/MIME) · nem támogatott';
+  String get smimeEncryptedUnsupported => 'Titkosított (S/MIME) · nem támogatott';
 
   @override
   String get smimeEncryptedLocked => 'Titkosított (S/MIME) · zárolt';
@@ -2540,19 +2403,16 @@ class AppLocalizationsHu extends AppLocalizations {
   String get smimeUnknownSigner => 'ismeretlen';
 
   @override
-  String get smimeSignatureModified =>
-      'Érvénytelen aláírás: az üzenet módosult';
+  String get smimeSignatureModified => 'Érvénytelen aláírás: az üzenet módosult';
 
   @override
-  String get smimeSignatureWeak =>
-      'Nem biztonságos aláírás: elavult algoritmus';
+  String get smimeSignatureWeak => 'Nem biztonságos aláírás: elavult algoritmus';
 
   @override
   String get smimeSignatureUncheckable => 'Az aláírás nem ellenőrizhető';
 
   @override
-  String get smimeSignedCertificateMissing =>
-      'Aláírva · hiányzik a tanúsítvány';
+  String get smimeSignedCertificateMissing => 'Aláírva · hiányzik a tanúsítvány';
 
   @override
   String smimeSignedByRevoked(String name) {
@@ -2684,8 +2544,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get smimeTrustThisCertificateEllipsis =>
-      'Tanúsítvány megbízhatónak jelölése…';
+  String get smimeTrustThisCertificateEllipsis => 'Tanúsítvány megbízhatónak jelölése…';
 
   @override
   String get smimeCheckedFooterRevocation =>
@@ -2719,16 +2578,13 @@ class AppLocalizationsHu extends AppLocalizations {
   String get smimeTrust => 'Megbízható';
 
   @override
-  String get smimeSummaryNoKey =>
-      'Olyan tanúsítványhoz titkosították, amely nincs ezen az eszközön.';
+  String get smimeSummaryNoKey => 'Olyan tanúsítványhoz titkosították, amely nincs ezen az eszközön.';
 
   @override
-  String get smimeSummaryDamaged =>
-      'A titkosított adat sérült, vagy útközben módosult.';
+  String get smimeSummaryDamaged => 'A titkosított adat sérült, vagy útközben módosult.';
 
   @override
-  String get smimeSummaryUnsupported =>
-      'Olyan algoritmust használ, amelyet a Loupe nem támogat.';
+  String get smimeSummaryUnsupported => 'Olyan algoritmust használ, amelyet a Loupe nem támogat.';
 
   @override
   String get smimeSummaryLocked => 'Az S/MIME-tanúsítványod zárolva van.';
@@ -2737,19 +2593,16 @@ class AppLocalizationsHu extends AppLocalizations {
   String get smimeSummaryEncrypted => 'Csak te és a többi címzett olvashatja.';
 
   @override
-  String get smimeSummaryNotSigned =>
-      'Nincs aláírva, így a feladó nincs megerősítve.';
+  String get smimeSummaryNotSigned => 'Nincs aláírva, így a feladó nincs megerősítve.';
 
   @override
-  String get smimeSummaryModified =>
-      'Az aláírás nem egyezik: az üzenetet az aláírás után módosították.';
+  String get smimeSummaryModified => 'Az aláírás nem egyezik: az üzenetet az aláírás után módosították.';
 
   @override
   String get smimeSummaryUncheckable => 'Az aláírás nem ellenőrizhető.';
 
   @override
-  String get smimeSummaryNoCertificate =>
-      'Az aláíró tanúsítványa nincs az üzenetben, így nem ellenőrizhető.';
+  String get smimeSummaryNoCertificate => 'Az aláíró tanúsítványa nincs az üzenetben, így nem ellenőrizhető.';
 
   @override
   String get smimeSummaryRevoked =>
@@ -2770,12 +2623,10 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get smimeProblemInvalidChain =>
-      'A tanúsítvány vagy valamelyik kibocsátója érvénytelen.';
+  String get smimeProblemInvalidChain => 'A tanúsítvány vagy valamelyik kibocsátója érvénytelen.';
 
   @override
-  String get smimeProblemUntrusted =>
-      'A tanúsítvány olyan szolgáltatótól származik, amelyben a Loupe nem bízik meg.';
+  String get smimeProblemUntrusted => 'A tanúsítvány olyan szolgáltatótól származik, amelyben a Loupe nem bízik meg.';
 
   @override
   String get smimeProblemExpired => 'A tanúsítvány lejárt.';
@@ -2787,8 +2638,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get smimeProblemWrongUsage => 'A tanúsítvány nem levelezéshez való.';
 
   @override
-  String get smimeProblemWrongAddress =>
-      'A tanúsítvány nem a feladó címéhez, hanem egy másik címhez tartozik.';
+  String get smimeProblemWrongAddress => 'A tanúsítvány nem a feladó címéhez, hanem egy másik címhez tartozik.';
 
   @override
   String smimeTrustedBy(String issuer) {
@@ -2845,12 +2695,10 @@ class AppLocalizationsHu extends AppLocalizations {
   String get smimeImportCertificateEllipsis => 'Tanúsítvány importálása…';
 
   @override
-  String get smimeUseDeviceCertificate =>
-      'Tanúsítvány használata erről az eszközről…';
+  String get smimeUseDeviceCertificate => 'Tanúsítvány használata erről az eszközről…';
 
   @override
-  String get smimeCorrespondentsCertificates =>
-      'Levelezőpartnerek tanúsítványai';
+  String get smimeCorrespondentsCertificates => 'Levelezőpartnerek tanúsítványai';
 
   @override
   String get smimeCorrespondentsCertificatesFooter =>
@@ -2864,8 +2712,7 @@ class AppLocalizationsHu extends AppLocalizations {
       'Amikor aláírt levelet nyitsz meg, a Loupe megkérdezi az aláíró tanúsítványát kiadó szolgáltatót (az OCSP-válaszolóját vagy a visszavonási listáját), hogy visszavonták-e. A szolgáltató így láthatja, mikor olvas valaki a te internetcímedről az adott tanúsítvánnyal aláírt levelet. A válaszok a lejáratukig ezen az eszközön maradnak. A visszavont tanúsítványt az üzenet fejléce „visszavont tanúsítvány” jelzéssel mutatja.';
 
   @override
-  String get smimeCheckRevocation =>
-      'Tanúsítványok visszavonásának online ellenőrzése';
+  String get smimeCheckRevocation => 'Tanúsítványok visszavonásának online ellenőrzése';
 
   @override
   String get smimeTrustedAuthorities => 'Megbízható hitelesítésszolgáltatók';
@@ -2875,10 +2722,8 @@ class AppLocalizationsHu extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          'Általad megbízhatónak jelöltek, azon $count mellett, amelyekben a Mozilla az e-mailek terén megbízik.',
-      one:
-          'Általad megbízhatónak jelöltek, azon $count mellett, amelyben a Mozilla az e-mailek terén megbízik.',
+      other: 'Általad megbízhatónak jelöltek, azon $count mellett, amelyekben a Mozilla az e-mailek terén megbízik.',
+      one: 'Általad megbízhatónak jelöltek, azon $count mellett, amelyben a Mozilla az e-mailek terén megbízik.',
     );
     return '$_temp0';
   }
@@ -2900,8 +2745,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get smimeFromFile => 'Fájlból';
 
   @override
-  String get smimeClipboardEmpty =>
-      'A vágólap üres. Előbb másold ki a tanúsítványt.';
+  String get smimeClipboardEmpty => 'A vágólap üres. Előbb másold ki a tanúsítványt.';
 
   @override
   String get smimeCertificate => 'Tanúsítvány';
@@ -3054,8 +2898,7 @@ class AppLocalizationsHu extends AppLocalizations {
       'A privát kulcsa törlődik erről az eszközről: a hozzá titkosított levelek itt többé nem olvashatók, hacsak újra nem importálod.';
 
   @override
-  String get smimeRemoveContactMessage =>
-      'A partner következő aláírt üzenetével visszakerül.';
+  String get smimeRemoveContactMessage => 'A partner következő aláírt üzenetével visszakerül.';
 
   @override
   String get smimeAddressImportFooter =>
@@ -3078,8 +2921,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get smimeCertificatePassword => 'Tanúsítvány jelszava';
 
   @override
-  String get smimeCertificatePasswordPrompt =>
-      'Add meg a jelszót, amellyel a tanúsítványfájlt exportálták.';
+  String get smimeCertificatePasswordPrompt => 'Add meg a jelszót, amellyel a tanúsítványfájlt exportálták.';
 
   @override
   String get smimeImport => 'Importálás';
@@ -3115,17 +2957,12 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String smimeImportedCertificatesAndAuthorities(
-    int count,
-    String certificates,
-  ) {
+  String smimeImportedCertificatesAndAuthorities(int count, String certificates) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          'Importálva: $certificates és $count megbízható hitelesítésszolgáltató.',
-      one:
-          'Importálva: $certificates és egy megbízható hitelesítésszolgáltató.',
+      other: 'Importálva: $certificates és $count megbízható hitelesítésszolgáltató.',
+      one: 'Importálva: $certificates és egy megbízható hitelesítésszolgáltató.',
     );
     return '$_temp0';
   }
@@ -3213,16 +3050,13 @@ class AppLocalizationsHu extends AppLocalizations {
   String get smimeSetPassphraseButton => 'Beállítás';
 
   @override
-  String get smimeLockedOpenAgain =>
-      'Az S/MIME-tanúsítványod zárolva van. A feloldáshoz nyisd meg újra az üzenetet.';
+  String get smimeLockedOpenAgain => 'Az S/MIME-tanúsítványod zárolva van. A feloldáshoz nyisd meg újra az üzenetet.';
 
   @override
-  String get smimeDeviceHasNoCertificates =>
-      'Ez az eszköz nem kínálja fel a tanúsítványait.';
+  String get smimeDeviceHasNoCertificates => 'Ez az eszköz nem kínálja fel a tanúsítványait.';
 
   @override
-  String get smimeCantReadCertificate =>
-      'A Loupe nem tudja beolvasni ezt a tanúsítványt.';
+  String get smimeCantReadCertificate => 'A Loupe nem tudja beolvasni ezt a tanúsítványt.';
 
   @override
   String get smimeCertificateNotForMail =>
@@ -3256,12 +3090,10 @@ class AppLocalizationsHu extends AppLocalizations {
   String get smimeAuthorityNotWebAddress => 'A szolgáltató címe nem webcím.';
 
   @override
-  String get smimeAuthorityTimeout =>
-      'A hitelesítésszolgáltató nem válaszolt időben.';
+  String get smimeAuthorityTimeout => 'A hitelesítésszolgáltató nem válaszolt időben.';
 
   @override
-  String get smimeAuthorityUnreachable =>
-      'A hitelesítésszolgáltató nem érhető el.';
+  String get smimeAuthorityUnreachable => 'A hitelesítésszolgáltató nem érhető el.';
 
   @override
   String smimeAuthorityStatus(String status) {
@@ -3269,8 +3101,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityAnswerTooLarge =>
-      'A hitelesítésszolgáltató válasza túl nagy.';
+  String get smimeAuthorityAnswerTooLarge => 'A hitelesítésszolgáltató válasza túl nagy.';
 
   @override
   String get smimeRevocationNotChecked =>
@@ -3308,12 +3139,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String actionsCountWaiting(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count várakozó',
-      one: '$count várakozó',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count várakozó', one: '$count várakozó');
     return '$_temp0';
   }
 
@@ -3332,8 +3158,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get actionsSettledHeader => 'Lezárva';
 
   @override
-  String get actionsNoneInConversation =>
-      'Ebben a beszélgetésben nincsenek teendők.';
+  String get actionsNoneInConversation => 'Ebben a beszélgetésben nincsenek teendők.';
 
   @override
   String get actionsFooter =>
@@ -3486,8 +3311,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get actionsOriginManual => 'Te adtad hozzá';
 
   @override
-  String get actionsOriginDemo =>
-      'A beépített demó javasolta: szabályok, modell nélkül';
+  String get actionsOriginDemo => 'A beépített demó javasolta: szabályok, modell nélkül';
 
   @override
   String actionsOriginSuggested(String provider) {
@@ -3558,12 +3382,10 @@ class AppLocalizationsHu extends AppLocalizations {
       'A beépített demó javasolta: szabályok, modell nélkül. Semmi sem hagyja el ezt a telefont.';
 
   @override
-  String get actionsSuggestNone =>
-      'Ebben az üzenetben nincs semmi követnivaló.';
+  String get actionsSuggestNone => 'Ebben az üzenetben nincs semmi követnivaló.';
 
   @override
-  String get actionsSuggestPartial =>
-      'Ez az üzenet hosszú: csak az eleje lett elolvasva.';
+  String get actionsSuggestPartial => 'Ez az üzenet hosszú: csak az eleje lett elolvasva.';
 
   @override
   String get actionsSuggestTracked => 'Felvéve';
@@ -3587,12 +3409,10 @@ class AppLocalizationsHu extends AppLocalizations {
       'Minden javaslat idézi az üzenetet, és semmi sem lesz követve, amíg hozzá nem adod. A korábbi, idézett levelek nem számítanak.';
 
   @override
-  String get actionsSuggestTooLarge =>
-      'Ez az üzenet túl hosszú a kiválasztott modellhez.';
+  String get actionsSuggestTooLarge => 'Ez az üzenet túl hosszú a kiválasztott modellhez.';
 
   @override
-  String get actionsSuggestInvalid =>
-      'A válasz nem egyezett az üzenettel, ezért nincs javaslat.';
+  String get actionsSuggestInvalid => 'A válasz nem egyezett az üzenettel, ezért nincs javaslat.';
 
   @override
   String get actionsSuggestCancelled => 'Leállítva.';
@@ -3602,10 +3422,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String settingsIdle(String protocol) {
-    String _temp0 = intl.Intl.selectLogic(protocol, {
-      'jmap': 'Push',
-      'other': 'IDLE',
-    });
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
     return '$_temp0';
   }
 
@@ -3670,8 +3487,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get settingsSignatureAddField => 'Mező hozzáadása';
 
   @override
-  String get settingsSignatureImageFailed =>
-      'A képet nem sikerült hozzáadni. Próbálj kisebb PNG-t vagy JPEG-et.';
+  String get settingsSignatureImageFailed => 'A képet nem sikerült hozzáadni. Próbálj kisebb PNG-t vagy JPEG-et.';
 
   @override
   String get settingsSignatureWhenToUse => 'Mikor használja';
@@ -3687,8 +3503,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get settingsSignatureAddCopied => 'Cím vagy domain hozzáadása…';
 
   @override
-  String get settingsSignatureCopiedPrompt =>
-      'Egy cím vagy egy domain, például client.example.';
+  String get settingsSignatureCopiedPrompt => 'Egy cím vagy egy domain, például client.example.';
 
   @override
   String get settingsSignatureScheduled => 'Ütemezett';
@@ -3749,12 +3564,10 @@ class AppLocalizationsHu extends AppLocalizations {
   String get settingsSwipeRight => 'Csúsztatás jobbra';
 
   @override
-  String get settingsSwipeRightFooter =>
-      'Teljes csúsztatással ez a művelet fut le.';
+  String get settingsSwipeRightFooter => 'Teljes csúsztatással ez a művelet fut le.';
 
   @override
-  String get settingsSwipeToggleRead =>
-      'Megjelölés olvasottként / olvasatlanként';
+  String get settingsSwipeToggleRead => 'Megjelölés olvasottként / olvasatlanként';
 
   @override
   String get settingsSwipeTrash => 'Kukába';
@@ -3772,8 +3585,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get settingsUndoSendDelay => 'Küldés visszavonásának ideje';
 
   @override
-  String get settingsUndoSendDelayFooter =>
-      'Az elküldött üzenetek ennyi ideig várnak, így visszavonhatod őket.';
+  String get settingsUndoSendDelayFooter => 'Az elküldött üzenetek ennyi ideig várnak, így visszavonhatod őket.';
 
   @override
   String settingsUndoSendSeconds(int seconds) {
@@ -3824,22 +3636,19 @@ class AppLocalizationsHu extends AppLocalizations {
   String get settingsDefaultView => 'Alapértelmezett nézet';
 
   @override
-  String get settingsDefaultViewFooter =>
-      'Bármelyik üzenet nézetét átválthatod az Aa gombbal.';
+  String get settingsDefaultViewFooter => 'Bármelyik üzenet nézetét átválthatod az Aa gombbal.';
 
   @override
   String get settingsViewReadable => 'Olvasóbarát';
 
   @override
-  String get settingsViewReadableDetail =>
-      'Tiszta, jól olvasható, követi a sötét módot';
+  String get settingsViewReadableDetail => 'Tiszta, jól olvasható, követi a sötét módot';
 
   @override
   String get settingsViewOriginal => 'Eredeti';
 
   @override
-  String get settingsViewOriginalDetail =>
-      'Pontosan úgy, ahogy a feladó megtervezte';
+  String get settingsViewOriginalDetail => 'Pontosan úgy, ahogy a feladó megtervezte';
 
   @override
   String get settingsViewPlain => 'Egyszerű szöveg';
@@ -3857,8 +3666,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get settingsFontMono => 'Rögzített szélességű';
 
   @override
-  String get settingsFontMonoDetail =>
-      'Az ASCII-rajzok és a táblázatok nem csúsznak szét';
+  String get settingsFontMonoDetail => 'Az ASCII-rajzok és a táblázatok nem csúsznak szét';
 
   @override
   String get settingsTechnicalLists => 'Technikai listák';
@@ -3870,8 +3678,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get settingsOpenLinksDirectly => 'Linkek közvetlen megnyitása';
 
   @override
-  String get settingsOpenLinksDirectlyDetail =>
-      'Kattintáskövetők kihagyása, ha a cél ismert';
+  String get settingsOpenLinksDirectlyDetail => 'Kattintáskövetők kihagyása, ha a cél ismert';
 
   @override
   String get settingsSecurityHeader => 'Biztonság';
@@ -3916,8 +3723,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get settingsLockAfter => 'Automatikus zárolás';
 
   @override
-  String get settingsLockAfterFooter =>
-      'Mennyi ideig lehet a Loupe a háttérben, mielőtt újra kérdez.';
+  String get settingsLockAfterFooter => 'Mennyi ideig lehet a Loupe a háttérben, mielőtt újra kérdez.';
 
   @override
   String get settingsNotifications => 'Értesítések';
@@ -3942,8 +3748,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get settingsResetApp => 'Alkalmazás visszaállítása';
 
   @override
-  String get settingsResetFooter =>
-      'Elfelejti az összes beállítást, és visszatér az üdvözlőképernyőre.';
+  String get settingsResetFooter => 'Elfelejti az összes beállítást, és visszatér az üdvözlőképernyőre.';
 
   @override
   String get settingsResetTitle => 'Visszaállítod a Loupe-ot?';
@@ -3969,12 +3774,10 @@ class AppLocalizationsHu extends AppLocalizations {
       'A Loupe nem használ analitikát, és nem követ. A leveleid csak a levelezőszervereidre jutnak el.';
 
   @override
-  String get settingsNotificationsOffIos =>
-      'A Loupe értesítései ki vannak kapcsolva a Beállításokban.';
+  String get settingsNotificationsOffIos => 'A Loupe értesítései ki vannak kapcsolva a Beállításokban.';
 
   @override
-  String get settingsNotificationsOffAndroid =>
-      'A Loupe értesítései ki vannak kapcsolva az Android beállításaiban.';
+  String get settingsNotificationsOffAndroid => 'A Loupe értesítései ki vannak kapcsolva az Android beállításaiban.';
 
   @override
   String settingsNotificationsBlockedFooter(String system) {
@@ -4041,8 +3844,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get settingsComingSoon => 'Hamarosan';
 
   @override
-  String get settingsAllowUnrestrictedBattery =>
-      'Korlátlan akkumulátorhasználat engedélyezése';
+  String get settingsAllowUnrestrictedBattery => 'Korlátlan akkumulátorhasználat engedélyezése';
 
   @override
   String get settingsPush => 'Push';
@@ -4068,16 +3870,14 @@ class AppLocalizationsHu extends AppLocalizations {
   String get settingsAppIconBadge => 'Alkalmazásikon-jelvény';
 
   @override
-  String get settingsBadgeNote =>
-      'A jelvény minden levélellenőrzéskor frissül, a háttérben is.';
+  String get settingsBadgeNote => 'A jelvény minden levélellenőrzéskor frissül, a háttérben is.';
 
   @override
   String get settingsBadgeUnsupportedFooter =>
       'A telefon kezdőképernyője nem jelenít meg számokat az alkalmazásikonokon. A jelvény minden levélellenőrzéskor frissül, a háttérben is.';
 
   @override
-  String get settingsTestNotificationBody =>
-      'Az új levelek értesítései így néznek ki.';
+  String get settingsTestNotificationBody => 'Az új levelek értesítései így néznek ki.';
 
   @override
   String get settingsAccountRemoved => 'Ezt a fiókot eltávolították.';
@@ -4098,8 +3898,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get settingsColour => 'Szín';
 
   @override
-  String get settingsColourFooter =>
-      'Ezzel jelöli a fiók üzeneteit az Összes beérkező levél nézetben.';
+  String get settingsColourFooter => 'Ezzel jelöli a fiók üzeneteit az Összes beérkező levél nézetben.';
 
   @override
   String settingsColourNumber(int number) {
@@ -4191,12 +3990,10 @@ class AppLocalizationsHu extends AppLocalizations {
       'Az első identitás az új üzenetek alapértelmezett identitása. Húzással módosíthatod a sorrendet.';
 
   @override
-  String get settingsIdentitiesFooterSingle =>
-      'Az új üzenetek alapértelmezett identitása.';
+  String get settingsIdentitiesFooterSingle => 'Az új üzenetek alapértelmezett identitása.';
 
   @override
-  String get settingsIdentitiesReplyFooter =>
-      'A válasz abból az identitásból megy ki, amelyre az üzenetet küldték.';
+  String get settingsIdentitiesReplyFooter => 'A válasz abból az identitásból megy ki, amelyre az üzenetet küldték.';
 
   @override
   String get settingsIdentityDefault => 'Alapértelmezett';
@@ -4228,8 +4025,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get settingsCopyToMyself => 'Másolat magamnak';
 
   @override
-  String get settingsCopyToMyselfFooter =>
-      'Az ebből az identitásból küldött minden üzenethez hozzáadódik.';
+  String get settingsCopyToMyselfFooter => 'Az ebből az identitásból küldött minden üzenethez hozzáadódik.';
 
   @override
   String get settingsCc => 'Másolat';
@@ -4245,8 +4041,7 @@ class AppLocalizationsHu extends AppLocalizations {
       'Az ezekre a címekre küldött üzenetekre adott válaszok ebből az identitásból mennek ki. A * bármit jelent: *@example.com, me+*@example.com.';
 
   @override
-  String get settingsReplyPatternPrompt =>
-      'Egy cím, vagy egy minta, amelyben a * bármit jelent.';
+  String get settingsReplyPatternPrompt => 'Egy cím, vagy egy minta, amelyben a * bármit jelent.';
 
   @override
   String get settingsAddReplyPattern => 'Cím vagy minta hozzáadása';
@@ -4268,8 +4063,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get settingsIdentityNoAddressTitle => 'Nincs cím';
 
   @override
-  String get settingsIdentityNoAddressMessage =>
-      'Add meg az e-mail-címet, amelyről küldeni szeretnél.';
+  String get settingsIdentityNoAddressMessage => 'Add meg az e-mail-címet, amelyről küldeni szeretnél.';
 
   @override
   String get settingsIdentityInvalidAddressTitle => 'Érvénytelen cím';
@@ -4300,12 +4094,10 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get settingsDeleteIdentityMessage =>
-      'Az erről a címről már elküldött üzenetek változatlanok maradnak.';
+  String get settingsDeleteIdentityMessage => 'Az erről a címről már elküldött üzenetek változatlanok maradnak.';
 
   @override
-  String get settingsLastIdentityFooter =>
-      'Egy fióknak legalább egy identitásra van szüksége.';
+  String get settingsLastIdentityFooter => 'Egy fióknak legalább egy identitásra van szüksége.';
 
   @override
   String get rulesTitle => 'Szabályok';
@@ -4377,8 +4169,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get rulesStatusUnavailable => 'Nem érhető el';
 
   @override
-  String get rulesStatusNoSieve =>
-      'Ennek a fióknak a szervere nem kínál Sieve-et (ManageSieve vagy JMAP).';
+  String get rulesStatusNoSieve => 'Ennek a fióknak a szervere nem kínál Sieve-et (ManageSieve vagy JMAP).';
 
   @override
   String rulesActionMove(String folder) {
@@ -4460,8 +4251,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get rulesRemovedAccount => 'Eltávolított fiók';
 
   @override
-  String get rulesAccountsFooter =>
-      'A minden fiókra vonatkozó szabály a később hozzáadott fiókokra is érvényes.';
+  String get rulesAccountsFooter => 'A minden fiókra vonatkozó szabály a később hozzáadott fiókokra is érvényes.';
 
   @override
   String get rulesActionsHeader => 'Akkor';
@@ -4495,8 +4285,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get rulesAddForward => 'Továbbítás ide…';
 
   @override
-  String get rulesStopProcessing =>
-      'További szabályok feldolgozásának leállítása';
+  String get rulesStopProcessing => 'További szabályok feldolgozásának leállítása';
 
   @override
   String get rulesRunOnHeader => 'Futtatás helye';
@@ -4524,8 +4313,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get rulesMoveAccountTitle => 'Melyik fiók mappájába?';
 
   @override
-  String get rulesMoveAccountMessage =>
-      'A többi fiók levelei az ott azonos nevű mappába kerülnek.';
+  String get rulesMoveAccountMessage => 'A többi fiók levelei az ott azonos nevű mappába kerülnek.';
 
   @override
   String get rulesAddTag => 'Címke hozzáadása';
@@ -4564,15 +4352,13 @@ class AppLocalizationsHu extends AppLocalizations {
   String get rulesChooseActionTitle => 'Válassz műveletet';
 
   @override
-  String get rulesChooseActionMessage =>
-      'Add meg, mit tegyen a szabály az egyező üzenetekkel.';
+  String get rulesChooseActionMessage => 'Add meg, mit tegyen a szabály az egyező üzenetekkel.';
 
   @override
   String get rulesSaveError => 'Nem sikerült menteni a szabályt';
 
   @override
-  String get rulesSaveServerError =>
-      'Nem sikerült menteni a szerveroldali szabályt';
+  String get rulesSaveServerError => 'Nem sikerült menteni a szerveroldali szabályt';
 
   @override
   String get rulesRunOnDeviceInstead => 'Futtatás inkább ezen az eszközön';
@@ -4581,8 +4367,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get rulesNothingToApplyTitle => 'Nincs mit alkalmazni';
 
   @override
-  String get rulesNothingToApplyMessage =>
-      'Előbb adj a szabálynak működő feltételt és egy műveletet.';
+  String get rulesNothingToApplyMessage => 'Előbb adj a szabálynak működő feltételt és egy műveletet.';
 
   @override
   String rulesApplyScopeTitle(String rule) {
@@ -4614,8 +4399,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String rulesApplyConfirmTitle(int count, String rule) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4629,8 +4413,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String rulesApplyConfirm(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4644,8 +4427,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String rulesApplied(int count, String rule) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4687,8 +4469,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String rulesMatchingCount(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4702,8 +4483,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String rulesMatchingCountMore(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4732,8 +4512,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String rulesPreviewMore(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4807,8 +4586,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsCountError =>
-      'Nem sikerült megszámolni a feliratkozásokat';
+  String get subscriptionsCountError => 'Nem sikerült megszámolni a feliratkozásokat';
 
   @override
   String get subscriptionsNoMatches => 'Nincs találat';
@@ -4837,8 +4615,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get subscriptionsNothingRarelyRead => 'Nincs ritkán olvasott';
 
   @override
-  String get subscriptionsNothingFilteredDetail =>
-      'Mindenből olvasol valamennyit, amit kapsz.';
+  String get subscriptionsNothingFilteredDetail => 'Mindenből olvasol valamennyit, amit kapsz.';
 
   @override
   String get subscriptionsNoDiscussions => 'Nincsenek beszélgetések';
@@ -4915,8 +4692,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String subscriptionsArchiveInbox(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4932,15 +4708,13 @@ class AppLocalizationsHu extends AppLocalizations {
   String get subscriptionsCreateRule => 'Szabály létrehozása…';
 
   @override
-  String get subscriptionsCreateRuleDetail =>
-      'Jövőbeli leveleinek áthelyezése vagy archiválása';
+  String get subscriptionsCreateRuleDetail => 'Jövőbeli leveleinek áthelyezése vagy archiválása';
 
   @override
   String get subscriptionsTreatAsDiscussion => 'Kezelés beszélgetésként';
 
   @override
-  String get subscriptionsTreatAsDiscussionDetail =>
-      'Lista, amelyre emberek írnak: fórumszerű olvasás';
+  String get subscriptionsTreatAsDiscussionDetail => 'Lista, amelyre emberek írnak: fórumszerű olvasás';
 
   @override
   String get subscriptionsTreatAsNewsletter => 'Kezelés hírlevélként';
@@ -4955,8 +4729,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get subscriptionsBlocked => 'Letiltva';
 
   @override
-  String get subscriptionsBlockedDetail =>
-      'Az új levelek a Levélszemétbe kerülnek';
+  String get subscriptionsBlockedDetail => 'Az új levelek a Levélszemétbe kerülnek';
 
   @override
   String get subscriptionsPin => 'Rögzítés a Postafiókokhoz';
@@ -4965,20 +4738,17 @@ class AppLocalizationsHu extends AppLocalizations {
   String get subscriptionsUnpin => 'Rögzítés feloldása a Postafiókokból';
 
   @override
-  String get subscriptionsOpenDefaultView =>
-      'Megnyitás alapértelmezett nézetben';
+  String get subscriptionsOpenDefaultView => 'Megnyitás alapértelmezett nézetben';
 
   @override
-  String get subscriptionsOpenPlainText =>
-      'Megnyitás egyszerű szövegként (Mono)';
+  String get subscriptionsOpenPlainText => 'Megnyitás egyszerű szövegként (Mono)';
 
   @override
   String get subscriptionsPinned => 'Rögzítve';
 
   @override
   String subscriptionsUnreadCount(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4991,8 +4761,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoMailNow =>
-      'Jelenleg nincs levél ettől a feladótól.';
+  String get subscriptionsNoMailNow => 'Jelenleg nincs levél ettől a feladótól.';
 
   @override
   String get subscriptionsLatestMessages => 'LEGÚJABB ÜZENETEK';
@@ -5008,12 +4777,9 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String subscriptionsReadDetail(String percent, int read, int total) {
-    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(
-      localeName,
-    );
+    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String readString = readNumberFormat.format(read);
-    final intl.NumberFormat totalNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
 
     return '$percent · $readString / $totalString';
@@ -5024,12 +4790,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String subscriptionsFolders(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Mappák',
-      one: 'Mappa',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Mappák', one: 'Mappa');
     return '$_temp0';
   }
 
@@ -5075,8 +4836,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickFailedTitle =>
-      'Az automatikus leiratkozás nem sikerült';
+  String get subscriptionsOneClickFailedTitle => 'Az automatikus leiratkozás nem sikerült';
 
   @override
   String get subscriptionsSendUnsubscribeEmail => 'Leiratkozási e-mail küldése';
@@ -5100,8 +4860,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsWebInsecure =>
-      'A kapcsolat ehhez a webhelyhez nem titkosított.';
+  String get subscriptionsWebInsecure => 'A kapcsolat ehhez a webhelyhez nem titkosított.';
 
   @override
   String subscriptionsHomographWarning(String site) {
@@ -5138,8 +4897,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickNotAllowed =>
-      'A leiratkozási link nem biztonságos internetes cím.';
+  String get subscriptionsOneClickNotAllowed => 'A leiratkozási link nem biztonságos internetes cím.';
 
   @override
   String subscriptionsOneClickTimeout(String site) {
@@ -5162,8 +4920,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoAccountToSend =>
-      'Nincs fiók, amelyről a leiratkozási e-mailt el lehetne küldeni.';
+  String get subscriptionsNoAccountToSend => 'Nincs fiók, amelyről a leiratkozási e-mailt el lehetne küldeni.';
 
   @override
   String subscriptionsMailConfirm(String to, String from, String subject) {
@@ -5234,8 +4991,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get rulesDescribeAccount => 'Fiók';
 
   @override
-  String get rulesDescribeHint =>
-      'Helyezd át a Harbor Coffee nyugtáit a Receipts mappába';
+  String get rulesDescribeHint => 'Helyezd át a Harbor Coffee nyugtáit a Receipts mappába';
 
   @override
   String rulesDescribeSentNote(String account) {
@@ -5249,8 +5005,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get rulesDescribeWorking => 'Szabály összeállítása…';
 
   @override
-  String get rulesDescribeFailed =>
-      'A Loupe nem tudott ebből szabályt készíteni.';
+  String get rulesDescribeFailed => 'A Loupe nem tudott ebből szabályt készíteni.';
 
   @override
   String get rulesDescribeProposed => 'Javasolt szabály';
@@ -5275,8 +5030,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get rulesDescribeScopeChoose =>
-      'Azt, hogy hol fusson, a szabályszerkesztőben választod ki.';
+  String get rulesDescribeScopeChoose => 'Azt, hogy hol fusson, a szabályszerkesztőben választod ki.';
 
   @override
   String rulesDescribeCantDoHeader(int count) {
@@ -5325,8 +5079,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get rulesDescribeReasonOther => 'A szabályok erre nem képesek.';
 
   @override
-  String get rulesDescribeSuggestion =>
-      'Szavak, amelyeket a Loupe helyette kereshet:';
+  String get rulesDescribeSuggestion => 'Szavak, amelyeket a Loupe helyette kereshet:';
 
   @override
   String get rulesDescribeQuestions => 'A Loupe-nak tudnia kell';
@@ -5335,23 +5088,19 @@ class AppLocalizationsHu extends AppLocalizations {
   String get rulesDescribeDryRunHeader => 'Próbafuttatás';
 
   @override
-  String get rulesDescribeDryRunWorking =>
-      'A telefonon lévő levelek ellenőrzése…';
+  String get rulesDescribeDryRunWorking => 'A telefonon lévő levelek ellenőrzése…';
 
   @override
   String rulesDescribeDryRunCount(int total, int matched, String account) {
-    final intl.NumberFormat totalNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
-    final intl.NumberFormat matchedNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String matchedString = matchedNumberFormat.format(matched);
 
     String _temp0 = intl.Intl.pluralLogic(
       total,
       locale: localeName,
-      other:
-          '$account: $totalString letöltött üzenetből $matchedString egyezne',
+      other: '$account: $totalString letöltött üzenetből $matchedString egyezne',
       one: '$account: $totalString letöltött üzenetből $matchedString egyezne',
     );
     return '$_temp0';
@@ -5369,8 +5118,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String rulesDescribeDryRunCapped(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -5384,24 +5132,20 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String rulesDescribeDryRunUnchecked(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          '$countString üzenetet nem lehetett ellenőrizni a szövegük letöltése nélkül.',
-      one:
-          '$countString üzenetet nem lehetett ellenőrizni a szövegének letöltése nélkül.',
+      other: '$countString üzenetet nem lehetett ellenőrizni a szövegük letöltése nélkül.',
+      one: '$countString üzenetet nem lehetett ellenőrizni a szövegének letöltése nélkül.',
     );
     return '$_temp0';
   }
 
   @override
-  String get rulesDescribeDryRunFailed =>
-      'A Loupe nem tudta ellenőrizni a telefonon lévő leveleket.';
+  String get rulesDescribeDryRunFailed => 'A Loupe nem tudta ellenőrizni a telefonon lévő leveleket.';
 
   @override
   String get rulesDescribeOpenEditor => 'Megnyitás a szabályszerkesztőben';
@@ -5432,8 +5176,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get appLiveGateTitle => 'A fiókjaidat nem sikerült megnyitni';
 
   @override
-  String get appLiveGateUnavailableBuild =>
-      'Valódi fiókok ebben a buildben még nem érhetők el.';
+  String get appLiveGateUnavailableBuild => 'Valódi fiókok ebben a buildben még nem érhetők el.';
 
   @override
   String get appLiveGateKeyUnreadable =>
@@ -5493,8 +5236,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get attachmentsOpenInError =>
-      'Nem sikerült megnyitni a mellékletet egy másik alkalmazásban.';
+  String get attachmentsOpenInError => 'Nem sikerült megnyitni a mellékletet egy másik alkalmazásban.';
 
   @override
   String attachmentsSaved(String name) {
@@ -5508,17 +5250,11 @@ class AppLocalizationsHu extends AppLocalizations {
   String get attachmentsGone => 'Ez a melléklet már nem érhető el.';
 
   @override
-  String get attachmentsDownloadFailed =>
-      'A mellékletet nem sikerült letölteni.';
+  String get attachmentsDownloadFailed => 'A mellékletet nem sikerült letölteni.';
 
   @override
   String attachmentsPageCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count oldal',
-      one: '$count oldal',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count oldal', one: '$count oldal');
     return '$_temp0';
   }
 
@@ -5528,8 +5264,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get attachmentsLargeDownload =>
-      'Ez a melléklet nagy. Töltsd le most, vagy később Wi-Fi-n.';
+  String get attachmentsLargeDownload => 'Ez a melléklet nagy. Töltsd le most, vagy később Wi-Fi-n.';
 
   @override
   String get attachmentsDownload => 'Letöltés';
@@ -5551,8 +5286,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get attachmentsPdfUnavailable =>
-      'Ez a PDF itt nem jeleníthető meg (lehet, hogy jelszóval védett).';
+  String get attachmentsPdfUnavailable => 'Ez a PDF itt nem jeleníthető meg (lehet, hogy jelszóval védett).';
 
   @override
   String attachmentsPageOf(int page, int count) {
@@ -5579,12 +5313,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String attachmentsTextInfo(String charset, int count, String lines) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$lines sor',
-      one: '$lines sor',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$lines sor', one: '$lines sor');
     return '$charset · $_temp0';
   }
 
@@ -5595,8 +5324,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get attachmentsCopied => 'Másolva';
 
   @override
-  String get attachmentsImageUnavailable =>
-      'Ez a kép itt nem jeleníthető meg. Próbáld a Megnyitás ebben… lehetőséget.';
+  String get attachmentsImageUnavailable => 'Ez a kép itt nem jeleníthető meg. Próbáld a Megnyitás ebben… lehetőséget.';
 
   @override
   String get attachmentsEmlNoSubject => '(Nincs tárgy)';
@@ -5822,15 +5550,13 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get calendarRefreshUnknown =>
-      'Egy résztvevő a legújabb változatot kéri';
+  String get calendarRefreshUnknown => 'Egy résztvevő a legújabb változatot kéri';
 
   @override
   String get calendarCancelled => 'Lemondva';
 
   @override
-  String get calendarCancelledByOrganizer =>
-      'A szervező lemondta ezt az eseményt.';
+  String get calendarCancelledByOrganizer => 'A szervező lemondta ezt az eseményt.';
 
   @override
   String get calendarCancelledLater => 'Ezt az eseményt később lemondták.';
@@ -5839,8 +5565,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get calendarOutdated => 'Elavult';
 
   @override
-  String get calendarOutdatedDetail =>
-      'Ezt a meghívást később frissítették; az újabb az érvényes.';
+  String get calendarOutdatedDetail => 'Ezt a meghívást később frissítették; az újabb az érvényes.';
 
   @override
   String calendarLocationRemoved(String location) {
@@ -5848,8 +5573,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get calendarLocationRemovedNone =>
-      'Helyszín eltávolítva (korábban nem volt)';
+  String get calendarLocationRemovedNone => 'Helyszín eltávolítva (korábban nem volt)';
 
   @override
   String calendarLocationChanged(String location) {
@@ -5885,12 +5609,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String calendarGuestCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count vendég',
-      one: '$count vendég',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count vendég', one: '$count vendég');
     return '$_temp0';
   }
 
@@ -5907,12 +5626,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String calendarMaybeCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count talán',
-      one: '$count talán',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count talán', one: '$count talán');
     return '$_temp0';
   }
 
@@ -5985,8 +5699,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get calendarNoCalendarApp =>
-      'Nincs naptáralkalmazás, amelyhez hozzá lehetne adni az eseményt.';
+  String get calendarNoCalendarApp => 'Nincs naptáralkalmazás, amelyhez hozzá lehetne adni az eseményt.';
 
   @override
   String get calendarCantOpenCalendar => 'Nem sikerült megnyitni a naptárt.';
@@ -6022,8 +5735,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get calendarNoOrganizer =>
-      'Ennek a meghívásnak nincs szervezője, akinek válaszolni lehetne.';
+  String get calendarNoOrganizer => 'Ennek a meghívásnak nincs szervezője, akinek válaszolni lehetne.';
 
   @override
   String get calendarNoAccount => 'Nincs fiók, amelyről válaszolni lehetne.';
@@ -6094,8 +5806,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get keyboardMoveToTrash => 'Áthelyezés a kukába';
 
   @override
-  String get keyboardToggleRead =>
-      'Megjelölés olvasottként vagy olvasatlanként';
+  String get keyboardToggleRead => 'Megjelölés olvasottként vagy olvasatlanként';
 
   @override
   String get keyboardToggleFlag => 'Megjelölés vagy megjelölés törlése';
@@ -6125,8 +5836,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get keyboardKeyBackspace => 'Backspace';
 
   @override
-  String get mailingListsMuted =>
-      'Szál némítva. Az új üzenetei olvasottként érkeznek.';
+  String get mailingListsMuted => 'Szál némítva. Az új üzenetei olvasottként érkeznek.';
 
   @override
   String get mailingListsUnmuted => 'Szál némítása feloldva.';
@@ -6183,12 +5893,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String mailingListsReplyCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count válasz',
-      one: '$count válasz',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count válasz', one: '$count válasz');
     return '$_temp0';
   }
 
@@ -6202,8 +5907,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get mailingListsTechnicalTitle => 'Technikai listák';
 
   @override
-  String get mailingListsTechnicalEmpty =>
-      'A levelezőlisták itt jelennek meg, amint megérkeznek a leveleik.';
+  String get mailingListsTechnicalEmpty => 'A levelezőlisták itt jelennek meg, amint megérkeznek a leveleik.';
 
   @override
   String get mailingListsTechnicalFooter =>
@@ -6272,8 +5976,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get palettePlaceholder =>
-      'Műveletek, postafiókok, beállítások keresése';
+  String get palettePlaceholder => 'Műveletek, postafiókok, beállítások keresése';
 
   @override
   String get paletteNothingFound => 'Nincs találat';
@@ -6375,8 +6078,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get searchUnknownAccountFailed =>
-      'Nem sikerült a fiók keresése a szerveren';
+  String get searchUnknownAccountFailed => 'Nem sikerült a fiók keresése a szerveren';
 
   @override
   String searchChip(String term) {
@@ -6439,8 +6141,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get searchSettingsTitle => 'Smart Mailboxes';
 
   @override
-  String get searchSettingsLocalFooter =>
-      'A Smart Mailboxok ezen az eszközön maradnak.';
+  String get searchSettingsLocalFooter => 'A Smart Mailboxok ezen az eszközön maradnak.';
 
   @override
   String searchSettingsServerFooter(String account) {
@@ -6451,16 +6152,13 @@ class AppLocalizationsHu extends AppLocalizations {
   String get searchSyncVia => 'Szinkronizálás ezen keresztül';
 
   @override
-  String get searchSyncViaFooter =>
-      'Minden eszközön ugyanazt a fiókot válaszd.';
+  String get searchSyncViaFooter => 'Minden eszközön ugyanazt a fiókot válaszd.';
 
   @override
-  String get searchGmailCantKeep =>
-      'A Gmail nem tudja tárolni a Smart Mailboxokat';
+  String get searchGmailCantKeep => 'A Gmail nem tudja tárolni a Smart Mailboxokat';
 
   @override
-  String get searchKeepOnDevice =>
-      'Smart Mailboxok tárolása csak ezen az eszközön';
+  String get searchKeepOnDevice => 'Smart Mailboxok tárolása csak ezen az eszközön';
 
   @override
   String get searchOnTheServer => 'A szerveren';
@@ -6509,12 +6207,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String sharedBytes(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count bájt',
-      one: '$count bájt',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count bájt', one: '$count bájt');
     return '$_temp0';
   }
 
@@ -6732,8 +6425,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get sharedMoveOneAccount =>
-      'Az áthelyezéshez egyetlen fiók üzeneteit jelöld ki.';
+  String get sharedMoveOneAccount => 'Az áthelyezéshez egyetlen fiók üzeneteit jelöld ki.';
 
   @override
   String get sharedSnoozeTitle => 'Szundi';
@@ -6905,12 +6597,10 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get documentsStatusNotDownloaded =>
-      'Nincs letöltve: nyisd meg, hogy elolvashasd, és kereshess benne.';
+  String get documentsStatusNotDownloaded => 'Nincs letöltve: nyisd meg, hogy elolvashasd, és kereshess benne.';
 
   @override
-  String get documentsStatusEncrypted =>
-      'Jelszóval védett: a Loupe nem tudja beolvasni.';
+  String get documentsStatusEncrypted => 'Jelszóval védett: a Loupe nem tudja beolvasni.';
 
   @override
   String get documentsStatusNoText =>
@@ -6920,31 +6610,22 @@ class AppLocalizationsHu extends AppLocalizations {
   String get documentsStatusEmpty => 'Ebben a fájlban nincs szöveg.';
 
   @override
-  String get documentsStatusUnsupported =>
-      'A Loupe még nem tud ilyen típusú dokumentumot beolvasni.';
+  String get documentsStatusUnsupported => 'A Loupe még nem tud ilyen típusú dokumentumot beolvasni.';
 
   @override
-  String get documentsStatusTooLarge =>
-      'Túl nagy ahhoz, hogy ezen a telefonon be lehessen olvasni.';
+  String get documentsStatusTooLarge => 'Túl nagy ahhoz, hogy ezen a telefonon be lehessen olvasni.';
 
   @override
-  String get documentsStatusDamaged =>
-      'Nem sikerült beolvasni: lehet, hogy a fájl sérült.';
+  String get documentsStatusDamaged => 'Nem sikerült beolvasni: lehet, hogy a fájl sérült.';
 
   @override
   String documentsStatusPartial(int read, int total) {
-    String _temp0 = intl.Intl.pluralLogic(
-      total,
-      locale: localeName,
-      other: '$total oldal',
-      one: '$total oldal',
-    );
+    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$total oldal', one: '$total oldal');
     return 'Beolvasva: $read / $_temp0; a többi oldal nem kereshető.';
   }
 
   @override
-  String get documentsStatusPartialText =>
-      'Csak az eleje van beolvasva; a többi része nem kereshető.';
+  String get documentsStatusPartialText => 'Csak az eleje van beolvasva; a többi része nem kereshető.';
 
   @override
   String get documentsOpenDocument => 'Dokumentum megnyitása';
@@ -6992,8 +6673,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get documentsNoFactChanges =>
-      'A kulcsadatok azonosak; a szöveg más részei eltérnek.';
+  String get documentsNoFactChanges => 'A kulcsadatok azonosak; a szöveg más részei eltérnek.';
 
   @override
   String get documentsKeyFacts => 'Kulcsadatok';
@@ -7005,12 +6685,10 @@ class AppLocalizationsHu extends AppLocalizations {
   String get documentsKeyFactsWorking => 'Dokumentum olvasása…';
 
   @override
-  String get documentsKeyFactsFailed =>
-      'Nem sikerült megtalálni a kulcsadatokat.';
+  String get documentsKeyFactsFailed => 'Nem sikerült megtalálni a kulcsadatokat.';
 
   @override
-  String get documentsKeyFactsDemoNote =>
-      'A beépített demó készítette, nem modell.';
+  String get documentsKeyFactsDemoNote => 'A beépített demó készítette, nem modell.';
 
   @override
   String documentsKeyFactsMadeBy(String provider) {
@@ -7018,12 +6696,10 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get documentsKeyFactsHint =>
-      'Koppints egy adatra, és megnézheted, hol szerepel a dokumentumban.';
+  String get documentsKeyFactsHint => 'Koppints egy adatra, és megnézheted, hol szerepel a dokumentumban.';
 
   @override
-  String get documentsKeyFactsNone =>
-      'A Loupe még nem ismer kulcsadatokat az ilyen típusú dokumentumokhoz.';
+  String get documentsKeyFactsNone => 'A Loupe még nem ismer kulcsadatokat az ilyen típusú dokumentumokhoz.';
 
   @override
   String get documentsKeyFactsPartial =>
@@ -7080,8 +6756,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get documentsFieldEarlyRepaymentCharges => 'Előtörlesztési díjak';
 
   @override
-  String get documentsFieldTotalAmountPayable =>
-      'Teljes visszafizetendő összeg';
+  String get documentsFieldTotalAmountPayable => 'Teljes visszafizetendő összeg';
 
   @override
   String get documentsFieldAmountDue => 'Fizetendő összeg';
@@ -7135,8 +6810,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get accountSetupAddressTitle => 'Levelezőfiók hozzáadása';
 
   @override
-  String get accountSetupAddressText =>
-      'A Loupe a legtöbb szolgáltató beállításait megtalálja.';
+  String get accountSetupAddressText => 'A Loupe a legtöbb szolgáltató beállításait megtalálja.';
 
   @override
   String get accountSetupNameHint => 'Neved';
@@ -7165,8 +6839,7 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get accountSetupCheckServers =>
-      'Ellenőrizd a szerverneveket és a portokat.';
+  String get accountSetupCheckServers => 'Ellenőrizd a szerverneveket és a portokat.';
 
   @override
   String get accountSetupEnterPassword => 'Add meg a jelszavadat.';
@@ -7180,15 +6853,13 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get accountSetupCouldNotOpenPage =>
-      'Nem sikerült megnyitni az oldalt.';
+  String get accountSetupCouldNotOpenPage => 'Nem sikerült megnyitni az oldalt.';
 
   @override
   String get accountSetupCouldNotSaveName => 'Nem sikerült menteni a nevet.';
 
   @override
-  String get accountSetupTrustCertificate =>
-      'Tanúsítvány megbízhatónak jelölése';
+  String get accountSetupTrustCertificate => 'Tanúsítvány megbízhatónak jelölése';
 
   @override
   String get accountSetupPasswordRequired => 'Kötelező';
@@ -7225,15 +6896,13 @@ class AppLocalizationsHu extends AppLocalizations {
   String get accountSetupUseAppPassword => 'Alkalmazásjelszó használata';
 
   @override
-  String get accountSetupUseAppPasswordInstead =>
-      'Inkább alkalmazásjelszó használata';
+  String get accountSetupUseAppPasswordInstead => 'Inkább alkalmazásjelszó használata';
 
   @override
   String get accountSetupUseDifferentAddress => 'Másik cím használata';
 
   @override
-  String get accountSetupHowToCreateAppPassword =>
-      'Hogyan hozhatok létre alkalmazásjelszót?';
+  String get accountSetupHowToCreateAppPassword => 'Hogyan hozhatok létre alkalmazásjelszót?';
 
   @override
   String get accountSetupHowToCreateOne => 'Hogyan hozhatok létre egyet?';
@@ -7263,16 +6932,14 @@ class AppLocalizationsHu extends AppLocalizations {
       'Az iCloud Mailhez alkalmazásspecifikus jelszó kell, nem az Apple-fiókod jelszava.';
 
   @override
-  String get accountSetupYahooNote =>
-      'A Yahoo Mailhez alkalmazásjelszó kell, nem a fiókod jelszava.';
+  String get accountSetupYahooNote => 'A Yahoo Mailhez alkalmazásjelszó kell, nem a fiókod jelszava.';
 
   @override
   String get accountSetupFastmailJmapNote =>
       'A Loupe JMAP-on keresztül, API-tokennel kapcsolódik a Fastmailhez: Settings › Privacy & Security › Manage API tokens, JMAP-hoz, levelekhez és küldéshez való hozzáféréssel.';
 
   @override
-  String get accountSetupFastmailNote =>
-      'A Fastmail a levelezőalkalmazásokhoz alkalmazásjelszót kér.';
+  String get accountSetupFastmailNote => 'A Fastmail a levelezőalkalmazásokhoz alkalmazásjelszót kér.';
 
   @override
   String get accountSetupServerSettings => 'Szerverbeállítások';
@@ -7354,8 +7021,7 @@ class AppLocalizationsHu extends AppLocalizations {
       'A jelszó elutasítva. Alkalmazásjelszót használj, ne a fiókod jelszavát.';
 
   @override
-  String get accountSetupPasswordRejected =>
-      'A jelszó elutasítva. Ellenőrizd, és próbáld újra.';
+  String get accountSetupPasswordRejected => 'A jelszó elutasítva. Ellenőrizd, és próbáld újra.';
 
   @override
   String get accountSetupServerUnreachable =>
@@ -7433,11 +7099,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get accountSetupSigningIn => 'Bejelentkezés…';
 
   @override
-  String accountSetupSignInExpired(
-    String provider,
-    String email,
-    String account,
-  ) {
+  String accountSetupSignInExpired(String provider, String email, String account) {
     return '$provider már nem fogadja el a Loupe bejelentkezését ehhez a címhez: $email, ezért $account nem szinkronizálódik. A levelei eléréséhez jelentkezz be újra.';
   }
 
@@ -7445,8 +7107,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get accountImportTitle => 'Importálás Thunderbirdből';
 
   @override
-  String get accountImportPointCamera =>
-      'Irányítsd a kamerát a Thunderbird által mutatott QR-kódra.';
+  String get accountImportPointCamera => 'Irányítsd a kamerát a Thunderbird által mutatott QR-kódra.';
 
   @override
   String accountImportProgress(int scanned, int total) {
@@ -7511,20 +7172,16 @@ class AppLocalizationsHu extends AppLocalizations {
       'Ez a kód egy újabb Thunderbirdből származik. Az importáláshoz frissítsd a Loupe-ot.';
 
   @override
-  String get accountImportDamaged =>
-      'Ezt a Thunderbird-kódot nem sikerült beolvasni.';
+  String get accountImportDamaged => 'Ezt a Thunderbird-kódot nem sikerült beolvasni.';
 
   @override
-  String get accountImportTooLarge =>
-      'Ez a kód túl nagy ahhoz, hogy Thunderbird-export legyen.';
+  String get accountImportTooLarge => 'Ez a kód túl nagy ahhoz, hogy Thunderbird-export legyen.';
 
   @override
-  String get accountImportCouldNotOpenSettings =>
-      'Nem sikerült megnyitni a Beállításokat.';
+  String get accountImportCouldNotOpenSettings => 'Nem sikerült megnyitni a Beállításokat.';
 
   @override
-  String get accountImportCameraOffTitle =>
-      'A kamera-hozzáférés ki van kapcsolva';
+  String get accountImportCameraOffTitle => 'A kamera-hozzáférés ki van kapcsolva';
 
   @override
   String get accountImportCameraOffText =>
@@ -7534,15 +7191,13 @@ class AppLocalizationsHu extends AppLocalizations {
   String get accountImportNoCameraTitle => 'Nincs kamera';
 
   @override
-  String get accountImportNoCameraText =>
-      'A Loupe itt nem tud kamerát használni. Illeszd be inkább a kód szövegét.';
+  String get accountImportNoCameraText => 'A Loupe itt nem tud kamerát használni. Illeszd be inkább a kód szövegét.';
 
   @override
   String get accountImportCameraFailedTitle => 'A kamera nem indult el';
 
   @override
-  String get accountImportCameraFailedText =>
-      'Próbáld újra, vagy illeszd be inkább a kód szövegét.';
+  String get accountImportCameraFailedText => 'Próbáld újra, vagy illeszd be inkább a kód szövegét.';
 
   @override
   String get accountImportOpenSettings => 'Beállítások megnyitása';
@@ -7560,22 +7215,18 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get accountImportNoneReadable =>
-      'A kódokban lévő fiókok közül egyiket sem sikerült beolvasni.';
+  String get accountImportNoneReadable => 'A kódokban lévő fiókok közül egyiket sem sikerült beolvasni.';
 
   @override
-  String get accountImportChoose =>
-      'Válaszd ki a Loupe-hoz hozzáadandó fiókokat.';
+  String get accountImportChoose => 'Válaszd ki a Loupe-hoz hozzáadandó fiókokat.';
 
   @override
   String accountImportMissingCodes(int count, String codes, int total) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          '$total kódból ezek nincsenek beolvasva: $codes, ezért a fiókjaik nem szerepelnek a listán.',
-      one:
-          '$total kódból ez nincs beolvasva: $codes, ezért a fiókjai nem szerepelnek a listán.',
+      other: '$total kódból ezek nincsenek beolvasva: $codes, ezért a fiókjaik nem szerepelnek a listán.',
+      one: '$total kódból ez nincs beolvasva: $codes, ezért a fiókjai nem szerepelnek a listán.',
     );
     return '$_temp0';
   }
@@ -7595,8 +7246,7 @@ class AppLocalizationsHu extends AppLocalizations {
       locale: localeName,
       other:
           '$count fiókot nem sikerült beolvasni a kódokból. Lehet, hogy egy újabb Thunderbird beállításait használják.',
-      one:
-          '$count fiókot nem sikerült beolvasni a kódokból. Lehet, hogy egy újabb Thunderbird beállításait használja.',
+      one: '$count fiókot nem sikerült beolvasni a kódokból. Lehet, hogy egy újabb Thunderbird beállításait használja.',
     );
     return '$_temp0';
   }
@@ -7605,8 +7255,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get accountImportScanAgain => 'Újbóli beolvasás';
 
   @override
-  String get accountImportAlreadyAdded =>
-      'Ezzel a címmel már van fiók a Loupe-ban.';
+  String get accountImportAlreadyAdded => 'Ezzel a címmel már van fiók a Loupe-ban.';
 
   @override
   String accountImportSignsInWith(String provider) {
@@ -7626,8 +7275,7 @@ class AppLocalizationsHu extends AppLocalizations {
       'A Thunderbird a böngészőben jelentkezik be ebbe a fiókba. A Loupe ezt még nem tudja: használj alkalmazásjelszót, ha a szolgáltatód kínál ilyet.';
 
   @override
-  String get accountImportUnencrypted =>
-      'Titkosítás nélkül kapcsolódik. Csak a saját hálózatodon használd.';
+  String get accountImportUnencrypted => 'Titkosítás nélkül kapcsolódik. Csak a saját hálózatodon használd.';
 
   @override
   String get accountImportEnterAgain => 'Add meg újra';
@@ -7656,20 +7304,16 @@ class AppLocalizationsHu extends AppLocalizations {
   String get accountImportPasteTitle => 'Exportszöveg beillesztése';
 
   @override
-  String get accountImportPasteText =>
-      'Illeszd be egy Thunderbird-exportkód szövegét, soronként egy kódot.';
+  String get accountImportPasteText => 'Illeszd be egy Thunderbird-exportkód szövegét, soronként egy kódot.';
 
   @override
-  String get accountImportPop3 =>
-      'A POP3-fiókok nem támogatottak. A Loupe IMAP-pal a szerveren tartja a leveleket.';
+  String get accountImportPop3 => 'A POP3-fiókok nem támogatottak. A Loupe IMAP-pal a szerveren tartja a leveleket.';
 
   @override
-  String get accountImportKerberos =>
-      'Ez a fiók Kerberosszal jelentkezik be, amelyet a Loupe nem támogat.';
+  String get accountImportKerberos => 'Ez a fiók Kerberosszal jelentkezik be, amelyet a Loupe nem támogat.';
 
   @override
-  String get accountImportNtlm =>
-      'Ez a fiók NTLM-mel jelentkezik be, amelyet a Loupe nem támogat.';
+  String get accountImportNtlm => 'Ez a fiók NTLM-mel jelentkezik be, amelyet a Loupe nem támogat.';
 
   @override
   String get accountImportClientCertificate =>
@@ -7689,12 +7333,10 @@ class AppLocalizationsHu extends AppLocalizations {
   String get accountImportEnterApiToken => 'Add meg az API-tokent.';
 
   @override
-  String get accountImportStorageFailed =>
-      'A Loupe nem tudta megnyitni a fióktárolóját. Próbáld újra később.';
+  String get accountImportStorageFailed => 'A Loupe nem tudta megnyitni a fióktárolóját. Próbáld újra később.';
 
   @override
-  String get accountImportFailed =>
-      'A fiókot nem sikerült hozzáadni. Próbáld újra, vagy add hozzá kézzel.';
+  String get accountImportFailed => 'A fiókot nem sikerült hozzáadni. Próbáld újra, vagy add hozzá kézzel.';
 
   @override
   String get composeReplyCheckTitle => 'Válaszellenőrzés';
@@ -7988,8 +7630,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get composeDraftNotFound => 'Nem található a piszkozat.';
 
   @override
-  String get composeAttachmentsLost =>
-      'A mellékleteket nem sikerült visszaállítani. Add hozzá őket újra.';
+  String get composeAttachmentsLost => 'A mellékleteket nem sikerült visszaállítani. Add hozzá őket újra.';
 
   @override
   String composeSomeAttachmentsFailed(String error) {
@@ -8016,8 +7657,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get composeNoSubjectTitle => 'Nincs tárgy';
 
   @override
-  String get composeNoSubjectText =>
-      'Ennek az üzenetnek nincs tárgya. Mégis elküldöd?';
+  String get composeNoSubjectText => 'Ennek az üzenetnek nincs tárgya. Mégis elküldöd?';
 
   @override
   String get composeSentBeforeChanges =>
@@ -8145,26 +7785,18 @@ class AppLocalizationsHu extends AppLocalizations {
   String composeRecoveryUntitled(String recipients, String name) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Egy üzenet nem lett elküldve, amikor a Loupe bezárult.',
-      'one':
-          'Egy $name részére írt üzenet nem lett elküldve, amikor a Loupe bezárult.',
-      'other':
-          'Egy $name és mások részére írt üzenet nem lett elküldve, amikor a Loupe bezárult.',
+      'one': 'Egy $name részére írt üzenet nem lett elküldve, amikor a Loupe bezárult.',
+      'other': 'Egy $name és mások részére írt üzenet nem lett elküldve, amikor a Loupe bezárult.',
     });
     return '$_temp0';
   }
 
   @override
-  String composeRecoveryWithSubject(
-    String recipients,
-    String subject,
-    String name,
-  ) {
+  String composeRecoveryWithSubject(String recipients, String subject, String name) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': '„$subject” nem lett elküldve, amikor a Loupe bezárult.',
-      'one':
-          '„$subject” ($name részére) nem lett elküldve, amikor a Loupe bezárult.',
-      'other':
-          '„$subject” ($name és mások részére) nem lett elküldve, amikor a Loupe bezárult.',
+      'one': '„$subject” ($name részére) nem lett elküldve, amikor a Loupe bezárult.',
+      'other': '„$subject” ($name és mások részére) nem lett elküldve, amikor a Loupe bezárult.',
     });
     return '$_temp0';
   }
@@ -8212,8 +7844,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get outboxEmptyTitle => 'Nincs mit küldeni';
 
   @override
-  String get outboxEmptyText =>
-      'A később küldendő üzenetek itt várnak, amíg el nem jön az idejük.';
+  String get outboxEmptyText => 'A később küldendő üzenetek itt várnak, amíg el nem jön az idejük.';
 
   @override
   String get outboxSendNow => 'Küldés most';
@@ -8260,12 +7891,10 @@ class AppLocalizationsHu extends AppLocalizations {
   String get outboxBeingSent => 'Ez az üzenet küldés alatt áll.';
 
   @override
-  String get outboxActionFailed =>
-      'Ez nem sikerült. Az üzenet még a Kimenő mappában van.';
+  String get outboxActionFailed => 'Ez nem sikerült. Az üzenet még a Kimenő mappában van.';
 
   @override
-  String get notificationsBadgeInboxes =>
-      'Olvasatlanok a beérkező levelek közt';
+  String get notificationsBadgeInboxes => 'Olvasatlanok a beérkező levelek közt';
 
   @override
   String get notificationsBadgeVip => 'Olvasatlanok a VIP-ben';
@@ -8274,8 +7903,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get notificationsVipChannel => 'VIP';
 
   @override
-  String get notificationsVipChannelDescription =>
-      'Új levelek a VIP-jeidtől, bármely fiókban';
+  String get notificationsVipChannelDescription => 'Új levelek a VIP-jeidtől, bármely fiókban';
 
   @override
   String notificationsAccountChannelDescription(String email) {
@@ -8326,34 +7954,28 @@ class AppLocalizationsHu extends AppLocalizations {
   String get platformInstantText => 'Az Azonnali kézbesítés be van kapcsolva';
 
   @override
-  String get platformErrorBox =>
-      'Hiba történt a megjelenítés közben. Lépj vissza, és próbáld újra.';
+  String get platformErrorBox => 'Hiba történt a megjelenítés közben. Lépj vissza, és próbáld újra.';
 
   @override
-  String get welcomeTagline =>
-      'A felszínen egyszerű,\na mélyben nagy tudású levelezés.';
+  String get welcomeTagline => 'A felszínen egyszerű,\na mélyben nagy tudású levelezés.';
 
   @override
-  String get welcomeAccountsTitle =>
-      'Minden fiók egyetlen nyugodt postafiókban';
+  String get welcomeAccountsTitle => 'Minden fiók egyetlen nyugodt postafiókban';
 
   @override
-  String get welcomeAccountsText =>
-      'Gmail, Outlook, iCloud, Fastmail és bármely IMAP- vagy JMAP-szerver.';
+  String get welcomeAccountsText => 'Gmail, Outlook, iCloud, Fastmail és bármely IMAP- vagy JMAP-szerver.';
 
   @override
   String get welcomeSearchTitle => 'Keresés, ami megtalálja';
 
   @override
-  String get welcomeSearchText =>
-      'Azonnali találatok a telefonodon, aztán a szerverről.';
+  String get welcomeSearchText => 'Azonnali találatok a telefonodon, aztán a szerverről.';
 
   @override
   String get welcomePrivacyTitle => 'Eleve a magánszféra védelmére tervezve';
 
   @override
-  String get welcomePrivacyText =>
-      'Nincs követés. A távoli képek letiltva maradnak, amíg nem engedélyezed őket.';
+  String get welcomePrivacyText => 'Nincs követés. A távoli képek letiltva maradnak, amíg nem engedélyezed őket.';
 
   @override
   String get welcomeAddAccount => 'Fiók hozzáadása';
@@ -8407,12 +8029,10 @@ class AppLocalizationsHu extends AppLocalizations {
   String get settingsAiDemo => 'Beépített demó';
 
   @override
-  String get settingsAiDemoDetail =>
-      'Ezen a telefonon. Nincs modell: néhány szabály a funkciók kipróbálásához.';
+  String get settingsAiDemoDetail => 'Ezen a telefonon. Nincs modell: néhány szabály a funkciók kipróbálásához.';
 
   @override
-  String get settingsAiAnthropicDetail =>
-      'Felhő: Claude, a saját API-kulcsoddal.';
+  String get settingsAiAnthropicDetail => 'Felhő: Claude, a saját API-kulcsoddal.';
 
   @override
   String get settingsAiServer => 'Saját szerver';
@@ -8425,8 +8045,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get settingsAiOnPhone => 'Ezen a telefonon';
 
   @override
-  String get settingsAiOnPhoneDetail =>
-      'Még nem érhető el: az eszközön futó modellt még tesztelik telefonokon.';
+  String get settingsAiOnPhoneDetail => 'Még nem érhető el: az eszközön futó modellt még tesztelik telefonokon.';
 
   @override
   String get settingsAiNotSetUp => 'Nincs beállítva';
@@ -8477,15 +8096,13 @@ class AppLocalizationsHu extends AppLocalizations {
       'Az API útvonalával együtt, például http://192.168.1.20:11434/v1 az Ollamához.';
 
   @override
-  String get settingsAiServerAddressInvalid =>
-      'Ez nem http:// vagy https:// cím.';
+  String get settingsAiServerAddressInvalid => 'Ez nem http:// vagy https:// cím.';
 
   @override
   String get settingsAiServerModelTitle => 'Modellnév';
 
   @override
-  String get settingsAiServerModelMessage =>
-      'Ahogy a szervered nevezi, például llama3.2.';
+  String get settingsAiServerModelMessage => 'Ahogy a szervered nevezi, például llama3.2.';
 
   @override
   String get settingsAiTestConnection => 'Kapcsolat tesztelése';
@@ -8502,15 +8119,13 @@ class AppLocalizationsHu extends AppLocalizations {
   String get settingsAiTestFailed => 'A teszt sikertelen';
 
   @override
-  String get settingsAiTestInvalid =>
-      'A modell válaszolt, de nem abban a formában, amit a Loupe kért.';
+  String get settingsAiTestInvalid => 'A modell válaszolt, de nem abban a formában, amit a Loupe kért.';
 
   @override
   String get settingsAiRemoveKey => 'Kulcs eltávolítása';
 
   @override
-  String get settingsAiRemoveKeyTitle =>
-      'Eltávolítod az Anthropic API-kulcsot?';
+  String get settingsAiRemoveKeyTitle => 'Eltávolítod az Anthropic API-kulcsot?';
 
   @override
   String get settingsAiRemoveKeyMessage =>
@@ -8549,8 +8164,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get settingsAiFeaturesHeader => 'Funkciók';
 
   @override
-  String get settingsAiFeaturesFooter =>
-      'Egy kikapcsolt funkció nem mutat MI-részt, és nem kérdez modellt.';
+  String get settingsAiFeaturesFooter => 'Egy kikapcsolt funkció nem mutat MI-részt, és nem kérdez modellt.';
 
   @override
   String get settingsAiFeatureBrief => 'Röviden';
@@ -8574,16 +8188,13 @@ class AppLocalizationsHu extends AppLocalizations {
   String get settingsAiFeatureMatters => 'Ügy állása';
 
   @override
-  String get settingsAiFeatureSearchDetail =>
-      'A keresésben: egy mondatból ellenőrizhető keresés lesz.';
+  String get settingsAiFeatureSearchDetail => 'A keresésben: egy mondatból ellenőrizhető keresés lesz.';
 
   @override
-  String get settingsAiFeatureBriefDetail =>
-      'Egy üzenetben: mit kér tőled, a hozzá tartozó részletekkel.';
+  String get settingsAiFeatureBriefDetail => 'Egy üzenetben: mit kér tőled, a hozzá tartozó részletekkel.';
 
   @override
-  String get settingsAiFeatureActionsDetail =>
-      'Tételeket javasol a „Rám vár” és a „Másokra vár” mappába.';
+  String get settingsAiFeatureActionsDetail => 'Tételeket javasol a „Rám vár” és a „Másokra vár” mappába.';
 
   @override
   String get settingsAiFeatureRulesDetail =>
@@ -8594,16 +8205,13 @@ class AppLocalizationsHu extends AppLocalizations {
       'Az Üzenetek összehasonlításában: mi változott tartalmilag, forrásokkal.';
 
   @override
-  String get settingsAiFeatureDocumentsDetail =>
-      'A csatolt dokumentumok fő tényei, oldalszámokkal.';
+  String get settingsAiFeatureDocumentsDetail => 'A csatolt dokumentumok fő tényei, oldalszámokkal.';
 
   @override
-  String get settingsAiFeatureReplyCheckDetail =>
-      'Küldés előtt: mit hagyhatott ki egy válasz.';
+  String get settingsAiFeatureReplyCheckDetail => 'Küldés előtt: mit hagyhatott ki egy válasz.';
 
   @override
-  String get settingsAiFeatureMattersDetail =>
-      'Egy ügy legfrissebb állása a levelei alapján.';
+  String get settingsAiFeatureMattersDetail => 'Egy ügy legfrissebb állása a levelei alapján.';
 
   @override
   String get settingsAiLocalOnlyHeader => 'Levelek a telefonon maradnak';
@@ -8629,12 +8237,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String settingsAiUsageRequests(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count kérés',
-      one: '1 kérés',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count kérés', one: '1 kérés');
     return '$_temp0';
   }
 
