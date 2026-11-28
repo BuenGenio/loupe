@@ -25,6 +25,15 @@ final class RemoteMailbox {
   final String? parentPath;
   final bool isSelectable;
   final bool isSubscribed;
+
+  RemoteMailbox withRole(MailboxRole role) => RemoteMailbox(
+    path: path,
+    name: name,
+    role: role,
+    parentPath: parentPath,
+    isSelectable: isSelectable,
+    isSubscribed: isSubscribed,
+  );
 }
 
 /// Opaque per-mailbox sync state, owned by the transport (UIDVALIDITY,

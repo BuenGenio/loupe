@@ -2726,6 +2726,20 @@ class AppLocalizationsHr extends AppLocalizations {
       'Nije provjereno: provjeravaju se samo certifikati tijela kojima Loupe vjeruje.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Posebne mape';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Gdje Loupe sprema poslanu poštu, skice i izbrisanu poštu. Ako ne odaberete mapu, Loupe koristi onu koju označi poslužitelj ili mapu s uobičajenim nazivom.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automatski';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Već razvrstana pošta ostaje gdje jest. Od sada Loupe koristi mapu koju odaberete.';
+
+  @override
   String get settingsLanguage => 'Jezik';
 
   @override

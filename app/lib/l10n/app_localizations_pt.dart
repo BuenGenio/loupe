@@ -2682,6 +2682,20 @@ class AppLocalizationsPt extends AppLocalizations {
       'Não verificado: só são verificados os certificados de autoridades em que o Loupe confia.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Pastas especiais';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Onde o Loupe guarda o correio enviado, os rascunhos e o correio eliminado. Se não escolher uma pasta, usa a que o servidor assinala ou uma com o nome habitual.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automático';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'O correio já arquivado fica onde está. A partir de agora, o Loupe usa a pasta que escolher.';
+
+  @override
   String get settingsLanguage => 'Idioma';
 
   @override

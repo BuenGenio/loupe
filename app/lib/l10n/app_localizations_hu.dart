@@ -2671,6 +2671,20 @@ class AppLocalizationsHu extends AppLocalizations {
       'Nincs ellenőrizve: csak a Loupe által megbízhatónak tartott szolgáltatóktól származó tanúsítványok ellenőrzése történik meg.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Különleges mappák';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Ahová a Loupe az elküldött leveleket, a piszkozatokat és a törölt leveleket teszi. Ha nem választasz mappát, azt használja, amelyet a szervered megjelöl, vagy a szokásos nevűt.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automatikus';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'A már elhelyezett levelek ott maradnak, ahol vannak. Mostantól a Loupe az általad választott mappát használja.';
+
+  @override
   String get settingsLanguage => 'Nyelv';
 
   @override

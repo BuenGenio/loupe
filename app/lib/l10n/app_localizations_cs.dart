@@ -2720,6 +2720,20 @@ class AppLocalizationsCs extends AppLocalizations {
       'Nezkontrolováno: kontrolují se jen certifikáty od autorit, kterým Loupe důvěřuje.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Zvláštní složky';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Kam Loupe ukládá odeslanou poštu, koncepty a smazanou poštu. Pokud složku nevyberete, použije tu, kterou označí server, nebo složku s obvyklým názvem.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automaticky';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Již zařazená pošta zůstane, kde je. Od teď Loupe použije složku, kterou vyberete.';
+
+  @override
   String get settingsLanguage => 'Jazyk';
 
   @override

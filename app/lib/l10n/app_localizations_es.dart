@@ -2678,6 +2678,20 @@ class AppLocalizationsEs extends AppLocalizations {
       'No comprobado: solo se comprueban los certificados de autoridades en las que Loupe confía.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Carpetas especiales';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Dónde guarda Loupe el correo enviado, los borradores y el correo eliminado. Si no eliges una carpeta, usa la que marca tu servidor o una con el nombre habitual.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automático';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'El correo ya guardado se queda donde está. A partir de ahora, Loupe usa la carpeta que elijas.';
+
+  @override
   String get settingsLanguage => 'Idioma';
 
   @override

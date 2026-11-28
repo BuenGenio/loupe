@@ -4509,6 +4509,30 @@ abstract class AppLocalizations {
   /// **'Not checked: only certificates from an authority Loupe trusts are checked.'**
   String get smimeRevocationNotChecked;
 
+  /// Section header in Settings › account (IMAP accounts): which folders hold sent mail, drafts and deleted mail.
+  ///
+  /// In en, this message translates to:
+  /// **'Special Folders'**
+  String get settingsSpecialFoldersHeader;
+
+  /// Under the Sent, Drafts and Trash rows of Special Folders. "Marks": IMAP servers flag these folders; the usual names are ones like "Sent Items".
+  ///
+  /// In en, this message translates to:
+  /// **'Where Loupe keeps sent mail, drafts and deleted mail. Unless you pick a folder, it uses the one your server marks, or one with the usual name.'**
+  String get settingsSpecialFoldersFooter;
+
+  /// First choice when picking the Sent, Drafts or Trash folder: let Loupe find it (the server’s mark, else the usual name). Under it, the folder it found.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic'**
+  String get settingsFolderRoleAutomatic;
+
+  /// Under the folder list when picking the Sent, Drafts or Trash folder: picking another doesn’t move the mail already there.
+  ///
+  /// In en, this message translates to:
+  /// **'Mail already filed stays where it is. From now on, Loupe uses the folder you pick.'**
+  String get settingsFolderRoleFooter;
+
   /// Settings row and page title: the language the app shows.
   ///
   /// In en, this message translates to:

@@ -2723,6 +2723,20 @@ class AppLocalizationsBs extends AppLocalizations {
       'Nije provjereno: provjeravaju se samo certifikati koje izdaju certifikacijska tijela kojima Loupe vjeruje.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Posebni folderi';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Gdje Loupe čuva poslanu poštu, nacrte i obrisanu poštu. Ako ne odaberete folder, Loupe koristi onaj koji server označi ili folder s uobičajenim imenom.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automatski';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Već razvrstana pošta ostaje gdje jeste. Od sada Loupe koristi folder koji odaberete.';
+
+  @override
   String get settingsLanguage => 'Jezik';
 
   @override

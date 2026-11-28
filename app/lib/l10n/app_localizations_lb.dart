@@ -2680,6 +2680,20 @@ class AppLocalizationsLb extends AppLocalizations {
       'Net iwwerpréift: Nëmmen Zertifikater vu Stellen, deene Loupe vertraut, ginn iwwerpréift.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Spezial Dossieren';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Wou Loupe geschéckt Mailen, Entwërf a geläscht Mailen ofleet. Wann Dir keen Dossier wielt, hëlt Loupe deen, deen Äre Server markéiert, oder een mam übleche Numm.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automatesch';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Mailen, déi schonn ofgeluecht sinn, bleiwen, wou se sinn. Vun elo un benotzt Loupe den Dossier, deen Dir wielt.';
+
+  @override
   String get settingsLanguage => 'Sprooch';
 
   @override

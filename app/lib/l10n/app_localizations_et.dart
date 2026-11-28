@@ -2661,6 +2661,20 @@ class AppLocalizationsEt extends AppLocalizations {
       'Pole kontrollitud: kontrollitakse ainult nende asutuste sertifikaate, mida Loupe usaldab.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Erikaustad';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Kuhu Loupe paneb saadetud kirjad, mustandid ja kustutatud kirjad. Kui sa kausta ei vali, kasutab Loupe seda, mille server on märgistanud, või tavapärase nimega kausta.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automaatne';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Juba paigutatud kirjad jäävad sinna, kus nad on. Edaspidi kasutab Loupe sinu valitud kausta.';
+
+  @override
   String get settingsLanguage => 'Keel';
 
   @override

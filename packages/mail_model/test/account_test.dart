@@ -69,4 +69,60 @@ void main() {
     expect(_account.identityById('acc/alias:').id, 'acc/default');
     expect(_account.identityById('other/alias:x@y.example').id, 'acc/default');
   });
+
+  group('folder roles', () {
+    const listed = [
+      RemoteMailbox(path: 'INBOX', name: 'Inbox', role: MailboxRole.inbox),
+      RemoteMailbox(path: 'Sent', name: 'Sent', role: MailboxRole.sent),
+      RemoteMailbox(path: 'INBOX.Sent Items', name: 'Sent Items', parentPath: 'INBOX'),
+      RemoteMailbox(path: 'Drafts', name: 'Drafts', role: MailboxRole.drafts),
+      RemoteMailbox(path: 'Trash', name: 'Trash', role: MailboxRole.trash),
+      RemoteMailbox(path: 'Archive', name: 'Archive', role: MailboxRole.archive),
+      RemoteMailbox(path: 'Old', name: 'Old', isSelectable: false),
+    ];
+    Map<String, MailboxRole> roles(List<RemoteMailbox> boxes) => {for (final m in boxes) m.path: m.role};
+
+    test('round-trip through JSON; an account saved before them has none', () {
+      final picked = _account.withFolderRole(MailboxRole.sent, 'INBOX.Sent Items');
+      expect(MailAccount.fromJson(picked.toJson()).folderRoles, {MailboxRole.sent: 'INBOX.Sent Items'});
+      expect(_account.toJson().containsKey('folderRoles'), isFalse);
+      expect(MailAccount.fromJson(_account.toJson()).folderRoles, isEmpty);
+    });
+
+    test('a picked folder takes the role from the server’s; the server’s choice is kept for the rest', () {
+      final a = _account.withFolderRole(MailboxRole.sent, 'INBOX.Sent Items');
+      expect(roles(a.applyFolderRoles(listed)), {
+        'INBOX': MailboxRole.inbox,
+        'Sent': MailboxRole.none,
+        'INBOX.Sent Items': MailboxRole.sent,
+        'Drafts': MailboxRole.drafts,
+        'Trash': MailboxRole.trash,
+        'Archive': MailboxRole.archive,
+        'Old': MailboxRole.none,
+      });
+      expect(_account.applyFolderRoles(listed), same(listed));
+    });
+
+    test('a folder holds one role: picking it gives up its own, and unpicks it for another role', () {
+      final a = _account.withFolderRole(MailboxRole.trash, 'Archive').withFolderRole(MailboxRole.drafts, 'Archive');
+      expect(a.folderRoles, {MailboxRole.drafts: 'Archive'});
+      final applied = roles(a.applyFolderRoles(listed));
+      expect(applied['Archive'], MailboxRole.drafts);
+      expect(applied['Drafts'], MailboxRole.none);
+      expect(applied['Trash'], MailboxRole.trash);
+      expect(applied.values.where((r) => r == MailboxRole.archive), isEmpty);
+    });
+
+    test('null goes back to the server’s choice', () {
+      final a = _account.withFolderRole(MailboxRole.sent, 'INBOX.Sent Items').withFolderRole(MailboxRole.sent, null);
+      expect(a.folderRoles, isEmpty);
+    });
+
+    test('a folder that’s gone, can’t hold mail or is the Inbox changes nothing', () {
+      for (final path in ['Gone', 'Old', 'INBOX']) {
+        final a = _account.withFolderRole(MailboxRole.trash, path);
+        expect(roles(a.applyFolderRoles(listed)), roles(listed), reason: path);
+      }
+    });
+  });
 }

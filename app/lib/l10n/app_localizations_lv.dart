@@ -2724,6 +2724,20 @@ class AppLocalizationsLv extends AppLocalizations {
       'Nav pārbaudīts: tiek pārbaudīti tikai sertifikāti no iestādēm, kurām Loupe uzticas.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Īpašās mapes';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Kur Loupe glabā nosūtītās vēstules, melnrakstus un dzēstās vēstules. Ja neizvēlaties mapi, Loupe izmanto to, ko atzīmējis serveris, vai mapi ar ierasto nosaukumu.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automātiski';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Jau sakārtotās vēstules paliek, kur ir. Turpmāk Loupe izmanto jūsu izvēlēto mapi.';
+
+  @override
   String get settingsLanguage => 'Valoda';
 
   @override

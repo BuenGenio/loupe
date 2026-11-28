@@ -2680,6 +2680,20 @@ class AppLocalizationsIt extends AppLocalizations {
       'Non verificata: vengono verificati solo i certificati di autorità che Loupe considera attendibili.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Cartelle speciali';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Dove Loupe tiene la posta inviata, le bozze e la posta eliminata. Se non scegli una cartella, usa quella che il server indica o una con il nome consueto.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automatico';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'La posta già archiviata resta dov’è. D’ora in poi, Loupe usa la cartella che scegli.';
+
+  @override
   String get settingsLanguage => 'Lingua';
 
   @override

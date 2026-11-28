@@ -2699,6 +2699,20 @@ class AppLocalizationsDe extends AppLocalizations {
       'Nicht geprüft: Nur Zertifikate von Stellen, denen Loupe vertraut, werden geprüft.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Spezialordner';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Wo Loupe gesendete E-Mails, Entwürfe und gelöschte E-Mails ablegt. Wenn du keinen Ordner wählst, nimmt Loupe den, den dein Server kennzeichnet, oder einen mit dem üblichen Namen.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automatisch';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Bereits abgelegte E-Mails bleiben, wo sie sind. Ab jetzt verwendet Loupe den Ordner, den du wählst.';
+
+  @override
   String get settingsLanguage => 'Sprache';
 
   @override

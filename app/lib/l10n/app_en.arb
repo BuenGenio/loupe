@@ -1480,6 +1480,14 @@
   "@smimeRevocationNotChecked": {"description": "Why revocation wasn’t checked."},
 
   "@@x-section-settings": "Settings, rules, subscriptions",
+  "settingsSpecialFoldersHeader": "Special Folders",
+  "@settingsSpecialFoldersHeader": {"description": "Section header in Settings › account (IMAP accounts): which folders hold sent mail, drafts and deleted mail."},
+  "settingsSpecialFoldersFooter": "Where Loupe keeps sent mail, drafts and deleted mail. Unless you pick a folder, it uses the one your server marks, or one with the usual name.",
+  "@settingsSpecialFoldersFooter": {"description": "Under the Sent, Drafts and Trash rows of Special Folders. \"Marks\": IMAP servers flag these folders; the usual names are ones like \"Sent Items\"."},
+  "settingsFolderRoleAutomatic": "Automatic",
+  "@settingsFolderRoleAutomatic": {"description": "First choice when picking the Sent, Drafts or Trash folder: let Loupe find it (the server’s mark, else the usual name). Under it, the folder it found."},
+  "settingsFolderRoleFooter": "Mail already filed stays where it is. From now on, Loupe uses the folder you pick.",
+  "@settingsFolderRoleFooter": {"description": "Under the folder list when picking the Sent, Drafts or Trash folder: picking another doesn’t move the mail already there."},
 
   "settingsLanguage": "Language",
   "@settingsLanguage": {"description": "Settings row and page title: the language the app shows."},

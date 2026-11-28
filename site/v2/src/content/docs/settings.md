@@ -102,6 +102,7 @@ Settings › *account*:
 | **Identities** | | Your addresses, signatures and reply patterns. See [Identities and signatures](/docs/identities/). |
 | **Manage Folders** | | Which folders show and sync |
 | **Show All Folders** | Off | Shows every folder, subscribed or not |
+| **Special Folders** | Automatic | IMAP accounts: the Sent, Drafts and Trash folders. See [Special folders](/docs/accounts/#special-folders). |
 | **Server** | | The incoming and outgoing servers, for reference |
 | **Sign In Again** | | For Google and Microsoft accounts |
 | **Remove Account** | | Removes the account from this phone, not from the server |

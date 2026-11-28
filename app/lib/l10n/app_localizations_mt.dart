@@ -2785,6 +2785,20 @@ class AppLocalizationsMt extends AppLocalizations {
       'Mhux iċċekkjat: jiġu ċċekkjati biss ċertifikati minn awtorità li Loupe tafda.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Folders speċjali';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Fejn Loupe iżomm l-imejl mibgħut, l-abbozzi u l-imejl imħassar. Jekk ma tagħżilx folder, juża dak li jimmarka s-server tiegħek, jew wieħed bl-isem tas-soltu.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Awtomatiku';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'L-imejl diġà ffajljat jibqa’ fejn hu. Minn issa ’l quddiem, Loupe juża l-folder li tagħżel.';
+
+  @override
   String get settingsLanguage => 'Lingwa';
 
   @override

@@ -81,6 +81,11 @@ final class AccountSyncer {
   final _searchQueue = SerialQueue();
   final _remote = <String, RemoteMailbox>{};
 
+  /// The server's mailbox list as last listed, with the roles the server
+  /// gave: what [MailAccount.folderRoles] apply to, and what a role put back
+  /// to Automatic returns to.
+  List<RemoteMailbox>? _listed;
+
   /// Mailboxes the user opened; kept in sync with the priority ones.
   final _active = <String>{};
 
@@ -160,7 +165,45 @@ final class AccountSyncer {
     await pause();
   }
 
-  void updateAccount(MailAccount account) => _account = account;
+  /// Takes the edited [account]; folders picked for a role or put back to
+  /// Automatic hold their roles at once.
+  Future<void> updateAccount(MailAccount account) async {
+    final old = _account.folderRoles;
+    _account = account;
+    final now = account.folderRoles;
+    if (old.length != now.length || old.entries.any((e) => now[e.key] != e.value)) await _applyFolderRoles();
+  }
+
+  /// [listed] as the store keeps it: with queued subscription changes and
+  /// folders still to be created (see [_withPendingSubscriptions]), and the
+  /// account's [MailAccount.folderRoles].
+  Future<List<RemoteMailbox>> _mailboxList(List<RemoteMailbox> listed) async =>
+      _account.applyFolderRoles(await _withPendingSubscriptions(listed));
+
+  Future<void> _storeMailboxes(List<RemoteMailbox> remote) async {
+    await _store.replaceMailboxes(_account.id, remote);
+    _remote
+      ..clear()
+      ..addAll({for (final m in remote) MailIds.mailbox(_account.id, m.path): m});
+  }
+
+  /// Puts changed [MailAccount.folderRoles] in place without the server: on
+  /// the mailboxes as last listed, or, before any listing this session, on
+  /// the stored ones (a role put back to Automatic then waits for the next
+  /// sync to find the server's folder).
+  Future<void> _applyFolderRoles() async {
+    if (_disposed) return;
+    final listed = _listed ?? [for (final m in await _store.getMailboxes(accountId: _account.id)) _remoteFor(m)];
+    await _storeMailboxes(await _mailboxList(listed));
+    if (_fullSync != null) {
+      // A sync under way applies the earlier choices; one more applies these.
+      unawaited(syncAll());
+    } else {
+      // A picked folder may never have synced (only subscribed ones sync in
+      // the background); it shows its mail, and the copies filed in it, now.
+      unawaited(syncMailboxes([for (final p in _account.folderRoles.values) MailIds.mailbox(_account.id, p)]));
+    }
+  }
 
   // Status ------------------------------------------------------------------
 
@@ -262,11 +305,9 @@ final class AccountSyncer {
     final firstSync = _lastSuccess == null;
     _setStatus(SyncPhase.syncing);
     try {
-      final remote = await _withPendingSubscriptions(await onMain((t) => t.listMailboxes()));
-      await _store.replaceMailboxes(_account.id, remote);
-      _remote
-        ..clear()
-        ..addAll({for (final m in remote) MailIds.mailbox(_account.id, m.path): m});
+      final listed = await onMain((t) => t.listMailboxes());
+      _listed = listed;
+      await _storeMailboxes(await _mailboxList(listed));
       await _replayOps();
       _dirty.clear();
       for (final m in await _mailboxesForFullSync()) {

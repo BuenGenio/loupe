@@ -2735,6 +2735,20 @@ class AppLocalizationsFr extends AppLocalizations {
       'Non vérifié : seuls les certificats d’une autorité approuvée par Loupe sont vérifiés.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Dossiers spéciaux';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Là où Loupe range le courrier envoyé, les brouillons et le courrier supprimé. Si vous ne choisissez pas de dossier, Loupe utilise celui que votre serveur indique, ou un dossier au nom habituel.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automatique';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Le courrier déjà rangé reste où il est. Désormais, Loupe utilise le dossier que vous choisissez.';
+
+  @override
   String get settingsLanguage => 'Langue';
 
   @override

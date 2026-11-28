@@ -10,6 +10,10 @@ creating the heading if it isn't there yet. Say what changed for the person
 using the app, in a line or two; leave out internals, refactors and tests.
 -->
 
+## 2026-11-28
+
+- **Pick your Sent, Drafts and Trash folders** (Settings › account › Special Folders, for IMAP accounts). When the server marks the wrong folders, or none, choose where Loupe files sent mail, saves drafts and moves deleted mail; Automatic goes back to the server’s choice. Mail already in a folder stays there. In all 37 app languages.
+
 ## 2026-11-12
 
 - **Compare Messages…** in a message's ⋯ menu compares two messages in its conversation, highlighting added and removed text. Attachment names, types and sizes are compared separately; file contents are not checked. Works locally with downloaded messages, in all 37 app languages.

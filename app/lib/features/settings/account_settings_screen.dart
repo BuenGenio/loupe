@@ -18,6 +18,7 @@ import '../../theme/loupe_icons.dart';
 import '../account_setup/oauth_accounts.dart' show oauthProviderName;
 import '../account_setup/sign_in_again.dart';
 import '../compose/identity_selection.dart';
+import 'folder_role_screen.dart' show folderRoleName;
 
 String _security(AppLocalizations l10n, ConnectionSecurity s) => switch (s) {
   ConnectionSecurity.tls => 'TLS',
@@ -201,6 +202,28 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
             ),
           ],
         ),
+        // JMAP servers file sent mail by their own roles, so only IMAP accounts pick.
+        if (account.incoming.protocol == ServerProtocol.imap)
+          InsetGroup(
+            key: const Key('account-special-folders'),
+            header: l10n.settingsSpecialFoldersHeader,
+            separatorIndent: 16,
+            footer: l10n.settingsSpecialFoldersFooter,
+            children: [
+              for (final role in MailAccount.pickableFolderRoles)
+                GroupedRow(
+                  key: Key('account-folder-${role.name}'),
+                  title: folderRoleName(l10n, role),
+                  detail:
+                      (ref.watch(mailboxesProvider).value ?? const <Mailbox>[])
+                          .where((m) => m.accountId == account.id && m.role == role)
+                          .firstOrNull
+                          ?.path ??
+                      l10n.commonNone,
+                  onTap: () => context.push(Routes.folderRole(account.id, role)),
+                ),
+            ],
+          ),
         InsetGroup(
           header: l10n.commonServer,
           separatorIndent: 16,

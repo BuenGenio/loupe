@@ -119,6 +119,10 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
 
   final _accounts = <MailAccount>[];
   final _mailboxes = <String, Mailbox>{};
+
+  /// The roles the demo's "servers" gave their mailboxes, from before the
+  /// user first picked a folder for one (see [updateAccount]).
+  final _serverRoles = <String, MailboxRole>{};
   final _messages = <String, DemoMessage>{};
 
   /// Not yet synced: older mail per mailbox id (newest first) …
@@ -431,6 +435,24 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
     final i = _accounts.indexWhere((a) => a.id == account.id);
     if (i < 0) throw const MailException(MailErrorKind.notFound, 'This account no longer exists.');
     _accounts[i] = account;
+    // Special Folders: the picked folders take their roles, as a sync does.
+    final boxes = [
+      for (final m in _mailboxes.values)
+        if (m.accountId == account.id) m,
+    ];
+    final listed = [
+      for (final m in boxes)
+        RemoteMailbox(
+          path: m.path,
+          name: m.name,
+          role: _serverRoles.putIfAbsent(m.id, () => m.role),
+          isSelectable: m.isSelectable,
+        ),
+    ];
+    final applied = account.applyFolderRoles(listed);
+    for (final (i, m) in boxes.indexed) {
+      if (m.role != applied[i].role) _mailboxes[m.id] = m.copyWith(role: applied[i].role);
+    }
     _notify();
   }
 

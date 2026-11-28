@@ -2722,6 +2722,20 @@ class AppLocalizationsSr extends AppLocalizations {
       'Није проверено: проверавају се само сертификати које издају сертификациона тела којима Loupe верује.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Посебне фасцикле';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Где Loupe чува послату пошту, нацрте и обрисану пошту. Ако не изаберете фасциклу, Loupe користи ону коју означи сервер или фасциклу са уобичајеним именом.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Аутоматски';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Већ разврстана пошта остаје где јесте. Од сада Loupe користи фасциклу коју изаберете.';
+
+  @override
   String get settingsLanguage => 'Језик';
 
   @override

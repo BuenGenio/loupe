@@ -2672,6 +2672,20 @@ class AppLocalizationsMk extends AppLocalizations {
       'Не е проверено: се проверуваат само сертификати издадени од сертификациски тела на кои Loupe им верува.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Посебни папки';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Каде Loupe ги чува испратените пораки, нацртите и избришаните пораки. Ако не изберете папка, Loupe ја користи онаа што ја означува серверот или папка со вообичаеното име.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Автоматски';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Веќе распределените пораки остануваат каде што се. Отсега Loupe ја користи папката што ќе ја изберете.';
+
+  @override
   String get settingsLanguage => 'Јазик';
 
   @override

@@ -64,6 +64,12 @@ Rules:
 - **Settings on the server:** `MailTransport.readDocuments`/`writeDocument` keep small app documents on the user's
   mail server (an IMAP METADATA annotation, else a message in the `Loupe Settings` folder). Smart Mailboxes use them;
   see [smart-mailboxes-format.md](smart-mailboxes-format.md).
+- **Special folders are mailbox roles** (`MailboxRole`: Sent, Drafts, Trash…). The IMAP adapter takes them from
+  SPECIAL-USE flags, else from the usual names (`buildRemoteMailboxes`); JMAP from the server's roles. For IMAP
+  accounts the user can pick the Sent, Drafts and Trash folders (`MailAccount.folderRoles`, by path; Settings ›
+  account › Special Folders). `AccountSyncer` applies them to every listing before the store keeps it, so everything
+  that finds a folder by its role (`MailStore.mailboxByRole`) follows the pick; a picked folder the server no longer
+  lists leaves the role to the server's choice.
 - **Message bodies in the app** come from `contentLoaderProvider` (`ContentLoader.loadContent` and
   `loadAttachment`), not the repository directly: it decrypts and verifies OpenPGP and S/MIME mail,
   learns Autocrypt keys and collects S/MIME certificates. Decrypted attachments (both standards) have

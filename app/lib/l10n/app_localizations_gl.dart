@@ -2677,6 +2677,20 @@ class AppLocalizationsGl extends AppLocalizations {
       'Non comprobado: só se comproban os certificados de autoridades nas que Loupe confía.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Cartafoles especiais';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Onde garda Loupe o correo enviado, os borradores e o correo eliminado. Se non escolles un cartafol, usa o que marca o teu servidor ou un co nome habitual.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automático';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'O correo xa gardado queda onde está. A partir de agora, Loupe usa o cartafol que escollas.';
+
+  @override
   String get settingsLanguage => 'Idioma';
 
   @override

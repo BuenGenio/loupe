@@ -2675,6 +2675,20 @@ class AppLocalizationsNl extends AppLocalizations {
       'Niet gecontroleerd: alleen certificaten van een instantie die Loupe vertrouwt, worden gecontroleerd.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Speciale mappen';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Waar Loupe verzonden mail, concepten en verwijderde mail bewaart. Als je geen map kiest, gebruikt Loupe de map die je server aanwijst, of een met de gebruikelijke naam.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automatisch';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Mail die al is opgeborgen, blijft waar die is. Vanaf nu gebruikt Loupe de map die je kiest.';
+
+  @override
   String get settingsLanguage => 'Taal';
 
   @override
