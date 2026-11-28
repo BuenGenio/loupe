@@ -638,7 +638,7 @@ class DemoMailRepository
   }) => _watch(() {
     final actionThreads = switch (ref) {
       VirtualMailboxRef(:final kind) => _actionThreads(kind),
-      RealMailboxRef() => null,
+      RealMailboxRef() || KeywordMailboxRef() => null,
     };
     final matching = [
       for (final m in _messages.values)
